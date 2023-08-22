@@ -1,0 +1,13 @@
+package com.bankrupted.greenroof;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class GreenRoofApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}
