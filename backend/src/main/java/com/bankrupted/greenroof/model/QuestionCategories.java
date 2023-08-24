@@ -1,5 +1,5 @@
 package com.bankrupted.greenroof.model;
 
-public class CommunityPost {
+public class QuestionCategories {
 
 }
