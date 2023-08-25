@@ -2,7 +2,6 @@ package com.bankrupted.greenroof.entity.forum;
 
 import com.bankrupted.greenroof.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -23,12 +22,11 @@ public class ForumQuestion {
     @Column(nullable = false, columnDefinition = "DATE")
     private LocalDate createdAt;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @ManyToOne
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User questioner;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JsonIgnore
     @ManyToMany
     @JoinTable(
@@ -38,8 +36,7 @@ public class ForumQuestion {
     )
     private Set<ForumQuestionCategory> questionCategory;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JsonIgnore
-    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
-    private Set<ForumAnswer> questionAnswer;
+    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<ForumAnswer> answers;
 }

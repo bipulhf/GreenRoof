@@ -1,6 +1,7 @@
 package com.bankrupted.greenroof.entity.forum;
 
 import com.bankrupted.greenroof.entity.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -13,16 +14,18 @@ public class ForumVote {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
-    private Long vote;
+    @Column(columnDefinition = "SMALLINT")
+    private Short vote;
     @Column(nullable = false, columnDefinition = "DATE")
     private LocalDate createdAt;
 
-    @ManyToOne (fetch = FetchType.LAZY)
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "voter_id", nullable = false)
-    private User user;
+    private User voter;
 
-    @ManyToOne (fetch = FetchType.LAZY)
-    @JoinColumn(name = "answerer_id", nullable = false)
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "answer_id", nullable = false)
     private ForumAnswer answer;
 }

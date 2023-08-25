@@ -49,14 +49,14 @@ public class User {
     private Set<Roles> userRole;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "questioner",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<ForumQuestion> userQuestions;
-
-    @JsonIgnore
     @OneToMany(mappedBy = "answerer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<ForumAnswer> userAnswers;
+    private Set<ForumAnswer> answers;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<ForumVote> userVotes;
+    @OneToMany(mappedBy = "questioner", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<ForumQuestion> questions;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "voter", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<ForumVote> votes;
 }
