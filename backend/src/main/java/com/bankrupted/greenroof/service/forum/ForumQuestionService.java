@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Service
 @RequiredArgsConstructor
 public class ForumQuestionService {
@@ -17,12 +19,14 @@ public class ForumQuestionService {
 
     public ResponseEntity<?> craeteNewForumQuestion(String username, ForumQuestion forumQuestion) {
         forumQuestion.setQuestioner(userRepository.findByUsername(username).get());
+        forumQuestion.setCreatedAt(new Date());
         forumQuestionRepository.save(forumQuestion);
         return new ResponseEntity<>("Created", HttpStatus.CREATED);
     }
 
     public ResponseEntity<?> updateForumQuestion(String username, Integer questionId, ForumQuestion forumQuestion) {
         forumQuestion.setId(questionId.longValue());
+        forumQuestion.setCreatedAt(new Date());
         forumQuestion.setQuestioner(userRepository.findByUsername(username).get());
         forumQuestionRepository.save(forumQuestion);
         return new ResponseEntity<>("Updated", HttpStatus.OK);

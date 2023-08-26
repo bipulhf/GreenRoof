@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -17,8 +17,10 @@ public class ForumAnswer {
     private Long id;
     @Column(nullable = false, columnDefinition = "TEXT")
     private String answerText;
-    @Column(nullable = false, columnDefinition = "DATE")
-    private LocalDate createdAt;
+    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
+    private Integer score;
 
     @JsonIgnore
     @OneToMany(mappedBy = "answer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

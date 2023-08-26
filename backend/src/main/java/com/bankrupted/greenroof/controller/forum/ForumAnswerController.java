@@ -38,11 +38,13 @@ public class ForumAnswerController {
         return forumAnswerService.getAnswerOfSingleQuestion(questionId);
     }
 
+    @Transactional
     @PutMapping("vote/{username}/{answerId}/up")
     public ResponseEntity<?> upvoteOnAnswer(@RequestBody ForumVote forumVote, @PathVariable Long answerId, @PathVariable String username) {
         return forumVoteService.upvoteOnAnswer(forumVote, answerId, username);
     }
 
+    @Transactional
     @PutMapping("vote/{username}/{answerId}/down")
     public ResponseEntity<?> downvoteOnAnswer(@RequestBody ForumVote forumVote, @PathVariable Long answerId, @PathVariable String username) {
         return forumVoteService.downvoteOnAnswer(forumVote, answerId, username);

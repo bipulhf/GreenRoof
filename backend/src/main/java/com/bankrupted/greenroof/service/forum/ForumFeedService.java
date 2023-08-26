@@ -18,11 +18,11 @@ public class ForumFeedService {
     }
 
     public ResponseEntity<?> getSingleForumQuestion(Integer id) {
-        return ResponseEntity.ok(forumQuestionRepository.findById(id.longValue()).get());
+        return ResponseEntity.ok(forumQuestionRepository.findByIdOrderByCreatedAtDesc(id.longValue()).get());
     }
 
     public ResponseEntity<?> getUserForumQuestion(String username) {
         Long userId = userRepository.findByUsername(username).get().getId();
-        return ResponseEntity.ok(forumQuestionRepository.findByUserId(userId));
+        return ResponseEntity.ok(forumQuestionRepository.findByUserIdOrderByCreatedAtDesc(userId));
     }
 }

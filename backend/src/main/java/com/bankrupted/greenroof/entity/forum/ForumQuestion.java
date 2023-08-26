@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -19,8 +19,9 @@ public class ForumQuestion {
     private String questionTitle;
     @Column(nullable = false, columnDefinition = "TEXT")
     private String questionText;
-    @Column(nullable = false, columnDefinition = "DATE")
-    private LocalDate createdAt;
+    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)

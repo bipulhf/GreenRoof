@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Data
@@ -16,8 +16,9 @@ public class ForumVote {
     private Long id;
     @Column(columnDefinition = "SMALLINT")
     private Short vote;
-    @Column(nullable = false, columnDefinition = "DATE")
-    private LocalDate createdAt;
+    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)

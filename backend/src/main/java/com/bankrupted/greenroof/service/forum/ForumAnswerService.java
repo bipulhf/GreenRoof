@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -22,8 +23,10 @@ public class ForumAnswerService {
     private final ForumVoteRepository forumVoteRepository;
 
     public ResponseEntity<?> addAnswerToQuestion(String username, Long questionId, ForumAnswer forumAnswer) {
+        forumAnswer.setScore(0);
         forumAnswer.setAnswerer(userRepository.findByUsername(username).get());
         forumAnswer.setQuestion(forumQuestionRepository.findById(questionId).get());
+        forumAnswer.setCreatedAt(new Date());
         forumAnswerRepository.save(forumAnswer);
         return new ResponseEntity<>("Added Answer", HttpStatus.CREATED);
     }
@@ -33,12 +36,15 @@ public class ForumAnswerService {
         forumAnswer.setQuestion(prevAnswer.getQuestion());
         forumAnswer.setAnswerer(prevAnswer.getAnswerer());
         forumAnswer.setId(answerId);
+        forumAnswer.setCreatedAt(new Date());
         forumAnswerRepository.save(forumAnswer);
         return new ResponseEntity<>("Updated Answer", HttpStatus.CREATED);
     }
 
     public ResponseEntity<?> deleteAnswerOfQuestion(Long questionId) {
-        Long answerId = forumAnswerRepository.findByQuestionId(questionId).get(0).getId();
+        if(forumAnswerRepository.findTop1ByQuestionId(questionId) == null)
+            return new ResponseEntity<>("Deleted", HttpStatus.OK);;
+        Long answerId = forumAnswerRepository.findTop1ByQuestionId(questionId).getId();
         Integer voteListSize = forumVoteRepository.findByAnswerId(answerId).size();
         if(voteListSize > 0) forumVoteRepository.deleteByAnswerId(answerId);
         forumAnswerRepository.deleteByQuestionId(questionId);
@@ -52,6 +58,11 @@ public class ForumAnswerService {
     }
 
     public ResponseEntity<?> getAnswerOfSingleQuestion(Long questionId) {
-        return ResponseEntity.ok(forumAnswerRepository.findByQuestionId(questionId));
+        List<ForumAnswer> answer = forumAnswerRepository.findByQuestionIdOrderByScoreDescCreatedAtDesc(questionId);
+        answer.forEach(forumAnswer -> {
+            forumAnswer.setScore(forumVoteRepository.getTotalVotesOfAnswer(forumAnswer.getId()));
+            forumAnswerRepository.save(forumAnswer);
+        });
+        return ResponseEntity.ok(answer);
     }
 }

@@ -1,6 +1,7 @@
 package com.bankrupted.greenroof.service.forum;
 
 import com.bankrupted.greenroof.entity.User;
+import com.bankrupted.greenroof.entity.forum.ForumAnswer;
 import com.bankrupted.greenroof.entity.forum.ForumVote;
 import com.bankrupted.greenroof.repository.UserRepository;
 import com.bankrupted.greenroof.repository.forum.ForumAnswerRepository;
@@ -9,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
@@ -20,29 +23,37 @@ public class ForumVoteService {
 
     public ResponseEntity<?> upvoteOnAnswer(ForumVote forumVote, Long answerId, String username) {
         User voter = userRepository.findByUsername(username).get();
+        ForumAnswer answer = forumAnswerRepository.findById(answerId).get();
 
         if(checkVote(voter.getId(), answerId) && isUpvoted(voter.getId(), answerId))
             return new ResponseEntity<>("Already Voted", HttpStatus.OK);
-        else if(!isUpvoted(voter.getId(), answerId))
+        else if(checkVote(voter.getId(), answerId) && !isUpvoted(voter.getId(), answerId)) {
             changeExistingVote(forumVote, answerId, voter);
+            return new ResponseEntity<>("Upvoted Successfully", HttpStatus.OK);
+        }
 
-        forumVote.setAnswer(forumAnswerRepository.findById(answerId).get());
+        forumVote.setAnswer(answer);
         forumVote.setVoter(voter);
         forumVote.setVote((short) 1);
+        forumVote.setCreatedAt(new Date());
         forumVoteRepository.save(forumVote);
         return new ResponseEntity<>("Upvoted Successfully", HttpStatus.OK);
     }
 
     public ResponseEntity<?> downvoteOnAnswer(ForumVote forumVote, Long answerId, String username) {
         User voter = userRepository.findByUsername(username).get();
+        ForumAnswer answer = forumAnswerRepository.findById(answerId).get();
 
         if(checkVote(voter.getId(), answerId) && !isUpvoted(voter.getId(), answerId))
             return new ResponseEntity<>("Already Voted", HttpStatus.OK);
-        else if(isUpvoted(voter.getId(), answerId))
+        else if(checkVote(voter.getId(), answerId) && isUpvoted(voter.getId(), answerId)) {
             changeExistingVote(forumVote, answerId, voter);
+            return new ResponseEntity<>("Downvoted Successfully", HttpStatus.OK);
+        }
 
-        forumVote.setAnswer(forumAnswerRepository.findById(answerId).get());
+        forumVote.setAnswer(answer);
         forumVote.setVoter(voter);
+        forumVote.setCreatedAt(new Date());
         forumVote.setVote((short) -1);
         forumVoteRepository.save(forumVote);
         return new ResponseEntity<>("Downvoted Successfully", HttpStatus.OK);
@@ -74,6 +85,7 @@ public class ForumVoteService {
         forumVote.setVote(newVote);
         forumVote.setAnswer(vote.getAnswer());
         forumVote.setVoter(vote.getVoter());
+        forumVote.setCreatedAt(new Date());
         forumVoteRepository.save(forumVote);
     }
 }
