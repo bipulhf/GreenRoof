@@ -22,8 +22,7 @@ public class CommunityPost {
     private Date createdAt;
     private Double priorityValue;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 }

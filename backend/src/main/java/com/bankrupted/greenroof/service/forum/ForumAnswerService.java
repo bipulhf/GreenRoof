@@ -79,4 +79,9 @@ public class ForumAnswerService {
         });
         return ResponseEntity.ok(answerDtos);
     }
+
+    public ResponseEntity<?> getAnswersNumberOfUser(String username) {
+        Long userId = userRepository.findByUsername(username).get().getId();
+        return ResponseEntity.ok(forumAnswerRepository.getTotalNumberOfAnswersOfUser(userId));
+    }
 }

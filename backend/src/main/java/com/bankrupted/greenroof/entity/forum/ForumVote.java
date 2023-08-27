@@ -20,8 +20,7 @@ public class ForumVote {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "voter_id", nullable = false)
     private User voter;
 

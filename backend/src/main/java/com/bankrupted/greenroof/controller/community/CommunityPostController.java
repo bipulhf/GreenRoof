@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/v1/coomunity/post")
+@RequestMapping("api/v1/community/post")
 @RequiredArgsConstructor
 public class CommunityPostController {
 
@@ -27,8 +27,8 @@ public class CommunityPostController {
 
     @Transactional
     @DeleteMapping("delete/{username}/{questionId}")
-    public ResponseEntity<?> deleteCommunityPost(@PathVariable String username, @PathVariable Long postId) {
-        return communityPostService.deleteCommmunityPost(username, postId);
+    public ResponseEntity<?> deleteCommunityPost(@PathVariable String username, @PathVariable Long questionId) {
+        return communityPostService.deleteCommmunityPost(username, questionId);
     }
 
 }

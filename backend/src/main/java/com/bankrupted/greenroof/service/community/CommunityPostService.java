@@ -22,14 +22,18 @@ public class CommunityPostService {
     public ResponseEntity<?> craeteNewCommunityPost(String username, CommunityPost communityPost) {
         communityPost.setUser(userRepository.findByUsername(username).get());
         communityPost.setCreatedAt(new Date());
+        communityPost.setPriorityValue(0.0);
         communityPostRepository.save(communityPost);
         return new ResponseEntity<>("Post Created", HttpStatus.CREATED);
     }
 
     public ResponseEntity<?> updateCommunityPost(String username, Long postId, CommunityPost communityPost) {
+        CommunityPost prevPost = communityPostRepository.findById(postId).get();
+
         communityPost.setId(postId);
         communityPost.setUser(userRepository.findByUsername(username).get());
         communityPost.setCreatedAt(new Date());
+        communityPost.setPriorityValue(prevPost.getPriorityValue());
         communityPostRepository.save(communityPost);
         return new ResponseEntity<>("Post Updated", HttpStatus.CREATED);
     }

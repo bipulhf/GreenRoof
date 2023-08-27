@@ -19,7 +19,7 @@ public class CommunityCommentController {
         return  communityCommentService.addComment(username, postId, communityComment);
     }
 
-    @PutMapping("update/{username}/{answerId}")
+    @PutMapping("update/{username}/{commentId}")
     public ResponseEntity<?> updateComment(@PathVariable String username, @PathVariable Long commentId, @RequestBody CommunityComment communityComment) {
         return communityCommentService.updateComment(username, commentId, communityComment);
     }

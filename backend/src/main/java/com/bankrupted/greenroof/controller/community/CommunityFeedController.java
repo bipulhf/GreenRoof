@@ -15,7 +15,7 @@ public class CommunityFeedController {
 
     private final CommunityFeedService communityFeedService;
 
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<?> getAllCommunityPosts() {
         return communityFeedService.getAllCommunityPosts();
     }

@@ -18,8 +18,7 @@ public class CommunityPostLike {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "liker_id")
     private User liker;
 
