@@ -12,7 +12,7 @@ public class ForumFeedController {
 
     private final ForumFeedService forumFeedService;
 
-    @GetMapping("get/all")
+    @GetMapping("")
     public ResponseEntity<?> getAllForumQuestions() {
         return forumFeedService.getAllForumQuestions();
     }

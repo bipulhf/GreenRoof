@@ -33,20 +33,20 @@ public class ForumAnswerController {
         return  forumAnswerService.deleteAnswerOfQuestion(username, answerId);
     }
 
-    @GetMapping("get/{questionId}")
+    @GetMapping("{questionId}")
     public ResponseEntity<?> getAnswerOfSingleQuestion(@PathVariable Long questionId) {
-        return forumAnswerService.getAnswerOfSingleQuestion(questionId);
+        return forumAnswerService.getAnswersOfSingleQuestion(questionId);
     }
 
     @Transactional
     @PutMapping("vote/{username}/{answerId}/up")
-    public ResponseEntity<?> upvoteOnAnswer(@RequestBody ForumVote forumVote, @PathVariable Long answerId, @PathVariable String username) {
-        return forumVoteService.upvoteOnAnswer(forumVote, answerId, username);
+    public ResponseEntity<?> upvoteOnAnswer(@PathVariable Long answerId, @PathVariable String username) {
+        return forumVoteService.upvoteOnAnswer(answerId, username);
     }
 
     @Transactional
     @PutMapping("vote/{username}/{answerId}/down")
-    public ResponseEntity<?> downvoteOnAnswer(@RequestBody ForumVote forumVote, @PathVariable Long answerId, @PathVariable String username) {
-        return forumVoteService.downvoteOnAnswer(forumVote, answerId, username);
+    public ResponseEntity<?> downvoteOnAnswer(@PathVariable Long answerId, @PathVariable String username) {
+        return forumVoteService.downvoteOnAnswer(answerId, username);
     }
 }

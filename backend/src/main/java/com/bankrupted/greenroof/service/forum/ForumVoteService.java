@@ -21,9 +21,10 @@ public class ForumVoteService {
     private final ForumAnswerRepository forumAnswerRepository;
     private final ForumVoteRepository forumVoteRepository;
 
-    public ResponseEntity<?> upvoteOnAnswer(ForumVote forumVote, Long answerId, String username) {
+    public ResponseEntity<?> upvoteOnAnswer(Long answerId, String username) {
         User voter = userRepository.findByUsername(username).get();
         ForumAnswer answer = forumAnswerRepository.findById(answerId).get();
+        ForumVote forumVote = new ForumVote();
 
         if(checkVote(voter.getId(), answerId) && isUpvoted(voter.getId(), answerId))
             return new ResponseEntity<>("Already Voted", HttpStatus.OK);
@@ -40,9 +41,11 @@ public class ForumVoteService {
         return new ResponseEntity<>("Upvoted Successfully", HttpStatus.OK);
     }
 
-    public ResponseEntity<?> downvoteOnAnswer(ForumVote forumVote, Long answerId, String username) {
+    public ResponseEntity<?> downvoteOnAnswer(Long answerId, String username) {
         User voter = userRepository.findByUsername(username).get();
         ForumAnswer answer = forumAnswerRepository.findById(answerId).get();
+        ForumVote forumVote = new ForumVote();
+
 
         if(checkVote(voter.getId(), answerId) && !isUpvoted(voter.getId(), answerId))
             return new ResponseEntity<>("Already Voted", HttpStatus.OK);

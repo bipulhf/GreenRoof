@@ -14,7 +14,7 @@ public class ForumQuestionController {
 
     private final ForumQuestionService forumQuestionService;
 
-    @PostMapping("{username}/create")
+    @PostMapping("create/{username}")
     public ResponseEntity<?> createNewForumQuestion(@PathVariable String username, @RequestBody ForumQuestion forumQuestion) {
         return forumQuestionService.craeteNewForumQuestion(username, forumQuestion);
     }

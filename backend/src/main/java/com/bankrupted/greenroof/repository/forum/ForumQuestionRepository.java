@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -15,4 +14,6 @@ public interface ForumQuestionRepository extends JpaRepository<ForumQuestion, Lo
     List<ForumQuestion> findByUserIdOrderByCreatedAtDesc(Long Id);
 
     Optional<ForumQuestion> findByIdOrderByCreatedAtDesc(long l);
+
+    //List<ForumQuestionDto> findAllOrderByCreatedAtDesc();
 }

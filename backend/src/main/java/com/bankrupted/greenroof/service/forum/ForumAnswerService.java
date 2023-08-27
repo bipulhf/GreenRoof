@@ -1,5 +1,6 @@
 package com.bankrupted.greenroof.service.forum;
 
+import com.bankrupted.greenroof.dto.forum.ForumAnswerDto;
 import com.bankrupted.greenroof.entity.forum.ForumAnswer;
 import com.bankrupted.greenroof.repository.UserRepository;
 import com.bankrupted.greenroof.repository.forum.ForumAnswerRepository;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -43,7 +45,7 @@ public class ForumAnswerService {
 
     public ResponseEntity<?> deleteAnswerOfQuestion(Long questionId) {
         if(forumAnswerRepository.findTop1ByQuestionId(questionId) == null)
-            return new ResponseEntity<>("Deleted", HttpStatus.OK);;
+            return new ResponseEntity<>("Question Not Found", HttpStatus.NOT_FOUND);;
         Long answerId = forumAnswerRepository.findTop1ByQuestionId(questionId).getId();
         Integer voteListSize = forumVoteRepository.findByAnswerId(answerId).size();
         if(voteListSize > 0) forumVoteRepository.deleteByAnswerId(answerId);
@@ -57,12 +59,24 @@ public class ForumAnswerService {
         return new ResponseEntity<>("Deleted", HttpStatus.OK);
     }
 
-    public ResponseEntity<?> getAnswerOfSingleQuestion(Long questionId) {
+    public ResponseEntity<?> getAnswersOfSingleQuestion(Long questionId) {
         List<ForumAnswer> answer = forumAnswerRepository.findByQuestionIdOrderByScoreDescCreatedAtDesc(questionId);
+        List<ForumAnswerDto> answerDtos = new ArrayList<>();
+
         answer.forEach(forumAnswer -> {
             forumAnswer.setScore(forumVoteRepository.getTotalVotesOfAnswer(forumAnswer.getId()));
             forumAnswerRepository.save(forumAnswer);
+
+            ForumAnswerDto answerDto = ForumAnswerDto.builder()
+                    .id(forumAnswer.getId())
+                    .answerText(forumAnswer.getAnswerText())
+                    .score(forumAnswer.getScore())
+                    .answerer(forumAnswer.getAnswerer())
+                    .createdAt(forumAnswer.getCreatedAt())
+                    .build();
+
+            answerDtos.add(answerDto);
         });
-        return ResponseEntity.ok(answer);
+        return ResponseEntity.ok(answerDtos);
     }
 }
