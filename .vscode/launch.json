@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-GreenRoofApplication<greenroof>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.bankrupted.greenroof.GreenRoofApplication",
+      "projectName": "greenroof",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}
