@@ -3,10 +3,7 @@ package com.bankrupted.greenroof.controller.community;
 import com.bankrupted.greenroof.service.community.CommunityFeedService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/v1/community/feed")
@@ -20,13 +17,18 @@ public class CommunityFeedController {
         return communityFeedService.getAllCommunityPosts();
     }
 
-    @GetMapping("get/{id}")
-    public ResponseEntity<?> getSingleCommunityPost(@PathVariable Long id) {
-        return communityFeedService.getSingleCommunityPost(id);
+    @GetMapping("recent")
+    public ResponseEntity<?> getAllRecentCommunityPosts() {
+        return communityFeedService.getAllRecentCommunityPosts();
     }
 
-    @GetMapping("{username}")
-    public ResponseEntity<?> getUserCommunityPost(@PathVariable String username) {
+    @GetMapping("post")
+    public ResponseEntity<?> getSingleCommunityPost(@RequestParam Long postId) {
+        return communityFeedService.getSingleCommunityPost(postId);
+    }
+
+    @GetMapping("user")
+    public ResponseEntity<?> getUserCommunityPost(@RequestParam String username) {
         return communityFeedService.getUserCommunityPost(username);
     }
 }

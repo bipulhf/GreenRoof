@@ -1,17 +1,19 @@
 package com.bankrupted.greenroof.dto.forum;
 
-import com.bankrupted.greenroof.entity.User;
-import lombok.Builder;
+import com.bankrupted.greenroof.dto.UserDto;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 @Data
-@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ForumAnswerDto {
     private Long id;
     private String answerText;
     private Integer score;
     private Date createdAt;
-    private User answerer;
+    private UserDto answerer;
 }

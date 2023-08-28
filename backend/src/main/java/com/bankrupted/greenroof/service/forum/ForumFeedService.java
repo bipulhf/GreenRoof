@@ -1,10 +1,15 @@
 package com.bankrupted.greenroof.service.forum;
 
+import com.bankrupted.greenroof.dto.forum.ForumQuestionDto;
+import com.bankrupted.greenroof.entity.forum.ForumQuestion;
 import com.bankrupted.greenroof.repository.UserRepository;
 import com.bankrupted.greenroof.repository.forum.ForumQuestionRepository;
+import com.bankrupted.greenroof.utils.ModelMapperUtility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -12,17 +17,26 @@ public class ForumFeedService {
 
     private final ForumQuestionRepository forumQuestionRepository;
     private final UserRepository userRepository;
+    private final ModelMapperUtility<ForumQuestion, ForumQuestionDto> modelMapper;
 
     public ResponseEntity<?> getAllForumQuestions() {
-        return ResponseEntity.ok(forumQuestionRepository.findAll());
+        List<ForumQuestion> forumQuestionList = forumQuestionRepository.findAll();
+        return modelMapper.modelMap(forumQuestionList, ForumQuestionDto.class);
     }
 
-    public ResponseEntity<?> getSingleForumQuestion(Integer id) {
-        return ResponseEntity.ok(forumQuestionRepository.findByIdOrderByCreatedAtDesc(id.longValue()).get());
+    public ResponseEntity<?> getAllRecentForumQuestions() {
+        List<ForumQuestion> forumQuestionList = forumQuestionRepository.findAllByOrderByCreatedAtDesc();
+        return modelMapper.modelMap(forumQuestionList, ForumQuestionDto.class);
+    }
+
+    public ResponseEntity<?> getSingleForumQuestion(Long questionId) {
+        ForumQuestion question = forumQuestionRepository.findByIdOrderByCreatedAtDesc(questionId).get();
+        return modelMapper.modelMap(question, ForumQuestionDto.class);
     }
 
     public ResponseEntity<?> getUserForumQuestion(String username) {
         Long userId = userRepository.findByUsername(username).get().getId();
-        return ResponseEntity.ok(forumQuestionRepository.findByUserIdOrderByCreatedAtDesc(userId));
+        List<ForumQuestion> forumQuestionList = forumQuestionRepository.findByUserIdOrderByCreatedAtDesc(userId);
+        return modelMapper.modelMap(forumQuestionList, ForumQuestionDto.class);
     }
 }

@@ -30,8 +30,8 @@ public class CommunityCommentController {
         return  communityCommentService.deleteComment(username, commentId);
     }
 
-    @GetMapping("{postId}")
-    public ResponseEntity<?> getCommentsOfSinglePost(@PathVariable Long postId) {
+    @GetMapping("")
+    public ResponseEntity<?> getCommentsOfSinglePost(@RequestParam Long postId) {
         return communityCommentService.getCommentsOfSinglePost(postId);
     }
 }

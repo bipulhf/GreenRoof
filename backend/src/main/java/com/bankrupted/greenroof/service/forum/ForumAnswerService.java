@@ -6,12 +6,12 @@ import com.bankrupted.greenroof.repository.UserRepository;
 import com.bankrupted.greenroof.repository.forum.ForumAnswerRepository;
 import com.bankrupted.greenroof.repository.forum.ForumQuestionRepository;
 import com.bankrupted.greenroof.repository.forum.ForumVoteRepository;
+import com.bankrupted.greenroof.utils.ModelMapperUtility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -23,6 +23,8 @@ public class ForumAnswerService {
     private final ForumQuestionRepository forumQuestionRepository;
     private final UserRepository userRepository;
     private final ForumVoteRepository forumVoteRepository;
+    private final ModelMapperUtility<ForumAnswer, ForumAnswerDto> modelMapper;
+
 
     public ResponseEntity<?> addAnswerToQuestion(String username, Long questionId, ForumAnswer forumAnswer) {
         forumAnswer.setScore(0);
@@ -60,24 +62,11 @@ public class ForumAnswerService {
     }
 
     public ResponseEntity<?> getAnswersOfSingleQuestion(Long questionId) {
-        List<ForumAnswer> answer = forumAnswerRepository.findByQuestionIdOrderByScoreDescCreatedAtDesc(questionId);
-        List<ForumAnswerDto> answerDtos = new ArrayList<>();
-
-        answer.forEach(forumAnswer -> {
-            forumAnswer.setScore(forumVoteRepository.getTotalVotesOfAnswer(forumAnswer.getId()));
-            forumAnswerRepository.save(forumAnswer);
-
-            ForumAnswerDto answerDto = ForumAnswerDto.builder()
-                    .id(forumAnswer.getId())
-                    .answerText(forumAnswer.getAnswerText())
-                    .score(forumAnswer.getScore())
-                    .answerer(forumAnswer.getAnswerer())
-                    .createdAt(forumAnswer.getCreatedAt())
-                    .build();
-
-            answerDtos.add(answerDto);
+        List<ForumAnswer> answers = forumAnswerRepository.findByQuestionIdOrderByScoreDescCreatedAtDesc(questionId);
+        answers.forEach(answer -> {
+            answer.setScore(forumVoteRepository.getTotalVotesOfAnswer(answer.getId()));
         });
-        return ResponseEntity.ok(answerDtos);
+        return modelMapper.modelMap(answers, ForumAnswerDto.class);
     }
 
     public ResponseEntity<?> getAnswersNumberOfUser(String username) {

@@ -1,15 +1,18 @@
 package com.bankrupted.greenroof.service.community;
 
+import com.bankrupted.greenroof.dto.community.CommunityCommentDto;
 import com.bankrupted.greenroof.entity.community.CommunityComment;
 import com.bankrupted.greenroof.repository.UserRepository;
 import com.bankrupted.greenroof.repository.community.CommunityCommentRepository;
 import com.bankrupted.greenroof.repository.community.CommunityPostRepository;
+import com.bankrupted.greenroof.utils.ModelMapperUtility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +21,8 @@ public class CommunityCommentService {
     private final CommunityCommentRepository communityCommentRepository;
     private final UserRepository userRepository;
     private final CommunityPostRepository communityPostRepository;
+    private final ModelMapperUtility<CommunityComment, CommunityCommentDto> modelMapper;
+
 
     public ResponseEntity<?> addComment(String username, Long postId, CommunityComment communityComment) {
         communityComment.setCommenter(userRepository.findByUsername(username).get());
@@ -48,6 +53,7 @@ public class CommunityCommentService {
     }
 
     public ResponseEntity<?> getCommentsOfSinglePost(Long postId) {
-        return ResponseEntity.ok(communityCommentRepository.findByPostId(postId));
+        List<CommunityComment> communityComments = communityCommentRepository.findByPostId(postId);
+        return modelMapper.modelMap(communityComments, CommunityCommentDto.class);
     }
 }

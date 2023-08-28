@@ -33,8 +33,8 @@ public class ForumAnswerController {
         return  forumAnswerService.deleteAnswerOfQuestion(username, answerId);
     }
 
-    @GetMapping("{questionId}")
-    public ResponseEntity<?> getAnswerOfSingleQuestion(@PathVariable Long questionId) {
+    @GetMapping("")
+    public ResponseEntity<?> getAnswerOfSingleQuestion(@RequestParam Long questionId) {
         return forumAnswerService.getAnswersOfSingleQuestion(questionId);
     }
 

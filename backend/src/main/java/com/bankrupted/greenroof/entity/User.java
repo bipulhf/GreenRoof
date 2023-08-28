@@ -35,7 +35,7 @@ public class User {
     private String city;
     @Column(nullable = false)
     private boolean isBanned;
-    private byte[] profilePhoto;
+    private String profilePhoto;
     @Column(nullable = false, columnDefinition = "DATE")
     private LocalDate createdAt;
 

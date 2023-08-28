@@ -17,13 +17,18 @@ public class ForumFeedController {
         return forumFeedService.getAllForumQuestions();
     }
 
-    @GetMapping("get/{id}")
-    public ResponseEntity<?> getSingleForumQuestion(@PathVariable Integer id) {
-        return forumFeedService.getSingleForumQuestion(id);
+    @GetMapping("recent")
+    public ResponseEntity<?> getAllRecentForumQuestions() {
+        return forumFeedService.getAllRecentForumQuestions();
     }
 
-    @GetMapping("{username}")
-    public ResponseEntity<?> getUserForumQuestion(@PathVariable String username) {
+    @GetMapping("question")
+    public ResponseEntity<?> getSingleForumQuestion(@RequestParam Long questionId) {
+        return forumFeedService.getSingleForumQuestion(questionId);
+    }
+
+    @GetMapping("user")
+    public ResponseEntity<?> getUserForumQuestion(@RequestParam String username) {
         return forumFeedService.getUserForumQuestion(username);
     }
 }

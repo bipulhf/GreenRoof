@@ -16,13 +16,13 @@ public class CommunityFollowController {
         return communityFollowService.followUser(user1, user2);
     }
 
-    @GetMapping("{username}/followers")
-    public ResponseEntity<?> getFollowersList(@PathVariable String username) {
+    @GetMapping("followers")
+    public ResponseEntity<?> getFollowersList(@RequestParam String username) {
         return communityFollowService.getFollowersList(username);
     }
 
-    @GetMapping("{username}/followings")
-    public ResponseEntity<?> getFollowingsList(@PathVariable String username) {
+    @GetMapping("followings")
+    public ResponseEntity<?> getFollowingsList(@RequestParam String username) {
         return communityFollowService.getFollowingsList(username);
     }
 }

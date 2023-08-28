@@ -10,10 +10,16 @@ import java.util.Optional;
 
 @Repository
 public interface ForumQuestionRepository extends JpaRepository<ForumQuestion, Long> {
-    @Query(value = "SELECT * from forum_questions ques WHERE ques.user_id=:Id", nativeQuery = true)
+    @Query(value = "SELECT * FROM forum_questions ques WHERE ques.user_id=:Id", nativeQuery = true)
     List<ForumQuestion> findByUserIdOrderByCreatedAtDesc(Long Id);
 
     Optional<ForumQuestion> findByIdOrderByCreatedAtDesc(long l);
 
-    //List<ForumQuestionDto> findAllOrderByCreatedAtDesc();
+    List<ForumQuestion> findAllByOrderByCreatedAtDesc();
+
+    @Query(value = "SELECT *\n" +
+            "FROM forum_questions\n" +
+            "WHERE forum_ts @@ to_tsquery('english', :text)\n" +
+            "ORDER BY ts_rank(forum_ts, to_tsquery('english', :text)) DESC;", nativeQuery = true)
+    List<ForumQuestion> searchQuestion(String text);
 }

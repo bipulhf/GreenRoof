@@ -5,14 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class CommunityCommentDto {
+@NoArgsConstructor
+public class UserFollowerDto {
     private Long id;
-    private String commentText;
-    private Date createdAt;
-    private UserDto commenter;
+    private UserDto follower;
 }
