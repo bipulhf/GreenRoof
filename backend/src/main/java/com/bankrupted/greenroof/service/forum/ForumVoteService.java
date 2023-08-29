@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.NoSuchElementException;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -22,10 +24,13 @@ public class ForumVoteService {
     private final ForumVoteRepository forumVoteRepository;
 
     public ResponseEntity<?> upvoteOnAnswer(Long answerId, String username) {
-        User voter = userRepository.findByUsername(username).get();
+        User voter = userRepository.findByUsername(username)
+                .orElseThrow(() -> new NoSuchElementException("No user found with this username " + username + "."));
         ForumAnswer answer = forumAnswerRepository.findById(answerId).get();
-        ForumVote forumVote = new ForumVote();
+        if (Objects.equals(answer.getAnswerer().getUsername(), username))
+            return new ResponseEntity<>("You can't vote your own answer.", HttpStatus.FORBIDDEN);
 
+        ForumVote forumVote = new ForumVote();
         if(checkVote(voter.getId(), answerId) && isUpvoted(voter.getId(), answerId))
             return new ResponseEntity<>("Already Voted", HttpStatus.OK);
         else if(checkVote(voter.getId(), answerId) && !isUpvoted(voter.getId(), answerId)) {
@@ -42,11 +47,14 @@ public class ForumVoteService {
     }
 
     public ResponseEntity<?> downvoteOnAnswer(Long answerId, String username) {
-        User voter = userRepository.findByUsername(username).get();
+        User voter = userRepository.findByUsername(username)
+                .orElseThrow(() -> new NoSuchElementException("No user found with this username " + username + "."));
         ForumAnswer answer = forumAnswerRepository.findById(answerId).get();
+
+        if (Objects.equals(answer.getAnswerer().getUsername(), username))
+            return new ResponseEntity<>("You can't vote your own answer.", HttpStatus.FORBIDDEN);
+
         ForumVote forumVote = new ForumVote();
-
-
         if(checkVote(voter.getId(), answerId) && !isUpvoted(voter.getId(), answerId))
             return new ResponseEntity<>("Already Voted", HttpStatus.OK);
         else if(checkVote(voter.getId(), answerId) && isUpvoted(voter.getId(), answerId)) {

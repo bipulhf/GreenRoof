@@ -5,6 +5,7 @@ import com.bankrupted.greenroof.entity.forum.ForumVote;
 import com.bankrupted.greenroof.service.forum.ForumAnswerService;
 import com.bankrupted.greenroof.service.forum.ForumVoteService;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +19,8 @@ public class ForumAnswerController {
     private final ForumVoteService forumVoteService;
 
     @PostMapping("add/{username}/{questionId}")
-    public ResponseEntity<?> addAnswerToQuestion(@PathVariable String username, @PathVariable Long questionId,@RequestBody ForumAnswer forumAnswer) {
-        return  forumAnswerService.addAnswerToQuestion(username, questionId, forumAnswer);
+    public ResponseEntity<?> addAnswerToQuestion(@PathVariable String username, @PathVariable Long questionId, @RequestBody @Valid ForumAnswer forumAnswer) {
+        return forumAnswerService.addAnswerToQuestion(username, questionId, forumAnswer);
     }
 
     @PutMapping("update/{username}/{answerId}")

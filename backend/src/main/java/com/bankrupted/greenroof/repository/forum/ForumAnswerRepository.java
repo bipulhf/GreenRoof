@@ -6,10 +6,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ForumAnswerRepository extends JpaRepository<ForumAnswer, Long> {
-    ForumAnswer findTop1ByQuestionId(Long questionId);
+    Optional<ForumAnswer> findTop1ByQuestionId(Long questionId);
     List<ForumAnswer> findByQuestionIdOrderByScoreDescCreatedAtDesc(Long questionId);
 
     @Query(value = "SELECT SUM(user_id) FROM forum_answers WHERE user_id=:userId", nativeQuery = true)

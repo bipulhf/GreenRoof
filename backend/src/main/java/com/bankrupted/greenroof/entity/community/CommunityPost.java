@@ -16,7 +16,7 @@ public class CommunityPost {
     private Long id;
     @Column(columnDefinition = "TEXT")
     private String  postText;
-    private byte[] postAttatchments;
+    private String postAttatchments;
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;

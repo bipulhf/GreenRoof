@@ -3,6 +3,7 @@ package com.bankrupted.greenroof.entity.community;
 import com.bankrupted.greenroof.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 import java.util.Date;
@@ -14,6 +15,7 @@ public class CommunityComment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message = "Comment can't be null.")
     @Column(nullable = false, columnDefinition = "TEXT")
     private String commentText;
     @Temporal(TemporalType.TIMESTAMP)

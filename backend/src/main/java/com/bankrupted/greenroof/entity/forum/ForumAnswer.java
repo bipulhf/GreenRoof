@@ -3,6 +3,7 @@ package com.bankrupted.greenroof.entity.forum;
 import com.bankrupted.greenroof.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 import java.util.Date;
@@ -15,6 +16,7 @@ public class ForumAnswer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message = "Answer is mandatory and can't be blank.")
     @Column(nullable = false, columnDefinition = "TEXT")
     private String answerText;
     @Column(nullable = false)

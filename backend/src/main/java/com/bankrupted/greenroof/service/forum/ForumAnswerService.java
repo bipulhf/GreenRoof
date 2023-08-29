@@ -2,6 +2,7 @@ package com.bankrupted.greenroof.service.forum;
 
 import com.bankrupted.greenroof.dto.forum.ForumAnswerDto;
 import com.bankrupted.greenroof.entity.forum.ForumAnswer;
+import com.bankrupted.greenroof.entity.forum.ForumQuestion;
 import com.bankrupted.greenroof.repository.UserRepository;
 import com.bankrupted.greenroof.repository.forum.ForumAnswerRepository;
 import com.bankrupted.greenroof.repository.forum.ForumQuestionRepository;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -27,16 +30,26 @@ public class ForumAnswerService {
 
 
     public ResponseEntity<?> addAnswerToQuestion(String username, Long questionId, ForumAnswer forumAnswer) {
+        ForumQuestion forumQuestion = forumQuestionRepository.findById(questionId)
+                .orElseThrow(() -> new NoSuchElementException("Question with id " + questionId + " does not exists."));
+
+        if(Objects.equals(forumQuestion.getQuestioner().getUsername(), username))
+            return new ResponseEntity<>("You can't answer on your own question", HttpStatus.FORBIDDEN);
+
         forumAnswer.setScore(0);
         forumAnswer.setAnswerer(userRepository.findByUsername(username).get());
-        forumAnswer.setQuestion(forumQuestionRepository.findById(questionId).get());
+        forumAnswer.setQuestion(forumQuestion);
         forumAnswer.setCreatedAt(new Date());
         forumAnswerRepository.save(forumAnswer);
         return new ResponseEntity<>("Added Answer", HttpStatus.CREATED);
     }
 
     public ResponseEntity<?> updateForumQuestion(String username, Long answerId, ForumAnswer forumAnswer) {
-        ForumAnswer prevAnswer = forumAnswerRepository.findById(answerId).get();
+        ForumAnswer prevAnswer = forumAnswerRepository.findById(answerId)
+                .orElseThrow(() -> new NoSuchElementException("Answer with id " + answerId + " does not exists."));
+        if(!Objects.equals(prevAnswer.getAnswerer().getUsername(), username))
+            return new ResponseEntity<>("You are not allowed to edit this answer.", HttpStatus.FORBIDDEN);
+
         forumAnswer.setQuestion(prevAnswer.getQuestion());
         forumAnswer.setAnswerer(prevAnswer.getAnswerer());
         forumAnswer.setId(answerId);
@@ -46,22 +59,28 @@ public class ForumAnswerService {
     }
 
     public ResponseEntity<?> deleteAnswerOfQuestion(Long questionId) {
-        if(forumAnswerRepository.findTop1ByQuestionId(questionId) == null)
-            return new ResponseEntity<>("Question Not Found", HttpStatus.NOT_FOUND);;
-        Long answerId = forumAnswerRepository.findTop1ByQuestionId(questionId).getId();
+        ForumAnswer forumAnswer = forumAnswerRepository.findTop1ByQuestionId(questionId).get();
+        Long answerId = forumAnswer.getId();
         Integer voteListSize = forumVoteRepository.findByAnswerId(answerId).size();
         if(voteListSize > 0) forumVoteRepository.deleteByAnswerId(answerId);
         forumAnswerRepository.deleteByQuestionId(questionId);
-        return new ResponseEntity<>("Deleted", HttpStatus.OK);
+        return new ResponseEntity<>("Answer deleted successfully.", HttpStatus.OK);
     }
 
     public ResponseEntity<?> deleteAnswerOfQuestion(String username, Long answerId) {
-        if(forumVoteRepository.findByAnswerId(answerId).size() > 0) forumVoteRepository.deleteByAnswerId(answerId);
+        ForumAnswer forumAnswer = forumAnswerRepository.findById(answerId)
+                        .orElseThrow(() -> new NoSuchElementException("Answer with id " + answerId + " does not exists."));
+        System.out.println(forumAnswer);
+        if(!Objects.equals(forumAnswer.getAnswerer().getUsername(), username))
+            return new ResponseEntity<>("You are not allowed to delete this answer.", HttpStatus.FORBIDDEN);
+        if(!forumVoteRepository.findByAnswerId(answerId).isEmpty()) forumVoteRepository.deleteByAnswerId(answerId);
         forumAnswerRepository.deleteById(answerId);
-        return new ResponseEntity<>("Deleted", HttpStatus.OK);
+        return new ResponseEntity<>("Answer deleted successfully.", HttpStatus.OK);
     }
 
     public ResponseEntity<?> getAnswersOfSingleQuestion(Long questionId) {
+        forumQuestionRepository.findById(questionId)
+                .orElseThrow(() -> new NoSuchElementException("Question with id " + questionId + " does not exists."));
         List<ForumAnswer> answers = forumAnswerRepository.findByQuestionIdOrderByScoreDescCreatedAtDesc(questionId);
         answers.forEach(answer -> {
             answer.setScore(forumVoteRepository.getTotalVotesOfAnswer(answer.getId()));
