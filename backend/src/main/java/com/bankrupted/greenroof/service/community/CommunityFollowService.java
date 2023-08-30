@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -27,8 +28,13 @@ public class CommunityFollowService {
     private final ModelMapperUtility<UserFollowing, UserFollowingDto> modelMapperFollowing;
 
     public ResponseEntity<?> followUser(String user1, String user2) {
-        User person1 = userRepository.findByUsername(user1).get();
-        User person2 = userRepository.findByUsername(user2).get();
+        User person1 = userRepository.findByUsername(user1)
+                .orElseThrow(() -> new NoSuchElementException("No user found with this username " + user1 + "."));
+        User person2 = userRepository.findByUsername(user2)
+                .orElseThrow(() -> new NoSuchElementException("No user found with this username " + user2 + "."));
+
+        if(person1 == person2)
+            return new ResponseEntity<>("You can't follow yourself.", HttpStatus.FORBIDDEN);
 
         if(communityFollowerRepository.existsByUserIdAndFollowersId(person2.getId(), person1.getId()) > 0)
             return new ResponseEntity<>("Already Followed", HttpStatus.OK);
@@ -37,6 +43,24 @@ public class CommunityFollowService {
         setFollowing(person2, person1);
 
         return new ResponseEntity<>("Followed successful", HttpStatus.CREATED);
+    }
+
+    public ResponseEntity<?> unfollowUser(String user1, String user2) {
+        User person1 = userRepository.findByUsername(user1)
+                .orElseThrow(() -> new NoSuchElementException("No user found with this username " + user1 + "."));
+        User person2 = userRepository.findByUsername(user2)
+                .orElseThrow(() -> new NoSuchElementException("No user found with this username " + user2 + "."));
+
+        if(person1 == person2)
+            return new ResponseEntity<>("You can't unfollow yourself.", HttpStatus.FORBIDDEN);
+
+        if(communityFollowerRepository.existsByUserIdAndFollowersId(person2.getId(), person1.getId()) == 0)
+            return new ResponseEntity<>("You can't unfollow the person.", HttpStatus.OK);
+
+        communityFollowerRepository.deleteByUserId(person2.getId());
+        communityFollowingRepository.deleteByUserId(person1.getId());
+
+        return new ResponseEntity<>("Unfollowed successful", HttpStatus.CREATED);
     }
 
     private void setFollowing(User person2, User person1) {
@@ -62,18 +86,21 @@ public class CommunityFollowService {
     }
 
     public ResponseEntity<?> getFollowingsList(String username) {
-        Long userId = userRepository.findByUsername(username).get().getId();
-        List<UserFollowing> userFollowings = communityFollowingRepository.findByUserId(userId);
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new NoSuchElementException("No user found with this username " + username + "."));
+        List<UserFollowing> userFollowings = communityFollowingRepository.findByUserId(user.getId());
         return modelMapperFollowing.modelMap(userFollowings, UserFollowingDto.class);
     }
 
     public ResponseEntity<?> getTotalFollowersNumber(String username) {
-        Long userId = userRepository.findByUsername(username).get().getId();
-        return ResponseEntity.ok(communityFollowerRepository.findTotalFollowersNumber(userId));
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new NoSuchElementException("No user found with this username " + username + "."));
+        return ResponseEntity.ok(communityFollowerRepository.findTotalFollowersNumber(user.getId()));
     }
 
     public ResponseEntity<?> getTotalFollowingsNumber(String username) {
-        Long userId = userRepository.findByUsername(username).get().getId();
-        return ResponseEntity.ok(communityFollowingRepository.findTotalFollowingsNumber(userId));
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new NoSuchElementException("No user found with this username " + username + "."));
+        return ResponseEntity.ok(communityFollowingRepository.findTotalFollowingsNumber(user.getId()));
     }
 }

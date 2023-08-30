@@ -1,6 +1,7 @@
 package com.bankrupted.greenroof.advice;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -14,10 +15,10 @@ import java.util.NoSuchElementException;
 @RestControllerAdvice
 public class ApplicationExceptionHandler {
 
-    private static Map<String, String> errorHandling(String ex) {
+    private static Map<String, String> errorHandling(String ex, HttpStatus httpStatus) {
         Map<String, String> errors = new HashMap<>();
-        errors.put("status", "404");
-        errors.put("error", "Not found");
+        errors.put("status", String.valueOf(httpStatus.value()));
+        errors.put("error", httpStatus.toString());
         errors.put("message", ex);
         errors.put("time", new Date().toString());
         return errors;
@@ -36,7 +37,14 @@ public class ApplicationExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NoSuchElementException.class)
     public Map<String, String> noSuchElement(NoSuchElementException ex) {
-        Map<String, String> errors = errorHandling(ex.getMessage());
+        Map<String, String> errors = errorHandling(ex.getMessage(), HttpStatus.NOT_FOUND);
+        return errors;
+    }
+
+    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public Map<String, String> noSuchElement(HttpRequestMethodNotSupportedException ex) {
+        Map<String, String> errors = errorHandling(ex.getMessage(), HttpStatus.METHOD_NOT_ALLOWED);
         return errors;
     }
 }

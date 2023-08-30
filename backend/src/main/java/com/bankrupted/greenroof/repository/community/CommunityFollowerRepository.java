@@ -16,4 +16,6 @@ public interface CommunityFollowerRepository extends JpaRepository<UserFollower,
 
     @Query(value = "SELECT COUNT(followers_id) FROM user_followers WHERE user_id=:userId", nativeQuery = true)
     Long findTotalFollowersNumber(Long userId);
+
+    void deleteByUserId(Long userId);
 }
