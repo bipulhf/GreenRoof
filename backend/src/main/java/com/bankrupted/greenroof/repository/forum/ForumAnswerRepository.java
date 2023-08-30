@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface ForumAnswerRepository extends JpaRepository<ForumAnswer, Long> {
-    Optional<ForumAnswer> findTop1ByQuestionId(Long questionId);
+    Boolean existsByQuestionId(Long questionId);
     List<ForumAnswer> findByQuestionIdOrderByScoreDescCreatedAtDesc(Long questionId);
 
     @Query(value = "SELECT SUM(user_id) FROM forum_answers WHERE user_id=:userId", nativeQuery = true)

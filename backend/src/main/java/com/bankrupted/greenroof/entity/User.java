@@ -47,16 +47,4 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Roles> userRole;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "answerer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<ForumAnswer> answers;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "questioner", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<ForumQuestion> questions;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "voter", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<ForumVote> votes;
 }

@@ -47,7 +47,7 @@ public class ForumQuestionService {
             return new ResponseEntity<>("You are not allowed to delete this question.", HttpStatus.FORBIDDEN);;
         forumAnswerService.deleteAnswerOfQuestion(questionId);
         forumQuestionRepository.deleteById(questionId);
-        return new ResponseEntity<>("Answer deleted successfully.", HttpStatus.OK);
+        return new ResponseEntity<>("Question deleted successfully.", HttpStatus.OK);
     }
 
     private boolean getQuestionEditPermission(Long questionId, String username) {

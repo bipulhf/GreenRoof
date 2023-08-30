@@ -26,7 +26,9 @@ public class ForumVoteService {
     public ResponseEntity<?> upvoteOnAnswer(Long answerId, String username) {
         User voter = userRepository.findByUsername(username)
                 .orElseThrow(() -> new NoSuchElementException("No user found with this username " + username + "."));
-        ForumAnswer answer = forumAnswerRepository.findById(answerId).get();
+        ForumAnswer answer = forumAnswerRepository.findById(answerId)
+                .orElseThrow(() -> new NoSuchElementException("Answer with id " + answerId + " does not exists."));
+
         if (Objects.equals(answer.getAnswerer().getUsername(), username))
             return new ResponseEntity<>("You can't vote your own answer.", HttpStatus.FORBIDDEN);
 
@@ -49,7 +51,8 @@ public class ForumVoteService {
     public ResponseEntity<?> downvoteOnAnswer(Long answerId, String username) {
         User voter = userRepository.findByUsername(username)
                 .orElseThrow(() -> new NoSuchElementException("No user found with this username " + username + "."));
-        ForumAnswer answer = forumAnswerRepository.findById(answerId).get();
+        ForumAnswer answer = forumAnswerRepository.findById(answerId)
+                .orElseThrow(() -> new NoSuchElementException("Answer with id " + answerId + " does not exists."));
 
         if (Objects.equals(answer.getAnswerer().getUsername(), username))
             return new ResponseEntity<>("You can't vote your own answer.", HttpStatus.FORBIDDEN);

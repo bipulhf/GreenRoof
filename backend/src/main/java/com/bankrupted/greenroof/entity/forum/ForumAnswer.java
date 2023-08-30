@@ -24,10 +24,6 @@ public class ForumAnswer {
     private Date createdAt;
     private Integer score;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "answer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<ForumVote> votes;
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
     private User answerer;

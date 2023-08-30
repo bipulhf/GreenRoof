@@ -6,6 +6,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.server.ServerErrorException;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -43,8 +44,23 @@ public class ApplicationExceptionHandler {
 
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public Map<String, String> noSuchElement(HttpRequestMethodNotSupportedException ex) {
+    public Map<String, String> methodNotSupported (HttpRequestMethodNotSupportedException ex) {
         Map<String, String> errors = errorHandling(ex.getMessage(), HttpStatus.METHOD_NOT_ALLOWED);
         return errors;
     }
+
+    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
+    @ExceptionHandler(ServerErrorException.class)
+    public Map<String, String> serverError (ServerErrorException ex) {
+        Map<String, String> errors = errorHandling(ex.getMessage(), HttpStatus.SERVICE_UNAVAILABLE);
+        return errors;
+    }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(IndexOutOfBoundsException.class)
+    public Map<String, String> indexOutOfBoundException (IndexOutOfBoundsException ex) {
+        Map<String, String> errors = errorHandling(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return errors;
+    }
 }
+

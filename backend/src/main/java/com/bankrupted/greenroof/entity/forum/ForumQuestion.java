@@ -39,8 +39,4 @@ public class ForumQuestion {
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
     private Set<ForumQuestionCategory> questionCategory;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<ForumAnswer> answers;
 }
