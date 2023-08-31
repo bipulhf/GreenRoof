@@ -1,4 +1,4 @@
-package com.bankrupted.greenroof.entity;
+package com.bankrupted.greenroof.entity.user;
 
 import jakarta.persistence.*;
 import lombok.Data;
