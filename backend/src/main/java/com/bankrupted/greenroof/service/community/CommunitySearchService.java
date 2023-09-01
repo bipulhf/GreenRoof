@@ -21,12 +21,12 @@ public class CommunitySearchService {
     private final ModelMapperUtility<User, UserProfileDto> modelMapperUser;
     private final ModelMapperUtility<CommunityPost, CommunityPostDto> modelMapperPost;
 
-    public ResponseEntity<?> searchByUsername(String username) {
+    public List<UserProfileDto> searchByUsername(String username) {
         List<User> userList = userRepository.searchByUsername(username);
         return modelMapperUser.modelMap(userList, UserProfileDto.class);
     }
 
-    public ResponseEntity<?> searchCommunityPost(String text) {
+    public List<CommunityPostDto> searchCommunityPost(String text) {
         List<CommunityPost> communityPosts = communityPostRepository.searchPost(text);
         return modelMapperPost.modelMap(communityPosts, CommunityPostDto.class);
     }

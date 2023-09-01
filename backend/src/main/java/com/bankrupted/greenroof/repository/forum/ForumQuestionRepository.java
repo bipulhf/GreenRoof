@@ -1,9 +1,11 @@
 package com.bankrupted.greenroof.repository.forum;
 
 import com.bankrupted.greenroof.entity.forum.ForumQuestion;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +17,7 @@ public interface ForumQuestionRepository extends JpaRepository<ForumQuestion, Lo
 
     Optional<ForumQuestion> findByIdOrderByCreatedAtDesc(long l);
 
-    List<ForumQuestion> findAllByOrderByCreatedAtDesc();
+    Page<ForumQuestion> findAllByOrderByCreatedAtDesc(Pageable pageable);
 
     @Query(value = "SELECT *\n" +
             "FROM forum_questions\n" +

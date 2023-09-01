@@ -5,6 +5,7 @@ import com.bankrupted.greenroof.service.community.CommunityCommentService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +34,6 @@ public class CommunityCommentController {
 
     @GetMapping("")
     public ResponseEntity<?> getCommentsOfSinglePost(@RequestParam Long postId) {
-        return communityCommentService.getCommentsOfSinglePost(postId);
+        return new ResponseEntity<>(communityCommentService.getCommentsOfSinglePost(postId), HttpStatus.OK);
     }
 }

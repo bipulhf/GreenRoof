@@ -15,16 +15,16 @@ import java.util.List;
 public class ModelMapperUtility<E, V> {
     private ModelMapper modelMapper = new ModelMapper();
 
-    public ResponseEntity<?> modelMap(List<E> modelList, Class className){
+    public List<V> modelMap(List<E> modelList, Class className){
         List<V> modelMapList = new ArrayList<>();
 
         modelList.forEach(model -> {
             modelMapList.add((V) modelMapper.map(model, className));
         });
-        return ResponseEntity.ok(modelMapList);
+        return modelMapList;
     }
 
-    public ResponseEntity<?> modelMap(E model, Class className) {
-        return ResponseEntity.ok(modelMapper.map(model, className));
+    public Object modelMap(E model, Class className) {
+        return modelMapper.map(model, className);
     }
 }

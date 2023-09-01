@@ -2,6 +2,7 @@ package com.bankrupted.greenroof.controller.forum;
 
 import com.bankrupted.greenroof.service.forum.ForumFeedService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,22 +14,22 @@ public class ForumFeedController {
     private final ForumFeedService forumFeedService;
 
     @GetMapping("")
-    public ResponseEntity<?> getAllForumQuestions() {
-        return forumFeedService.getAllForumQuestions();
+    public ResponseEntity<?> getAllForumQuestions(@RequestParam(defaultValue = "0", required = false) Integer pageNo) {
+        return new ResponseEntity<>(forumFeedService.getAllForumQuestions(pageNo), HttpStatus.OK);
     }
 
     @GetMapping("recent")
-    public ResponseEntity<?> getAllRecentForumQuestions() {
-        return forumFeedService.getAllRecentForumQuestions();
+    public ResponseEntity<?> getAllRecentForumQuestions(@RequestParam(defaultValue = "0", required = false) Integer pageNo) {
+        return new ResponseEntity<>(forumFeedService.getAllRecentForumQuestions(pageNo), HttpStatus.OK);
     }
 
     @GetMapping("question")
     public ResponseEntity<?> getSingleForumQuestion(@RequestParam Long questionId) {
-        return forumFeedService.getSingleForumQuestion(questionId);
+        return new ResponseEntity<>(forumFeedService.getSingleForumQuestion(questionId), HttpStatus.OK);
     }
 
     @GetMapping("user")
     public ResponseEntity<?> getUserForumQuestion(@RequestParam String username) {
-        return forumFeedService.getUserForumQuestion(username);
+        return new ResponseEntity<>(forumFeedService.getUserForumQuestion(username), HttpStatus.OK);
     }
 }

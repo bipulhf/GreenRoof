@@ -3,6 +3,7 @@ package com.bankrupted.greenroof.controller.community;
 import com.bankrupted.greenroof.service.community.CommunityFollowService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,11 +26,11 @@ public class CommunityFollowController {
 
     @GetMapping("followers")
     public ResponseEntity<?> getFollowersList(@RequestParam String username) {
-        return communityFollowService.getFollowersList(username);
+        return new ResponseEntity<>(communityFollowService.getFollowersList(username), HttpStatus.OK);
     }
 
     @GetMapping("followings")
     public ResponseEntity<?> getFollowingsList(@RequestParam String username) {
-        return communityFollowService.getFollowingsList(username);
+        return new ResponseEntity<>(communityFollowService.getFollowingsList(username), HttpStatus.OK);
     }
 }

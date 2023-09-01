@@ -79,13 +79,13 @@ public class CommunityFollowService {
         communityFollowerRepository.save(follower);
     }
 
-    public ResponseEntity<?> getFollowersList(String username) {
+    public List<UserFollowerDto> getFollowersList(String username) {
         Long userId = userRepository.findByUsername(username).get().getId();
         List<UserFollower> userFollowers = communityFollowerRepository.findByUserId(userId);
         return modelMapperFollower.modelMap(userFollowers, UserFollowerDto.class);
     }
 
-    public ResponseEntity<?> getFollowingsList(String username) {
+    public List<UserFollowingDto> getFollowingsList(String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new NoSuchElementException("No user found with this username " + username + "."));
         List<UserFollowing> userFollowings = communityFollowingRepository.findByUserId(user.getId());

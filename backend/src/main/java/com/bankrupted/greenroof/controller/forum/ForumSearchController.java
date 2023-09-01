@@ -2,6 +2,7 @@ package com.bankrupted.greenroof.controller.forum;
 
 import com.bankrupted.greenroof.service.forum.ForumSearchService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,11 +16,11 @@ public class ForumSearchController {
     private final ForumSearchService forumSearchService;
     @GetMapping("user")
     public ResponseEntity<?> searchByUsername(@RequestParam String username) {
-        return forumSearchService.searchByUsername(username);
+        return new ResponseEntity<>(forumSearchService.searchByUsername(username), HttpStatus.OK);
     }
 
     @GetMapping("post")
     public ResponseEntity<?> searchCommunityPost(@RequestParam String text) {
-        return forumSearchService.searchCommunityPost(text);
+        return new ResponseEntity<>(forumSearchService.searchCommunityPost(text), HttpStatus.OK);
     }
 }

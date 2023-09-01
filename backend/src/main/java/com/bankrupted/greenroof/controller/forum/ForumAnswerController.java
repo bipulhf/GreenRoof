@@ -7,6 +7,7 @@ import com.bankrupted.greenroof.service.forum.ForumVoteService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,7 +37,7 @@ public class ForumAnswerController {
 
     @GetMapping("")
     public ResponseEntity<?> getAnswerOfSingleQuestion(@RequestParam Long questionId) {
-        return forumAnswerService.getAnswersOfSingleQuestion(questionId);
+        return new ResponseEntity<>(forumAnswerService.getAnswersOfSingleQuestion(questionId), HttpStatus.OK);
     }
 
     @Transactional

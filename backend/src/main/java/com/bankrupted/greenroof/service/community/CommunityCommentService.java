@@ -72,7 +72,7 @@ public class CommunityCommentService {
         communityCommentRepository.deleteByPostId(postId);
     }
 
-    public ResponseEntity<?> getCommentsOfSinglePost(Long postId) {
+    public List<CommunityCommentDto> getCommentsOfSinglePost(Long postId) {
         communityPostRepository.findById(postId)
                 .orElseThrow(() -> new NoSuchElementException("Post with id " + postId + " does not exists."));
 

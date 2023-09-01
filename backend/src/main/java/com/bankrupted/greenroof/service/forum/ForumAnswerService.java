@@ -81,7 +81,7 @@ public class ForumAnswerService {
         return new ResponseEntity<>("Answer deleted successfully.", HttpStatus.OK);
     }
 
-    public ResponseEntity<?> getAnswersOfSingleQuestion(Long questionId) {
+    public List<ForumAnswerDto> getAnswersOfSingleQuestion(Long questionId) {
         forumQuestionRepository.findById(questionId)
                 .orElseThrow(() -> new NoSuchElementException("Question with id " + questionId + " does not exists."));
 
