@@ -11,7 +11,6 @@ import com.bankrupted.greenroof.user.UserService;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +18,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.Optional;
 import java.util.UUID;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/registration/")
@@ -71,7 +69,6 @@ public class RegistrationController {
             VerificationToken verificationToken) throws MessagingException, UnsupportedEncodingException {
         String url = applicationUrl + "/api/v1/registration/verifyEmail?token=" + verificationToken.getToken();
         eventListener.sendVerificationEmail(url);
-        log.info("Click the link to verify your registration :  {}", url);
     }
 
     @PostMapping("/password-reset-request")
@@ -93,8 +90,6 @@ public class RegistrationController {
             String passwordToken) throws MessagingException, UnsupportedEncodingException {
         String url = applicationUrl + "/api/v1/registration/reset-password?token=" + passwordToken;
         eventListener.sendPasswordResetVerificationEmail(url);
-
-        // log.info("Click the link to reset your password : {}", url);
 
         return url;
     }
