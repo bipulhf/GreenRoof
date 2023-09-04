@@ -8,7 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.stereotype.Service;
 
-import com.bankrupted.greenroof.token.TokenRepository;
+import com.bankrupted.greenroof.security.token.repository.TokenRepository;
 
 @Service
 @RequiredArgsConstructor

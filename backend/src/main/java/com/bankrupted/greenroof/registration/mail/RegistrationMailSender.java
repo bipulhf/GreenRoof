@@ -1,6 +1,6 @@
 package com.bankrupted.greenroof.registration.mail;
 
-import com.bankrupted.greenroof.event.RegistrationCompleteEvent;
+import com.bankrupted.greenroof.registration.event.RegistrationCompleteEvent;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;

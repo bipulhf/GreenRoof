@@ -1,13 +1,13 @@
 spring:
   datasource:
-    url: ${DB_URL}
-    username: ${$DB_USER}
-    password: ${DB_PASSWORD}
+    url: jdbc:postgresql://localhost:5432/greenroof
+    username: postgres
+    password: abcd1234
     driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 
@@ -15,7 +15,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: bankrupted.greenroof@gmail.com
-    password: ${GMAIL_SMTP}
+    password: kdplhutrmsiczqbq
     properties:
       mail:
         smtp:

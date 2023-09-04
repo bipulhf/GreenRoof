@@ -1,6 +1,10 @@
 package com.bankrupted.greenroof.advice;
 
+import com.bankrupted.greenroof.exception.GenericException;
+import com.bankrupted.greenroof.exception.InvalidVerificationTokenException;
+import com.bankrupted.greenroof.exception.UserAlreadyExistsException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -35,6 +39,20 @@ public class ApplicationExceptionHandler {
         return errors;
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public Map<String, String> userNotFound(UserAlreadyExistsException ex) {
+        Map<String, String> errors = errorHandling(ex.getMessage(), HttpStatus.CONFLICT);
+        return errors;
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(InvalidVerificationTokenException.class)
+    public Map<String, String> tokenNotFound(InvalidVerificationTokenException ex) {
+        Map<String, String> errors = errorHandling(ex.getMessage(), HttpStatus.UNAUTHORIZED);
+        return errors;
+    }
+
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NoSuchElementException.class)
     public Map<String, String> noSuchElement(NoSuchElementException ex) {
@@ -60,6 +78,20 @@ public class ApplicationExceptionHandler {
     @ExceptionHandler(IndexOutOfBoundsException.class)
     public Map<String, String> indexOutOfBoundException (IndexOutOfBoundsException ex) {
         Map<String, String> errors = errorHandling(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return errors;
+    }
+
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(BadCredentialsException.class)
+    public Map<String, String> credentialsNotMatch(BadCredentialsException ex) {
+        Map<String, String> errors = errorHandling("Username or Password does not exists.", HttpStatus.FORBIDDEN);
+        return errors;
+    }
+
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(GenericException.class)
+    public Map<String, String> followException(GenericException ex) {
+        Map<String, String> errors = errorHandling("Username or Password does not exists.", HttpStatus.FORBIDDEN);
         return errors;
     }
 }

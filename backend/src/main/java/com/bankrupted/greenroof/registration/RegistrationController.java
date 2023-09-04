@@ -1,17 +1,20 @@
 package com.bankrupted.greenroof.registration;
 
-import com.bankrupted.greenroof.event.RegistrationCompleteEvent;
-import com.bankrupted.greenroof.event.listener.RegistrationCompleteEventListener;
+import com.bankrupted.greenroof.registration.event.RegistrationCompleteEvent;
+import com.bankrupted.greenroof.registration.event.listener.RegistrationCompleteEventListener;
 import com.bankrupted.greenroof.registration.password.PasswordRequestUtil;
-import com.bankrupted.greenroof.token.VerificationToken;
-import com.bankrupted.greenroof.token.VerificationTokenRepository;
-import com.bankrupted.greenroof.user.User;
-import com.bankrupted.greenroof.user.UserService;
+import com.bankrupted.greenroof.security.token.VerificationToken;
+import com.bankrupted.greenroof.security.token.repository.VerificationTokenRepository;
+import com.bankrupted.greenroof.user.entity.RoleType;
+import com.bankrupted.greenroof.user.entity.User;
+import com.bankrupted.greenroof.user.service.UserService;
 
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
@@ -20,7 +23,7 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/registration/")
+@RequestMapping("api/v1/registration")
 public class RegistrationController {
 
     private final UserService userService;
@@ -30,39 +33,40 @@ public class RegistrationController {
     private final HttpServletRequest servletRequest;
 
     @PostMapping("/register")
-    public String registerUser(@RequestBody RegistrationRequest registrationRequest, final HttpServletRequest request) {
+    public ResponseEntity<?> registerUser(@RequestBody RegistrationRequest registrationRequest, final HttpServletRequest request) {
+        registrationRequest.setRole(RoleType.USER);
         User user = userService.registerUser(registrationRequest);
 
         publisher.publishEvent(new RegistrationCompleteEvent(user,
                 applicationUrl(request)));
-        return "Registration Success!  Please, check your email for to complete your registration";
+        return new ResponseEntity<>("Registration Success!  Please, check your email for to complete your registration", HttpStatus.CREATED);
     }
 
     @GetMapping("/verifyEmail")
-    public String sendVerificationToken(@RequestParam("token") String token) {
+    public ResponseEntity<?> sendVerificationToken(@RequestParam("token") String token) {
 
         String url = applicationUrl(servletRequest) + "/api/v1/registration/resend-verification-token?token="
                 + token;
 
         VerificationToken theToken = tokenRepository.findByToken(token);
         if (theToken.getUser().isEnabled()) {
-            return "This account has already been verified, please, login.";
+            return new ResponseEntity<>("This account has already been verified, please, login.", HttpStatus.CONFLICT);
         }
         String verificationResult = userService.validateToken(token);
         if (verificationResult.equalsIgnoreCase("valid")) {
-            return "Email verified successfully. Now you can login to your account";
+            return new ResponseEntity<>("Email verified successfully. Now you can login to your account", HttpStatus.CREATED);
         }
-        return "Invalid verification link, <a href=\"" + url + "\"> Get a new verification link. </a>";
+        return new ResponseEntity<>("Invalid verification link, <a href=\"" + url + "\"> Get a new verification link. </a>", HttpStatus.FORBIDDEN);
     }
 
     @GetMapping("/resend-verification-token")
-    public String resendVerificationToken(@RequestParam("token") String oldToken,
+    public ResponseEntity<?> resendVerificationToken(@RequestParam("token") String oldToken,
             final HttpServletRequest request) throws MessagingException, UnsupportedEncodingException {
         VerificationToken verificationToken = userService.generateNewVerificationToken(oldToken);
         User theUser = verificationToken.getUser();
         resendRegistrationVerificationTokenEmail(theUser, applicationUrl(request), verificationToken);
-        return "A new verification link has been sent to your email," +
-                " please, check to activate your account";
+        return new ResponseEntity<>("A new verification link has been sent to your email," +
+                " please, check to activate your account", HttpStatus.OK);
     }
 
     private void resendRegistrationVerificationTokenEmail(User theUser, String applicationUrl,
@@ -72,7 +76,7 @@ public class RegistrationController {
     }
 
     @PostMapping("/password-reset-request")
-    public String resetPasswordRequest(@RequestBody PasswordRequestUtil passwordRequestUtil,
+    public ResponseEntity<?> resetPasswordRequest(@RequestBody PasswordRequestUtil passwordRequestUtil,
             final HttpServletRequest servletRequest)
             throws MessagingException, UnsupportedEncodingException {
 
@@ -83,7 +87,7 @@ public class RegistrationController {
             userService.createPasswordResetTokenForUser(user.get(), passwordResetToken);
             passwordResetUrl = passwordResetEmailLink(user.get(), applicationUrl(servletRequest), passwordResetToken);
         }
-        return passwordResetUrl;
+        return new ResponseEntity<>(passwordResetUrl, HttpStatus.CREATED);
     }
 
     private String passwordResetEmailLink(User user, String applicationUrl,
@@ -95,28 +99,28 @@ public class RegistrationController {
     }
 
     @PostMapping("/reset-password")
-    public String resetPassword(@RequestBody PasswordRequestUtil passwordRequestUtil,
+    public ResponseEntity<?> resetPassword(@RequestBody PasswordRequestUtil passwordRequestUtil,
             @RequestParam("token") String token) {
         String tokenVerificationResult = userService.validatePasswordResetToken(token);
         if (!tokenVerificationResult.equalsIgnoreCase("valid")) {
-            return "Invalid token password reset token";
+            return new ResponseEntity<>("Invalid token password reset token", HttpStatus.FORBIDDEN);
         }
         Optional<User> theUser = Optional.ofNullable(userService.findUserByPasswordToken(token));
         if (theUser.isPresent()) {
             userService.changePassword(theUser.get(), passwordRequestUtil.getNewPassword());
-            return "Password has been reset successfully";
+            return new ResponseEntity<>("Password has been reset successfully", HttpStatus.CREATED);
         }
-        return "Invalid password reset token";
+        return new ResponseEntity<>("Invalid password reset token", HttpStatus.FORBIDDEN);
     }
 
     @PostMapping("/change-password")
-    public String changePassword(@RequestBody PasswordRequestUtil requestUtil) {
+    public ResponseEntity<?> changePassword(@RequestBody PasswordRequestUtil requestUtil) {
         User user = userService.findByEmail(requestUtil.getEmail()).get();
         if (!userService.oldPasswordIsValid(user, requestUtil.getOldPassword())) {
-            return "Incorrect old password";
+            return new ResponseEntity<>("Incorrect old password", HttpStatus.FORBIDDEN);
         }
         userService.changePassword(user, requestUtil.getNewPassword());
-        return "Password changed successfully";
+        return new ResponseEntity<>("Password changed successfully", HttpStatus.CREATED);
     }
 
     public String applicationUrl(HttpServletRequest request) {

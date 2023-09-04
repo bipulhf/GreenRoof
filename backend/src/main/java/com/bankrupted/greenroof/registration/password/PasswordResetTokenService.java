@@ -3,8 +3,8 @@ package com.bankrupted.greenroof.registration.password;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import com.bankrupted.greenroof.token.PasswordResetToken;
-import com.bankrupted.greenroof.user.User;
+import com.bankrupted.greenroof.security.token.PasswordResetToken;
+import com.bankrupted.greenroof.user.entity.User;
 
 import java.util.Calendar;
 import java.util.Optional;
