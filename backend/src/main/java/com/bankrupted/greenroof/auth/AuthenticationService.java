@@ -1,11 +1,11 @@
 package com.bankrupted.greenroof.auth;
 
 import com.bankrupted.greenroof.config.JwtService;
-import com.bankrupted.greenroof.entity.user.User;
-import com.bankrupted.greenroof.entity.user.UserRepository;
 import com.bankrupted.greenroof.token.Token;
 import com.bankrupted.greenroof.token.TokenRepository;
 import com.bankrupted.greenroof.token.TokenType;
+import com.bankrupted.greenroof.user.User;
+import com.bankrupted.greenroof.user.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,34 +26,15 @@ import java.io.IOException;
 public class AuthenticationService {
   private final UserRepository repository;
   private final TokenRepository tokenRepository;
-  private final PasswordEncoder passwordEncoder;
   private final JwtService jwtService;
   private final AuthenticationManager authenticationManager;
 
-  public AuthenticationResponse register(RegisterRequest request) {
-    var user = User.builder()
-        .firstName(request.getFirstname())
-        .lastName(request.getLastname())
-        .username(request.getUsername())
-        .email(request.getEmail())
-        .password(passwordEncoder.encode(request.getPassword()))
-        .role(request.getRole())
-        .build();
-    var savedUser = repository.save(user);
-    var jwtToken = jwtService.generateToken(user);
-    var refreshToken = jwtService.generateRefreshToken(user);
-    saveUserToken(savedUser, jwtToken);
-    return AuthenticationResponse.builder()
-        .accessToken(jwtToken)
-        .refreshToken(refreshToken)
-        .build();
-  }
-
   public AuthenticationResponse authenticate(AuthenticationRequest request) {
+
     authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(
-            request.getUsername(),
-            request.getPassword()));
+            request.getUsername(), request.getPassword()));
+
     var user = repository.findByUsername(request.getUsername())
         .orElseThrow();
     var jwtToken = jwtService.generateToken(user);

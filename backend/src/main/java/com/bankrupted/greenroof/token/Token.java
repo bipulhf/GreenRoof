@@ -1,6 +1,6 @@
 package com.bankrupted.greenroof.token;
 
-import com.bankrupted.greenroof.entity.user.User;
+import com.bankrupted.greenroof.user.User;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
