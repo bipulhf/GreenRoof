@@ -5,7 +5,7 @@ export default function ForumHeader() {
     return (
         <>
             <header className="grid grid-cols-9 max-[1200px]:grid-cols-none">
-                <div className="header-title my-[10px] col-span-7 flex">
+                <div className="header-title my-[10px] col-span-7 flex items-center">
                     <div className="image">
                         <img
                             className="w-[77px] md:w-[122px]"
@@ -22,7 +22,7 @@ export default function ForumHeader() {
                         </h3>
                     </div>
                 </div>
-                <div className="max-[1200px]:hidden my-[60px] w-[174px] h-[36px] rounded-[100px] border-2 border-solid border-greenbtn">
+                <div className="col-span-2 justify-self-end max-[1200px]:hidden my-[60px] w-[174px] h-[36px] rounded-[100px] border-2 border-solid border-greenbtn">
                     <AIAssistant />
                 </div>
             </header>

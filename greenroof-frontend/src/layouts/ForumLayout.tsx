@@ -5,7 +5,7 @@ import "../components/forum/forum.css";
 
 export default function ForumLayout() {
     return (
-        <div className="mx-[10px] lg:ml-[60px] lg:mr-[100px] md:mx-[30px] grid grid-cols-12 max-md:grid-cols-none">
+        <div className="mx-[10px] lg:ml-[60px] lg:mr-[100px] md:mx-[30px] grid grid-cols-12 max-tb:grid-cols-none">
             <div className="col-span-9">
                 <ForumHeader />
                 <main className="ml-7">

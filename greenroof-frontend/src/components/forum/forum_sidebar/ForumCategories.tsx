@@ -13,18 +13,38 @@ export default function ForumCategories() {
                 </div>
                 <div className="flex justify-between text-[18px] font-medium">
                     <ul>
-                        <li>Cateogry</li>
-                        <li>Cateogry</li>
-                        <li>Cateogry</li>
-                        <li>Cateogry</li>
-                        <li>Cateogry</li>
+                        <li>
+                            <a href="">Cateogry</a>
+                        </li>
+                        <li>
+                            <a href="">Cateogry</a>
+                        </li>
+                        <li>
+                            <a href="">Cateogry</a>
+                        </li>
+                        <li>
+                            <a href="">Cateogry</a>
+                        </li>
+                        <li>
+                            <a href="">Cateogry</a>
+                        </li>
                     </ul>
                     <ul>
-                        <li>Cateogry</li>
-                        <li>Cateogry</li>
-                        <li>Cateogry</li>
-                        <li>Cateogry</li>
-                        <li>Cateogry</li>
+                        <li>
+                            <a href="">Cateogry</a>
+                        </li>
+                        <li>
+                            <a href="">Cateogry</a>
+                        </li>
+                        <li>
+                            <a href="">Cateogry</a>
+                        </li>
+                        <li>
+                            <a href="">Cateogry</a>
+                        </li>
+                        <li>
+                            <a href="">Cateogry</a>
+                        </li>
                     </ul>
                 </div>
             </div>

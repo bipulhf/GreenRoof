@@ -7,6 +7,12 @@ export default {
   ],
   theme: {
     extend: {
+      screens: {
+        ss: '350px',
+        sm: '414px',
+        tb: '1022px',
+        md: '724px'
+      },
       colors: {
         white: '#FDFDFD',
         brown: '#B97246',
