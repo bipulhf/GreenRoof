@@ -1,7 +1,21 @@
 import user_photo from "/assets/forum/user_profile_photo_104x104.png";
 import badge from "/assets/forum/user_badge_16x32.png";
 
-export default function ForumUserInfo() {
+interface Props {
+    firstName: string;
+    lastName: string;
+    username: string;
+    // profilePhoto: string;
+    city: string;
+}
+
+export default function ForumUserInfo({
+    firstName,
+    lastName,
+    username,
+    city,
+}: // profilePhoto,
+Props) {
     return (
         <>
             <div className="mt-2 mb-10 user-card flex flex-col justify-center items-center">
@@ -12,7 +26,7 @@ export default function ForumUserInfo() {
                 />
                 <a href="" className="username text-center">
                     <h3 className="inline font-semibold text-[16px] sm:text-[18px] md:text-[20px]">
-                        Karim Biswas
+                        {firstName + " " + lastName}
                     </h3>
                     <img
                         src={badge}
@@ -20,10 +34,10 @@ export default function ForumUserInfo() {
                         className="inline h-[32px] w-[16px] ml-2 -my-4"
                     />
                     <h4 className="text-[11px] sm:text-[13px] md:text-[15px] text-gray">
-                        @KarimB
+                        @{username}
                     </h4>
                     <h4 className="font-medium text-[11px] sm:text-[13px] md:text-[15px] text-gray">
-                        From Dhaka
+                        From {city}
                     </h4>
                 </a>
             </div>

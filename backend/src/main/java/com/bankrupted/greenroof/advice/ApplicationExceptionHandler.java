@@ -84,7 +84,7 @@ public class ApplicationExceptionHandler {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(BadCredentialsException.class)
     public Map<String, String> credentialsNotMatch(BadCredentialsException ex) {
-        Map<String, String> errors = errorHandling("Username or Password does not exists.", HttpStatus.FORBIDDEN);
+        Map<String, String> errors = errorHandling("Username or Password does not match.", HttpStatus.FORBIDDEN);
         return errors;
     }
 

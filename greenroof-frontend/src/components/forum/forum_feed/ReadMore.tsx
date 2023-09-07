@@ -1,18 +1,21 @@
+import { Link } from "react-router-dom";
+
 interface Props {
+    id?: number;
     fullText: boolean;
     children: string;
 }
 
-export default function ReadMore({ children, fullText }: Props) {
+export default function ReadMore({ id, children, fullText }: Props) {
     const text = children;
     return (
         <>
             <h3 className="text-[11px] md:text-[14px] text-justify">
                 {fullText ? text : text.slice(0, 100) + "... "}
                 {fullText ? null : (
-                    <a className="font-semibold" href="">
+                    <Link to={"/forum/post/" + id} className="font-semibold">
                         Read More
-                    </a>
+                    </Link>
                 )}
             </h3>
         </>

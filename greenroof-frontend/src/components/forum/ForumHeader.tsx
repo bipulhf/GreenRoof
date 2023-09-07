@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import AIAssistant from "../AIAssistant";
 import ForumMobileMenu from "./forum_sidebar/ForumMobileMenu";
 import forum_logo from "/assets/forum/forum_logo.png";
@@ -15,14 +16,17 @@ export default function ForumHeader() {
                                 alt="Green Roof Logo"
                             />
                         </div>
-                        <div className="title-slogan my-[16px] md:my-[33px]">
+                        <Link
+                            to={"/forum"}
+                            className="title-slogan my-[16px] md:my-[33px]"
+                        >
                             <h1 className="text-greenttl font-bold text-2xl md:text-4xl lg:text-5xl">
                                 Green Roof Forum
                             </h1>
                             <h3 className="text-brown font-bold text-sm md:text-xl lg:text-2xl">
                                 Roof to Root : A Unified Connection
                             </h3>
-                        </div>
+                        </Link>
                     </div>
                     <ForumMobileMenu />
                 </div>
