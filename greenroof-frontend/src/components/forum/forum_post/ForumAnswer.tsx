@@ -1,17 +1,31 @@
-export default function ForumAnswer() {
+import ForumVote from "./ForumVote";
+
+interface Props {
+    id: number;
+    answerText: string;
+    score: number;
+    createdAt: Date;
+}
+
+export default function ForumAnswer({
+    id,
+    answerText,
+    createdAt,
+    score,
+}: Props) {
     return (
         <>
-            <div className="col-span-6 sm:col-span-7 md:col-span-8">
-                <h3 className="text-[11px] md:text-[14px]">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Minus alias quae laboriosam, consectetur asperiores
-                    exercitationem earum rerum aspernatur. Assumenda perferendis
-                    nam reiciendis obcaecati libero laudantium voluptates
-                    pariatur facilis laborum sunt.
+            <div className="col-span-5 sm:col-span-6 md:col-span-7">
+                <span className="hidden">{id}</span>
+                <h3 className="text-[11px] md:text-[14px] text-justify">
+                    {answerText}
                 </h3>
-                <p className="text-gray text-[12px] md:text-[14px]">
-                    15 September, 2023
+                <p className="mt-2 text-gray text-[12px] md:text-[14px]">
+                    {new Date(createdAt).toLocaleString()}
                 </p>
+            </div>
+            <div className="col-span-1">
+                <ForumVote score={score} />
             </div>
         </>
     );

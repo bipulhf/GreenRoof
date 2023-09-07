@@ -91,7 +91,7 @@ public class ApplicationExceptionHandler {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(GenericException.class)
     public Map<String, String> followException(GenericException ex) {
-        Map<String, String> errors = errorHandling("Username or Password does not exists.", HttpStatus.FORBIDDEN);
+        Map<String, String> errors = errorHandling(ex.getMessage(), HttpStatus.FORBIDDEN);
         return errors;
     }
 }
