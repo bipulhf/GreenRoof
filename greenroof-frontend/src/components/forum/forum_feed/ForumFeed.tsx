@@ -24,6 +24,7 @@ export default function ForumFeed() {
                         key={question.id}
                     >
                         <ForumQuestionerInfo
+                            id={question.id}
                             firstName={question.questioner.firstName}
                             lastName={question.questioner.lastName}
                             username={question.questioner.username}

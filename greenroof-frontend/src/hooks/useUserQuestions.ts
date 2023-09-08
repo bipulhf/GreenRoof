@@ -2,9 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 import apiClient from "../services/api-client";
 import { Question } from "./useQuestion";
 
-const useUserQuestion = (username: string) => {
+const useUserQuestions = (username: string) => {
     return useQuery<Question[], Error>({
-        queryKey: ["forum"],
+        queryKey: ["user-question", username],
         queryFn: () => {
             return apiClient
                 .get<Question[]>("/forum/feed/user?username=" + username)
@@ -13,4 +13,4 @@ const useUserQuestion = (username: string) => {
     });
 };
 
-export default useUserQuestion;
+export default useUserQuestions;

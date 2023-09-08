@@ -3,7 +3,7 @@ import useProfile from "../../../hooks/useProfile";
 import AskQuestion from "../AskQuestion";
 import ForumFeedQuestion from "../forum_feed/ForumFeedQuestion";
 import ForumUserInfo from "./ForumUserInfo";
-import useUserQuestion from "../../../hooks/useUserQuestion";
+import useUserQuestions from "../../../hooks/useUserQuestions";
 
 export default function ForumProfile() {
     const { username } = useParams();
@@ -11,7 +11,7 @@ export default function ForumProfile() {
         data: questions,
         error,
         isLoading,
-    } = useUserQuestion(username || "");
+    } = useUserQuestions(username || "");
     const { data: users } = useProfile(username || "");
     const userProfile = users != null ? users[0] : null;
     return (

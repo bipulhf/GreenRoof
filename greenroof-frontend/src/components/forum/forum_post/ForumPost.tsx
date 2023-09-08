@@ -29,6 +29,7 @@ export default function ForumPost() {
                         firstName={questions?.questioner.firstName || ""}
                         lastName={questions?.questioner.lastName || ""}
                         username={questions?.questioner.username || ""}
+                        id={questions?.id || 0}
                     />
                     <ForumFeedQuestion
                         id={questions?.id || 0}

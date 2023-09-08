@@ -22,7 +22,8 @@ export default {
         cyan: '#3BB697',
         greenbtn: '#347E32',
         gray: '#8D8D8D',
-        graybg: '#F3F3F3'
+        graybg: '#F3F3F3',
+        red:'#FF0000'
       }
     },
   },

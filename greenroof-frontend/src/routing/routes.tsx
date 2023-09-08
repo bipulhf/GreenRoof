@@ -5,6 +5,8 @@ import ForumMainPage from "../pages/Forum/ForumMainPage";
 import ForumSinglePostPage from "../pages/Forum/ForumSinglePostPage";
 import ForumUserProfilePage from "../pages/Forum/ForumUserProfilePage";
 import ForumSearchPage from "../pages/Forum/ForumSearchPage";
+import ForumCreatePost from "../components/forum/forum_post/ForumCreatePost";
+import ForumEditPost from "../components/forum/forum_post/ForumEditPost";
 
 const router = createBrowserRouter([
     { path: "/", element: <App /> },
@@ -14,6 +16,8 @@ const router = createBrowserRouter([
         children: [
             { index: true, element: <ForumMainPage /> },
             { path: "post/:postId", element: <ForumSinglePostPage /> },
+            { path: "post/create", element: <ForumCreatePost /> },
+            { path: "post/edit/:postId", element: <ForumEditPost /> },
             { path: "user/:username", element: <ForumUserProfilePage /> },
             { path: "search", element: <ForumSearchPage /> },
         ],

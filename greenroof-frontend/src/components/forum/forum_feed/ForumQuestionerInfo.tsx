@@ -1,17 +1,21 @@
 import { Link } from "react-router-dom";
 import user_photo from "/assets/forum/forum_question_user_photo_30x30.png";
+import useNumberOfAnswer from "../../../hooks/useNumberOfAnswer";
 
 interface Props {
     firstName: string;
     lastName: string;
     username: string;
+    id: number;
 }
 
 export default function ForumQuestionerInfo({
     firstName,
     lastName,
     username,
+    id,
 }: Props) {
+    const { data: noOfAns } = useNumberOfAnswer(id);
     return (
         <>
             <div className="self-center col-span-4 sm:col-span-3 md:col-span-2 text-center mr-4">
@@ -32,11 +36,14 @@ export default function ForumQuestionerInfo({
                 </div>
                 <div className="answers-no mt-[25px]">
                     <h3 className="font-semibold text-gray text-[10px] sm:text-[12px]">
-                        <a href="">2 Answers</a>
+                        {noOfAns?.noa} Answers
                     </h3>
-                    <a href="" className="text-gray font-medium text-[12px]">
+                    <Link
+                        to={"/forum/post/edit/" + id}
+                        className="text-gray font-medium text-[12px]"
+                    >
                         Edit Question
-                    </a>
+                    </Link>
                 </div>
             </div>
         </>
