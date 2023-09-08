@@ -32,4 +32,14 @@ public class ForumFeedController {
     public ResponseEntity<?> getUserForumQuestion(@RequestParam String username) {
         return new ResponseEntity<>(forumFeedService.getUserForumQuestion(username), HttpStatus.OK);
     }
+
+    @GetMapping("top-user")
+    public ResponseEntity<?> getTopUser() {
+        return new ResponseEntity<>(forumFeedService.getTopUser(), HttpStatus.OK);
+    }
+
+    @GetMapping("answer-number")
+    public ResponseEntity<?> getNumberOfAnswers(@RequestParam Long questionId) {
+        return new ResponseEntity<>(forumFeedService.getNumberOfAnswers(questionId), HttpStatus.OK);
+    }
 }

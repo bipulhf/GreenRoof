@@ -4,6 +4,7 @@ import com.bankrupted.greenroof.exception.GenericException;
 import com.bankrupted.greenroof.forum.dto.ForumAnswerDto;
 import com.bankrupted.greenroof.forum.entity.ForumAnswer;
 import com.bankrupted.greenroof.forum.entity.ForumQuestion;
+import com.bankrupted.greenroof.user.entity.User;
 import com.bankrupted.greenroof.user.repository.UserRepository;
 import com.bankrupted.greenroof.forum.repository.ForumAnswerRepository;
 import com.bankrupted.greenroof.forum.repository.ForumQuestionRepository;
@@ -37,8 +38,17 @@ public class ForumAnswerService {
         if(Objects.equals(forumQuestion.getQuestioner().getUsername(), username))
             throw new GenericException("You can't answer on your own question");
 
+        User user = userRepository.findByUsername(username).get();
+        user.setId(user.getId());
+        if ((user.getScore() == null)) {
+            user.setScore(user.getScore() + 1);
+        } else {
+            user.setScore(Integer.valueOf(1));
+        }
+        userRepository.save(user);
+
         forumAnswer.setScore(0);
-        forumAnswer.setAnswerer(userRepository.findByUsername(username).get());
+        forumAnswer.setAnswerer(user);
         forumAnswer.setQuestion(forumQuestion);
         forumAnswer.setCreatedAt(new Date());
         forumAnswerRepository.save(forumAnswer);

@@ -49,6 +49,7 @@ public class UserService {
         newUser.setEmail(request.getEmail());
         newUser.setRole(request.getRole());
         newUser.setCity(request.getCity());
+        newUser.setScore(0);
         newUser.setCreatedAt(LocalDate.now());
         newUser.setPassword(passwordEncoder.encode(request.getPassword()));
         var savedUser = userRepository.save(newUser);

@@ -2,6 +2,8 @@ package com.bankrupted.greenroof.forum.service;
 
 import com.bankrupted.greenroof.forum.dto.FeedResponseDto;
 import com.bankrupted.greenroof.forum.dto.ForumQuestionDto;
+import com.bankrupted.greenroof.forum.repository.ForumAnswerRepository;
+import com.bankrupted.greenroof.user.dto.UserDto;
 import com.bankrupted.greenroof.user.entity.User;
 import com.bankrupted.greenroof.forum.entity.ForumQuestion;
 import com.bankrupted.greenroof.user.repository.UserRepository;
@@ -13,7 +15,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 @Service
@@ -22,7 +26,9 @@ public class ForumFeedService {
 
     private final ForumQuestionRepository forumQuestionRepository;
     private final UserRepository userRepository;
+    private final ForumAnswerRepository forumAnswerRepository;
     private final ModelMapperUtility<ForumQuestion, ForumQuestionDto> modelMapper;
+    private final ModelMapperUtility<User, UserDto> userModelMapper;
     private int pageSize = 5;
 
     public FeedResponseDto<ForumQuestionDto> getAllForumQuestions(Integer pageNo) {
@@ -63,5 +69,20 @@ public class ForumFeedService {
                 .last(forumQuestionPage.isLast())
                 .build();
         return feedResponseDto;
+    }
+
+    public List<UserDto> getTopUser() {
+        List<User> userList = userRepository.findTop5ByOrderByScoreDesc();
+        return userModelMapper.modelMap(userList, UserDto.class);
+    }
+
+    public Map<String, Integer> getNumberOfAnswers(Long questionId) {
+        Map<String, Integer> mp = new HashMap<>();
+        if(forumAnswerRepository.getTotalNumberOfAnswersOfQuestion(questionId) == null) {
+            mp.put("noa", 0);
+            return mp;
+        }
+        mp.put("noa", forumAnswerRepository.getTotalNumberOfAnswersOfQuestion(questionId).intValue());
+        return mp;
     }
 }

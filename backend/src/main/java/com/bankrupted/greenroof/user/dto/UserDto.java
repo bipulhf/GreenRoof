@@ -13,4 +13,5 @@ public class UserDto {
     private String lastName;
     private String username;
     private String profilePhoto;
+    private Long score;
 }

@@ -15,5 +15,8 @@ public interface ForumAnswerRepository extends JpaRepository<ForumAnswer, Long> 
     @Query(value = "SELECT SUM(user_id) FROM forum_answers WHERE user_id=:userId", nativeQuery = true)
     Long getTotalNumberOfAnswersOfUser(Long userId);
 
+    @Query(value = "SELECT SUM(question_id) FROM forum_answers WHERE question_id=:questionId", nativeQuery = true)
+    Integer getTotalNumberOfAnswersOfQuestion(Long questionId);
+
     void deleteByQuestionId(Long questionId);
 }

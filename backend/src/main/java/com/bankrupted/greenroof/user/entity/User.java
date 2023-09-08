@@ -49,11 +49,12 @@ public class User implements UserDetails {
   private String email;
   @Column(nullable = false)
   private String password;
-
   @Column(unique = true, nullable = false)
   private String username;
-
+  @Column(unique = true, nullable = false)
   private String city;
+  @Column(columnDefinition = "integer default 0")
+  private Integer score;
   private boolean isBanned;
   private String profilePhoto;
   private LocalDate createdAt;
