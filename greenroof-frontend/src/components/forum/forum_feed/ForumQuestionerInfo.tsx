@@ -1,6 +1,7 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import user_photo from "/assets/forum/forum_question_user_photo_30x30.png";
 import useNumberOfAnswer from "../../../hooks/useNumberOfAnswer";
+import useQuestionDelete from "../../../hooks/useQuestionDelete";
 
 interface Props {
     firstName: string;
@@ -15,7 +16,17 @@ export default function ForumQuestionerInfo({
     username,
     id,
 }: Props) {
+    const mutation = useQuestionDelete(
+        "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJib3Nob250byIsImlhdCI6MTY5NDIwOTExOSwiZXhwIjoxNjk0Mjk1NTE5fQ.9v8GcYs2zm70wKlTYVnYpFwMRZjTWuiIymK8By7kLk4"
+    );
+    const deletePost = (id: number) => {
+        if (window.confirm("Do you really want to delete the post?")) {
+            mutation.mutate(id);
+            window.location.assign("/forum");
+        }
+    };
     const { data: noOfAns } = useNumberOfAnswer(id);
+    const { postId } = useParams();
     return (
         <>
             <div className="self-center col-span-4 sm:col-span-3 md:col-span-2 text-center mr-4">
@@ -25,25 +36,50 @@ export default function ForumQuestionerInfo({
                         alt="User Photo"
                         className="w-[24px] h-[24px] sm:w-[30px] sm:h-[30px] rounded-full mr-[5px] mt-[5px]"
                     />
-                    <Link to={"/forum/user/" + username} className="username">
-                        <h3 className="font-semibold text-[11px] sm:text-[13px] md:text-[16px]">
-                            {firstName + " " + lastName}
-                        </h3>
-                        <h4 className="font-medium text-[9px] sm:text-[11px] md:text-[13px] text-gray">
-                            @{username}
-                        </h4>
-                    </Link>
+                    {postId != null ? (
+                        <Link
+                            to={"/forum/user/" + username}
+                            className="username"
+                        >
+                            <h3 className="font-semibold text-[11px] sm:text-[13px] md:text-[16px]">
+                                {firstName + " " + lastName}
+                            </h3>
+                            <h4 className="font-medium text-[9px] sm:text-[11px] md:text-[13px] text-gray">
+                                @{username}
+                            </h4>
+                        </Link>
+                    ) : (
+                        <div>
+                            <h3 className="font-semibold text-[11px] sm:text-[13px] md:text-[16px]">
+                                {firstName + " " + lastName}
+                            </h3>
+                            <h4 className="font-medium text-[9px] sm:text-[11px] md:text-[13px] text-gray">
+                                @{username}
+                            </h4>
+                        </div>
+                    )}
                 </div>
                 <div className="answers-no mt-[25px]">
                     <h3 className="font-semibold text-gray text-[10px] sm:text-[12px]">
                         {noOfAns?.noa} Answers
                     </h3>
-                    <Link
-                        to={"/forum/post/edit/" + id}
-                        className="text-gray font-medium text-[12px]"
-                    >
-                        Edit Question
-                    </Link>
+                    {postId != null && (
+                        <div className="flex justify-evenly">
+                            <Link
+                                to={"/forum/post/edit/" + id}
+                                className="text-gray font-medium text-[12px]"
+                            >
+                                Edit
+                            </Link>
+
+                            <button
+                                className="text-gray font-medium text-[12px]"
+                                onClick={() => deletePost(parseInt(postId))}
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
         </>

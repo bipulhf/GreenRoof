@@ -11,10 +11,7 @@ const useNumberOfAnswer = (id: number) => {
         queryFn: () => {
             return apiClient
                 .get<Noa>("/forum/feed/answer-number?questionId=" + id)
-                .then((res) => {
-                    console.log(res);
-                    return res.data;
-                });
+                .then((res) => res.data);
         },
     });
 };

@@ -2,6 +2,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import useQuestion from "../../../hooks/useQuestion";
 import { useParams } from "react-router-dom";
 import useEditQ from "../../../hooks/useEditQ";
+import { useEffect } from "react";
 
 interface Inputs {
     questionTitle: string;
@@ -10,29 +11,33 @@ interface Inputs {
 
 export default function ForumEditPost() {
     const { postId } = useParams();
-    const { data: question } = useQuestion(parseInt(postId || "0"));
-
-    const preData = {
-        questionTitle: question?.questionTitle,
-        questionText: question?.questionText,
-    };
 
     const mutation = useEditQ(
-        "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJib3Nob250byIsImlhdCI6MTY5NDE5NjIyMCwiZXhwIjoxNjk0MjgyNjIwfQ.mvoAviO2oNwx7SqlbLW2AOB9jjC3f2IErTKo0vLlXRQ",
+        "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJib3Nob250byIsImlhdCI6MTY5NDIwOTExOSwiZXhwIjoxNjk0Mjk1NTE5fQ.9v8GcYs2zm70wKlTYVnYpFwMRZjTWuiIymK8By7kLk4",
         parseInt(postId || "0")
     );
-
+    const { data: preData } = useQuestion(parseInt(postId || "0"));
     const {
         register,
         handleSubmit,
+        reset,
         formState: { errors },
     } = useForm<Inputs>({
-        defaultValues: preData,
+        defaultValues: {
+            questionTitle: preData?.questionTitle,
+            questionText: preData?.questionText,
+        },
     });
+    useEffect(() => {
+        if (preData != null) {
+            reset(preData);
+        }
+    }, [preData]);
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         mutation.mutate(data);
+        window.location.assign("/forum/post/" + postId);
     };
-    return (
+    return preData != undefined ? (
         <>
             <h2 className="font-bold text-[14px] sm:text-[16px] md:text-[22px]">
                 Edit your question
@@ -93,5 +98,7 @@ export default function ForumEditPost() {
                 </button>
             </form>
         </>
+    ) : (
+        <p className="font-medium">Loading...</p>
     );
 }

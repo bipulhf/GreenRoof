@@ -8,7 +8,7 @@ interface Inputs {
 
 export default function ForumCreatePost() {
     const mutation = useCreateQ(
-        "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJib3Nob250byIsImlhdCI6MTY5NDE5Mzg3NCwiZXhwIjoxNjk0MjgwMjc0fQ.CGgKNfOWGovcIuSCq2J5SEtTK4QhegPjMaVdr06Mdzw"
+        "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJib3Nob250byIsImlhdCI6MTY5NDIwOTExOSwiZXhwIjoxNjk0Mjk1NTE5fQ.9v8GcYs2zm70wKlTYVnYpFwMRZjTWuiIymK8By7kLk4"
     );
 
     const {
@@ -18,6 +18,7 @@ export default function ForumCreatePost() {
     } = useForm<Inputs>();
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         mutation.mutate(data);
+        window.location.assign("/forum");
     };
     return (
         <>
