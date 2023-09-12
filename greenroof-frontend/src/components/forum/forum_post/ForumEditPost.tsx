@@ -1,5 +1,5 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { token } from "../../../services/jwt-token";
 import { useEditQuestion, useGetQuestion } from "../../../hooks/useQuestion";
@@ -11,7 +11,6 @@ interface Inputs {
 
 export default function ForumEditPost() {
     const { postId } = useParams();
-    const navigate = useNavigate();
     const mutation = useEditQuestion(token, parseInt(postId || "0"));
     const { data: preData } = useGetQuestion(parseInt(postId || "0"));
     const {
@@ -32,7 +31,6 @@ export default function ForumEditPost() {
     }, [preData]);
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         mutation.mutate(data);
-        navigate("/forum/post/" + postId);
     };
     return preData != undefined ? (
         <>
@@ -79,8 +77,10 @@ export default function ForumEditPost() {
                     </p>
                 )}
                 {mutation.isError && (
-                    <p className="font-medium text-red">
-                        Network Error. Please Try again.
+                    <p className="text-red">
+                        {mutation.error.response.data.message
+                            ? mutation.error.response.data.message
+                            : mutation.error.message}
                     </p>
                 )}
                 <button

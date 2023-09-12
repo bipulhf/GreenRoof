@@ -1,5 +1,6 @@
 import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import APIClient from "../services/apiClient";
+import { ValidationError } from "../services/types";
 
 interface HasVoted {
     voteNo?: number;
@@ -27,7 +28,7 @@ const useVote = (token: string, answerId: number) => {
 
 const useGetVoteStatus = (token: string, answerId: number) => {
     const headers = { Authorization: `Bearer ${token}` };
-    return useQuery<HasVoted, Error>({
+    return useQuery<HasVoted, ValidationError>({
         queryKey: ["vote", answerId],
         queryFn: () =>
             answerApiClient.getWithAuth(

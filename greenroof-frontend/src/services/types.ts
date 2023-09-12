@@ -42,3 +42,12 @@ export interface Question {
     questioner: User;
     createdAt: Date;
 }
+
+export interface ValidationError {
+    message: string;
+    response: {
+        data: {
+            message: string;
+        };
+    };
+}

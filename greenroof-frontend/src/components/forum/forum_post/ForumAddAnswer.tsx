@@ -55,7 +55,13 @@ export default function ForumAddAnswer({ id }: Props) {
                         Answer Text must be greater than 10 characters.
                     </p>
                 )}
-                {mutation.isError}
+                {mutation.isError && (
+                    <p className="text-red">
+                        {mutation.error.response.data.message
+                            ? mutation.error.response.data.message
+                            : mutation.error.message}
+                    </p>
+                )}
                 <button
                     type="submit"
                     className="p-1 w-[120px] my-[15px] rounded-full bg-greenbtn text-white text-[13px] hover:bg-greenttl md:px-3 font-medium"

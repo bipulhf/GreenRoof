@@ -1,4 +1,4 @@
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { token } from "../../../services/jwt-token";
 import user_photo from "/assets/forum/forum_question_user_photo_30x30.png";
 import useNumberOfAnswer from "../../../hooks/useNumberOfAnswer";
@@ -17,13 +17,10 @@ export default function ForumQuestionerInfo({
     username,
     id,
 }: Props) {
-    const navigate = useNavigate();
     const mutation = useDeleteQuestion(token);
     const deletePost = (id: number) => {
-        if (window.confirm("Do you really want to delete the post?")) {
+        if (window.confirm("Do you really want to delete the post?"))
             mutation.mutate(id);
-            navigate("/forum");
-        }
     };
     const { data: noOfAns } = useNumberOfAnswer(id);
     const { postId } = useParams();
@@ -79,6 +76,13 @@ export default function ForumQuestionerInfo({
                                 Delete
                             </button>
                         </div>
+                    )}
+                    {mutation.isError && (
+                        <p className="text-red">
+                            {mutation.error.response.data.message
+                                ? mutation.error.response.data.message
+                                : mutation.error.message}
+                        </p>
                     )}
                 </div>
             </div>

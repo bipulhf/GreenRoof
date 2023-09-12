@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import APIClient from "../services/apiClient";
-import { Answer } from "../services/types";
+import { Answer, ValidationError } from "../services/types";
 
 interface AnswerText {
     answerText: string;
@@ -39,7 +39,7 @@ const useCreateAnswer = (token: string, questionId: number) => {
                 queryKey: ["answer"],
             });
         },
-        onError: (err) => err,
+        onError: (err: ValidationError) => err,
     });
 };
 
@@ -54,6 +54,7 @@ const useEditAnswer = (token: string, answerId: number) => {
                 queryKey: ["answer", answerId],
             });
         },
+        onError: (err: ValidationError) => err,
     });
 };
 
@@ -68,6 +69,7 @@ const useDeleteAnswer = (token: string) => {
                 queryKey: ["answer"],
             });
         },
+        onError: (err: ValidationError) => err,
     });
 };
 

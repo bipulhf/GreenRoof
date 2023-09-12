@@ -47,7 +47,7 @@ export default function ForumEditAnswer() {
                         minLength: 10,
                     })}
                     name="answerText"
-                    className="text-[13px] border-2 border-gray rounded-lg p-1 sm:p-3 h-[250px]"
+                    className="text-[13px] border-2 border-gray rounded-lg p-1 sm:p-3 h-[1px]"
                     placeholder="Enter your answer here..."
                     aria-invalid={errors.answerText ? "true" : "false"}
                     required
@@ -58,7 +58,13 @@ export default function ForumEditAnswer() {
                         Answer Text must be greater than 10 characters.
                     </p>
                 )}
-                {mutation.isError}
+                {mutation.isError && (
+                    <p className="text-red">
+                        {mutation.error.response.data.message
+                            ? mutation.error.response.data.message
+                            : mutation.error.message}
+                    </p>
+                )}
                 <button
                     type="submit"
                     className="p-1 w-[120px] my-[15px] rounded-full bg-greenbtn text-white text-[13px] hover:bg-greenttl md:px-3 font-medium"

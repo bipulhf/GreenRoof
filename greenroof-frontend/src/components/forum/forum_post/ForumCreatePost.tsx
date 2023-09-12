@@ -1,7 +1,6 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { token } from "../../../services/jwt-token";
 import { useCreateQuestion } from "../../../hooks/useQuestion";
-import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 interface Inputs {
@@ -11,7 +10,6 @@ interface Inputs {
 
 export default function ForumCreatePost() {
     const mutation = useCreateQuestion(token);
-    const navigate = useNavigate();
 
     const {
         register,
@@ -19,10 +17,7 @@ export default function ForumCreatePost() {
         reset,
         formState: { errors, isSubmitSuccessful },
     } = useForm<Inputs>();
-    const onSubmit: SubmitHandler<Inputs> = (data) => {
-        mutation.mutate(data);
-        navigate("/forum");
-    };
+    const onSubmit: SubmitHandler<Inputs> = (data) => mutation.mutate(data);
     useEffect(() => {
         if (isSubmitSuccessful) {
             reset({
@@ -81,8 +76,10 @@ export default function ForumCreatePost() {
                     </p>
                 )}
                 {mutation.isError && (
-                    <p className="font-medium text-red">
-                        Network Error. Please Try again.
+                    <p className="text-red">
+                        {mutation.error.response.data.message
+                            ? mutation.error.response.data.message
+                            : mutation.error.message}
                     </p>
                 )}
                 <button
