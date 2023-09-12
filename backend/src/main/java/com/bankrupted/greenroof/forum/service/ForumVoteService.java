@@ -12,9 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.NoSuchElementException;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +21,20 @@ public class ForumVoteService {
     private final UserRepository userRepository;
     private final ForumAnswerRepository forumAnswerRepository;
     private final ForumVoteRepository forumVoteRepository;
+
+    public ResponseEntity<?> hasUserVoted(Long answerId, String username) {
+        User voter = userRepository.findByUsername(username)
+                .orElseThrow(() -> new NoSuchElementException("No user found with this username " + username + "."));
+        Map<String, Integer> mp = new HashMap<>();
+        boolean forumVote = forumVoteRepository.existsByAnswerIdAndVoterId(answerId, voter.getId());
+        if(!forumVote) {
+            mp.put("voteNo", 0);
+            return new ResponseEntity<>(mp, HttpStatus.OK);
+        }
+        ForumVote vote = forumVoteRepository.findByAnswerIdAndVoterId(answerId, voter.getId()).get();
+        mp.put("voteNo", (int) vote.getVote());
+        return new ResponseEntity<>(mp, HttpStatus.OK);
+    }
 
     public ResponseEntity<?> upvoteOnAnswer(Long answerId, String username) {
         User voter = userRepository.findByUsername(username)

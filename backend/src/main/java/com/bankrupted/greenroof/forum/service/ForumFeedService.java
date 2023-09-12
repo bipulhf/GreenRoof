@@ -1,7 +1,9 @@
 package com.bankrupted.greenroof.forum.service;
 
 import com.bankrupted.greenroof.forum.dto.FeedResponseDto;
+import com.bankrupted.greenroof.forum.dto.ForumAnswerDto;
 import com.bankrupted.greenroof.forum.dto.ForumQuestionDto;
+import com.bankrupted.greenroof.forum.entity.ForumAnswer;
 import com.bankrupted.greenroof.forum.repository.ForumAnswerRepository;
 import com.bankrupted.greenroof.user.dto.UserDto;
 import com.bankrupted.greenroof.user.entity.User;
@@ -27,7 +29,7 @@ public class ForumFeedService {
     private final ForumQuestionRepository forumQuestionRepository;
     private final UserRepository userRepository;
     private final ForumAnswerRepository forumAnswerRepository;
-    private final ModelMapperUtility<ForumQuestion, ForumQuestionDto> modelMapper;
+    private final ModelMapperUtility<ForumQuestion, ForumQuestionDto> questionModelMapper;
     private final ModelMapperUtility<User, UserDto> userModelMapper;
     private int pageSize = 5;
 
@@ -46,19 +48,19 @@ public class ForumFeedService {
     public ForumQuestionDto getSingleForumQuestion(Long questionId) {
         ForumQuestion question = forumQuestionRepository.findByIdOrderByCreatedAtDesc(questionId)
                 .orElseThrow(() -> new NoSuchElementException("Question with id " + questionId + " does not exists."));
-        return (ForumQuestionDto) modelMapper.modelMap(question, ForumQuestionDto.class);
+        return (ForumQuestionDto) questionModelMapper.modelMap(question, ForumQuestionDto.class);
     }
 
     public List<ForumQuestionDto> getUserForumQuestion(String username){
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new NoSuchElementException("No user found with this username " + username + "."));
         List<ForumQuestion> forumQuestionList = forumQuestionRepository.findByUserIdOrderByCreatedAtDesc(user.getId());
-        return modelMapper.modelMap(forumQuestionList, ForumQuestionDto.class);
+        return questionModelMapper.modelMap(forumQuestionList, ForumQuestionDto.class);
     }
 
     private FeedResponseDto<ForumQuestionDto> getResponseDto(Page<ForumQuestion> forumQuestionPage) {
         List<ForumQuestion> forumQuestionList = forumQuestionPage.getContent();
-        List<ForumQuestionDto> forumQuestionDtoList = modelMapper.modelMap(forumQuestionList, ForumQuestionDto.class);
+        List<ForumQuestionDto> forumQuestionDtoList = questionModelMapper.modelMap(forumQuestionList, ForumQuestionDto.class);
 
         FeedResponseDto<ForumQuestionDto> feedResponseDto = FeedResponseDto.<ForumQuestionDto>builder()
                 .contentList(forumQuestionDtoList)

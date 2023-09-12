@@ -27,7 +27,7 @@ public class ForumQuestionService {
         forumQuestion.setQuestioner(user);
         forumQuestion.setCreatedAt(new Date());
         forumQuestionRepository.save(forumQuestion);
-        return new ResponseEntity<>("Question created successfully.", HttpStatus.CREATED);
+        return new ResponseEntity<>("Question Added", HttpStatus.CREATED);
     }
 
     public ResponseEntity<?> updateForumQuestion(String username, Long questionId, ForumQuestion forumQuestion) {
@@ -46,7 +46,7 @@ public class ForumQuestionService {
         boolean FORBIDDEN = getQuestionEditPermission(questionId, username);
         if (FORBIDDEN)
             throw new GenericException("You are not allowed to delete this question.");
-        forumAnswerService.deleteAnswerOfQuestion(questionId);
+        forumAnswerService.deleteAnswerOfQuestion(questionId, username);
         forumQuestionRepository.deleteById(questionId);
         return new ResponseEntity<>("Question deleted successfully.", HttpStatus.OK);
     }

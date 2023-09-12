@@ -1,15 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "../services/api-client";
-import { Question } from "./useQuestion";
+import APIClient from "../services/apiClient";
+import { Question } from "../services/types";
+
+const questionApiClient = new APIClient<Question, Question>("/forum/feed");
 
 const useUserQuestions = (username: string) => {
     return useQuery<Question[], Error>({
-        queryKey: ["user-question", username],
-        queryFn: () => {
-            return apiClient
-                .get<Question[]>("/forum/feed/user?username=" + username)
-                .then((res) => res.data);
-        },
+        queryKey: ["question", username],
+        queryFn: () => questionApiClient.getAll("//user?username=" + username),
     });
 };
 

@@ -1,24 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "../services/api-client";
-import { Question } from "./useQuestion";
+import APIClient from "../services/apiClient";
+import { Content, Question } from "../services/types";
 
-export interface Content {
-    contentList: Question[];
-    pageNo: number;
-    pageSize: number;
-    totalElements: number;
-    totalPages: number;
-    last: boolean;
-}
+const contentApiClient = new APIClient<Content, Question>("/forum/feed");
 
 const useContent = () => {
     return useQuery<Content, Error>({
         queryKey: ["forum"],
-        queryFn: () => {
-            return apiClient
-                .get<Content>("/forum/feed/recent")
-                .then((res) => res.data);
-        },
+        queryFn: () => contentApiClient.get("/recent"),
     });
 };
 

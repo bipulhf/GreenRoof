@@ -1,7 +1,8 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { token } from "../../../services/jwt-token";
 import user_photo from "/assets/forum/forum_question_user_photo_30x30.png";
 import useNumberOfAnswer from "../../../hooks/useNumberOfAnswer";
-import useQuestionDelete from "../../../hooks/useQuestionDelete";
+import { useDeleteQuestion } from "../../../hooks/useQuestion";
 
 interface Props {
     firstName: string;
@@ -16,13 +17,12 @@ export default function ForumQuestionerInfo({
     username,
     id,
 }: Props) {
-    const mutation = useQuestionDelete(
-        "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJib3Nob250byIsImlhdCI6MTY5NDIwOTExOSwiZXhwIjoxNjk0Mjk1NTE5fQ.9v8GcYs2zm70wKlTYVnYpFwMRZjTWuiIymK8By7kLk4"
-    );
+    const navigate = useNavigate();
+    const mutation = useDeleteQuestion(token);
     const deletePost = (id: number) => {
         if (window.confirm("Do you really want to delete the post?")) {
             mutation.mutate(id);
-            window.location.assign("/forum");
+            navigate("/forum");
         }
     };
     const { data: noOfAns } = useNumberOfAnswer(id);
@@ -36,7 +36,7 @@ export default function ForumQuestionerInfo({
                         alt="User Photo"
                         className="w-[24px] h-[24px] sm:w-[30px] sm:h-[30px] rounded-full mr-[5px] mt-[5px]"
                     />
-                    {postId != null ? (
+                    {postId == null ? (
                         <Link
                             to={"/forum/user/" + username}
                             className="username"

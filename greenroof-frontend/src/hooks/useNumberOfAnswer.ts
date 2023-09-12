@@ -1,18 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "../services/api-client";
+import APIClient from "../services/apiClient";
+import { Answer } from "../services/types";
 
-interface Noa {
+interface NumberOfAnswers {
     noa: number;
 }
 
-const useNumberOfAnswer = (id: number) => {
-    return useQuery<Noa>({
-        queryKey: ["NoOfAnswer", id],
-        queryFn: () => {
-            return apiClient
-                .get<Noa>("/forum/feed/answer-number?questionId=" + id)
-                .then((res) => res.data);
-        },
+const apiClient = new APIClient<NumberOfAnswers, Answer>("/forum/feed");
+
+const useNumberOfAnswer = (questionId: number) => {
+    return useQuery<NumberOfAnswers, Error>({
+        queryKey: ["NoOfAnswer", questionId],
+        queryFn: () => apiClient.get("/answer-number?questionId=" + questionId),
     });
 };
 

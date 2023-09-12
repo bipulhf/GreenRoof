@@ -30,6 +30,11 @@ public class ForumAnswerService {
     private final ForumVoteRepository forumVoteRepository;
     private final ModelMapperUtility<ForumAnswer, ForumAnswerDto> modelMapper;
 
+    public ForumAnswerDto getSingleForumAnswer(Long answerId) {
+        ForumAnswer answer = forumAnswerRepository.findById(answerId)
+                .orElseThrow(() -> new NoSuchElementException("Answer with id " + answerId + " does not exists."));
+        return (ForumAnswerDto) modelMapper.modelMap(answer, ForumAnswerDto.class);
+    }
 
     public ResponseEntity<?> addAnswerToQuestion(String username, Long questionId, ForumAnswer forumAnswer) {
         ForumQuestion forumQuestion = forumQuestionRepository.findById(questionId)
@@ -40,11 +45,7 @@ public class ForumAnswerService {
 
         User user = userRepository.findByUsername(username).get();
         user.setId(user.getId());
-        if ((user.getScore() == null)) {
-            user.setScore(user.getScore() + 1);
-        } else {
-            user.setScore(Integer.valueOf(1));
-        }
+        user.setScore(user.getScore() + 1);
         userRepository.save(user);
 
         forumAnswer.setScore(0);
@@ -69,10 +70,15 @@ public class ForumAnswerService {
         return new ResponseEntity<>("Updated Answer", HttpStatus.CREATED);
     }
 
-    public void deleteAnswerOfQuestion(Long questionId) {
+    public void deleteAnswerOfQuestion(Long questionId, String username) {
         Boolean doesExist = forumAnswerRepository.existsByQuestionId(questionId);
         if(!doesExist)
             return;
+
+        User user = userRepository.findByUsername(username).get();
+        user.setId(user.getId());
+        user.setScore(user.getScore() - 1);
+        userRepository.save(user);
 
         Long answerId = forumAnswerRepository.findByQuestionIdOrderByScoreDescCreatedAtDesc(questionId).get(0).getId();
         Integer voteListSize = forumVoteRepository.findByAnswerId(answerId).size();
@@ -86,6 +92,11 @@ public class ForumAnswerService {
 
         if(!Objects.equals(forumAnswer.getAnswerer().getUsername(), username))
             throw new GenericException("You are not allowed to delete this answer.");
+
+        User user = userRepository.findByUsername(username).get();
+        user.setId(user.getId());
+        user.setScore(user.getScore() - 1);
+        userRepository.save(user);
 
         if(!forumVoteRepository.findByAnswerId(answerId).isEmpty()) forumVoteRepository.deleteByAnswerId(answerId);
         forumAnswerRepository.deleteById(answerId);

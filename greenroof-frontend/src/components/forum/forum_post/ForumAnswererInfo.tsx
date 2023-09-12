@@ -1,17 +1,31 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import user_photo from "/assets/forum/forum_question_user_photo_30x30.png";
+import { token } from "../../../services/jwt-token";
+import { useDeleteAnswer } from "../../../hooks/useAnswer";
 
 interface Props {
+    postId: number;
+    answerId: number;
     firstName: string;
     lastName: string;
     username: string;
 }
 
 export default function ForumAnswererInfo({
+    postId,
+    answerId,
     firstName,
     lastName,
     username,
 }: Props) {
+    const navigate = useNavigate();
+    const mutation = useDeleteAnswer(token);
+    const deleteAnswer = (id: number) => {
+        if (window.confirm("Do you really want to delete the post?")) {
+            mutation.mutate(id);
+            navigate("/forum/post/" + postId);
+        }
+    };
     return (
         <>
             <div className="self-center col-span-4 sm:col-span-3 md:col-span-2 text-center mr-4">
@@ -30,9 +44,21 @@ export default function ForumAnswererInfo({
                         </h4>
                     </Link>
                 </div>
-                <a href="" className="text-gray font-medium text-[12px]">
-                    Edit Answer
-                </a>
+                <div className="flex justify-evenly">
+                    <Link
+                        to={"/forum/answer/edit/" + postId + "/" + answerId}
+                        className="text-gray font-medium text-[12px]"
+                    >
+                        Edit
+                    </Link>
+
+                    <button
+                        className="text-gray font-medium text-[12px]"
+                        onClick={() => deleteAnswer(answerId)}
+                    >
+                        Delete
+                    </button>
+                </div>
             </div>
         </>
     );

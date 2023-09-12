@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.Arrays;
+
 @SpringBootApplication
 public class GreenRoofApplication {
 
@@ -15,7 +17,7 @@ public class GreenRoofApplication {
 
 	@Bean
 	public WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurer() {
+		WebMvcConfigurer webMvcConfigurer = new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry
@@ -26,6 +28,7 @@ public class GreenRoofApplication {
 						.allowedOrigins("http://localhost:5173/");
 			}
 		};
+		return webMvcConfigurer;
 	}
 
 }

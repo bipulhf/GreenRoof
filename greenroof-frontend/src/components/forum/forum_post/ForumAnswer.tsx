@@ -25,7 +25,7 @@ export default function ForumAnswer({
                 </p>
             </div>
             <div className="col-span-1">
-                <ForumVote score={score} />
+                <ForumVote answerId={id} score={score} />
             </div>
         </>
     );

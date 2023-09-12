@@ -19,6 +19,11 @@ public class ForumAnswerController {
     private final ForumAnswerService forumAnswerService;
     private final ForumVoteService forumVoteService;
 
+    @GetMapping("get")
+    public ResponseEntity<?> getSingleForumAnswer(@RequestParam Long answerId) {
+        return new ResponseEntity<>(forumAnswerService.getSingleForumAnswer(answerId), HttpStatus.OK);
+    }
+
     @PostMapping("add/{questionId}")
     public ResponseEntity<?> addAnswerToQuestion(@PathVariable Long questionId, @RequestBody @Valid ForumAnswer forumAnswer) {
         String username = GetUsername.get();
@@ -44,16 +49,22 @@ public class ForumAnswerController {
     }
 
     @Transactional
-    @PutMapping("vote/{answerId}/up")
+    @PostMapping("vote/{answerId}/up")
     public ResponseEntity<?> upvoteOnAnswer(@PathVariable Long answerId) {
         String username = GetUsername.get();
         return forumVoteService.upvoteOnAnswer(answerId, username);
     }
 
     @Transactional
-    @PutMapping("vote/{answerId}/down")
+    @PostMapping("vote/{answerId}/down")
     public ResponseEntity<?> downvoteOnAnswer(@PathVariable Long answerId) {
         String username = GetUsername.get();
         return forumVoteService.downvoteOnAnswer(answerId, username);
+    }
+
+    @GetMapping("vote")
+    public ResponseEntity<?> hasUserVoted(@RequestParam Long answerId) {
+        String username = GetUsername.get();
+        return forumVoteService.hasUserVoted(answerId, username);
     }
 }

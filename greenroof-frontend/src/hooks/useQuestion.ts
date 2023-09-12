@@ -1,24 +1,72 @@
-import { useQuery } from "@tanstack/react-query";
-import { User } from "./useProfile";
-import apiClient from "../services/api-client";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import APIClient from "../services/apiClient";
+import { Question } from "../services/types";
 
-export interface Question {
-    id: number;
+interface QuestionText {
     questionTitle: string;
     questionText: string;
-    questioner: User;
-    createdAt: Date;
 }
 
-const useQuestion = (id: number) => {
+const questionApiClient = new APIClient<Question, QuestionText>("/forum");
+const feedApiClient = new APIClient<Question, QuestionText>("/forum/feed");
+
+const useGetQuestion = (questionId: number) => {
     return useQuery<Question, Error>({
-        queryKey: ["question", id],
-        queryFn: () => {
-            return apiClient
-                .get<Question>("/forum/feed/question?questionId=" + id)
-                .then((res) => res.data);
+        queryKey: ["question", questionId],
+        queryFn: () => feedApiClient.get("/question?questionId=" + questionId),
+    });
+};
+
+const useCreateQuestion = (token: string) => {
+    const query = useQueryClient();
+    const headers = { Authorization: `Bearer ${token}` };
+    return useMutation({
+        mutationFn: (question: QuestionText) =>
+            questionApiClient.post("/question/create", headers, question),
+        onSuccess: () => {
+            query.invalidateQueries({
+                queryKey: ["forum"],
+            });
         },
     });
 };
 
-export default useQuestion;
+const useEditQuestion = (token: string, questionId: number) => {
+    const query = useQueryClient();
+    const headers = { Authorization: `Bearer ${token}` };
+    return useMutation({
+        mutationFn: (question: QuestionText) =>
+            questionApiClient.update(
+                "/question/update",
+                headers,
+                questionId,
+                question
+            ),
+        onSuccess: () => {
+            query.invalidateQueries({
+                queryKey: ["question", questionId],
+            });
+        },
+    });
+};
+
+const useDeleteQuestion = (token: string) => {
+    const query = useQueryClient();
+    const headers = { Authorization: `Bearer ${token}` };
+    return useMutation({
+        mutationFn: (id: number) =>
+            questionApiClient.delete("/question/delete", headers, id),
+        onSuccess: () => {
+            query.invalidateQueries({
+                queryKey: ["forum"],
+            });
+        },
+    });
+};
+
+export {
+    useGetQuestion,
+    useCreateQuestion,
+    useEditQuestion,
+    useDeleteQuestion,
+};

@@ -1,8 +1,8 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import useQuestion from "../../../hooks/useQuestion";
-import { useParams } from "react-router-dom";
-import useEditQ from "../../../hooks/useEditQ";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
+import { token } from "../../../services/jwt-token";
+import { useEditQuestion, useGetQuestion } from "../../../hooks/useQuestion";
 
 interface Inputs {
     questionTitle: string;
@@ -11,12 +11,9 @@ interface Inputs {
 
 export default function ForumEditPost() {
     const { postId } = useParams();
-
-    const mutation = useEditQ(
-        "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJib3Nob250byIsImlhdCI6MTY5NDIwOTExOSwiZXhwIjoxNjk0Mjk1NTE5fQ.9v8GcYs2zm70wKlTYVnYpFwMRZjTWuiIymK8By7kLk4",
-        parseInt(postId || "0")
-    );
-    const { data: preData } = useQuestion(parseInt(postId || "0"));
+    const navigate = useNavigate();
+    const mutation = useEditQuestion(token, parseInt(postId || "0"));
+    const { data: preData } = useGetQuestion(parseInt(postId || "0"));
     const {
         register,
         handleSubmit,
@@ -35,7 +32,7 @@ export default function ForumEditPost() {
     }, [preData]);
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         mutation.mutate(data);
-        window.location.assign("/forum/post/" + postId);
+        navigate("/forum/post/" + postId);
     };
     return preData != undefined ? (
         <>

@@ -1,34 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
-import apiClient from "../services/api-client";
+import { User, UserProfile } from "../services/types";
+import APIClient from "../services/apiClient";
 
-export interface User {
-    id: number;
-    firstName: string;
-    lastName: string;
-    username: string;
-    email: string;
-    city: string;
-    profilePhoto: string;
-}
-export interface UserProfile {
-    id: number;
-    firstName: string;
-    lastName: string;
-    username: string;
-    email: string;
-    profilePhoto: string;
-    city: string;
-    createdAt: Date;
-}
+const userApiClient = new APIClient<UserProfile, User>("/forum/search");
 
 const useProfile = (username: string) => {
-    return useQuery<User[], Error>({
+    return useQuery<UserProfile[], Error>({
         queryKey: ["user", username],
-        queryFn: () => {
-            return apiClient
-                .get<User[]>("/forum/search/user?username=" + username)
-                .then((res) => res.data);
-        },
+        queryFn: () => userApiClient.getAll("/user?username=" + username),
     });
 };
 

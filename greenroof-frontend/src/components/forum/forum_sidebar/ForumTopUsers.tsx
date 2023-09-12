@@ -1,7 +1,7 @@
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import user_profile_photo from "/assets/forum/forum_top_user_photo_40x40.png";
-import useTopUser from "../../../hooks/userTopUser";
+import useTopUser from "../../../hooks/useTopUser";
 import { Link } from "react-router-dom";
 
 export default function ForumTopUsers() {
