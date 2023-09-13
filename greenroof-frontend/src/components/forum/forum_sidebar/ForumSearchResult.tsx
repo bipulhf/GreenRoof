@@ -1,36 +1,35 @@
-import React from "react";
-import AskQuestion from "../AskQuestion";
-import ForumFeedQuestion from "./ForumFeedQuestion";
-import ForumQuestionerInfo from "./ForumQuestionerInfo";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { useContent } from "../../../hooks/useContent";
+import { useSearch } from "../../../hooks/useContent";
+import React from "react";
+import ForumFeedQuestion from "../forum_feed/ForumFeedQuestion";
+import ForumQuestionerInfo from "../forum_feed/ForumQuestionerInfo";
 
-export default function ForumFeed() {
+interface Props {
+    search: string;
+}
+
+export default function ForumSearchResult({ search }: Props) {
     const {
         data: questions,
         error,
         isLoading,
         hasNextPage,
         fetchNextPage,
-    } = useContent();
+    } = useSearch(search);
 
     const fetchedQuestionCount =
         questions?.pages.reduce(
             (total, page) => total + page.contentList.length,
             0
         ) || 0;
-
     return (
         <>
             {isLoading && <p>Loading...</p>}
             {error && <p>Network Error...</p>}
-
-            <div className="flex justify-between mb-5">
-                <h2 className="font-bold text-[14px] sm:text-[16px] md:text-[22px]">
-                    Recent Questions
-                </h2>
-                <AskQuestion />
-            </div>
+            {console.log(questions)}
+            <h2 className="font-bold text-[14px] sm:text-[16px] md:text-[22px]">
+                Showing Results for '{search}'
+            </h2>
             <InfiniteScroll
                 dataLength={fetchedQuestionCount}
                 hasMore={!!hasNextPage}

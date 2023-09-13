@@ -4,10 +4,14 @@ import ForumLayout from "../layouts/ForumLayout";
 import ForumMainPage from "../pages/Forum/ForumMainPage";
 import ForumSinglePostPage from "../pages/Forum/ForumSinglePostPage";
 import ForumUserProfilePage from "../pages/Forum/ForumUserProfilePage";
-import ForumSearchPage from "../pages/Forum/ForumSearchPage";
 import ForumCreatePost from "../components/forum/forum_post/ForumCreatePost";
 import ForumEditPost from "../components/forum/forum_post/ForumEditPost";
 import ForumEditAnswer from "../components/forum/forum_post/ForumEditAnswer";
+import CommunityLayout from "../layouts/CommunityLayout";
+import CommunityMainPage from "../pages/Community/CommunityMainPage";
+import CommunitySinglePostPage from "../pages/Community/CommunitySinglePostPage";
+import CommunityUserProfilePage from "../pages/Community/CommunityUserProfilePage";
+import CommunitySearchPage from "../pages/Community/CommunitySearchPage";
 
 const router = createBrowserRouter([
     { path: "/", element: <App /> },
@@ -24,7 +28,22 @@ const router = createBrowserRouter([
                 element: <ForumEditAnswer />,
             },
             { path: "user/:username", element: <ForumUserProfilePage /> },
-            { path: "search", element: <ForumSearchPage /> },
+        ],
+    },
+    {
+        path: "community",
+        element: <CommunityLayout />,
+        children: [
+            { index: true, element: <CommunityMainPage /> },
+            { path: "post/:postId", element: <CommunitySinglePostPage /> },
+            { path: "post/create", element: <ForumCreatePost /> },
+            { path: "post/edit/:postId", element: <ForumEditPost /> },
+            {
+                path: "answer/edit/:postId/:answerId",
+                element: <ForumEditAnswer />,
+            },
+            { path: "user/:username", element: <CommunityUserProfilePage /> },
+            { path: "search", element: <CommunitySearchPage /> },
         ],
     },
 ]);

@@ -40,9 +40,6 @@ public class ForumAnswerService {
         ForumQuestion forumQuestion = forumQuestionRepository.findById(questionId)
                 .orElseThrow(() -> new NoSuchElementException("Question with id " + questionId + " does not exists."));
 
-        if(Objects.equals(forumQuestion.getQuestioner().getUsername(), username))
-            throw new GenericException("You can't answer on your own question");
-
         User user = userRepository.findByUsername(username).get();
         user.setId(user.getId());
         user.setScore(user.getScore() + 1);

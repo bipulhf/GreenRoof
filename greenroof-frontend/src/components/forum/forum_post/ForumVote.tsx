@@ -1,6 +1,6 @@
 import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useGetVoteStatus, useVote } from "../../../hooks/useVote";
 import { token } from "../../../services/jwt-token";
 
@@ -13,39 +13,50 @@ export default function ForumVote({ answerId, score }: Props) {
     const { data } = useGetVoteStatus(token, answerId);
     const mutation = useVote(token, answerId);
 
-    const [isUpvote, setUpvote] = useState(false);
-    const [isDownvote, setDownvote] = useState(false);
+    const [isUpvote, setUpvote] = useState(data?.voteNo);
+    const [isDownvote, setDownvote] = useState(data?.voteNo);
     const upVote = () => {
-        setUpvote(true);
-        setUpvote(false);
+        setUpvote(1);
+        setDownvote(0);
         mutation.mutate(true);
     };
     const downVote = () => {
-        setDownvote(true);
-        setUpvote(false);
+        setDownvote(-1);
+        setUpvote(0);
         mutation.mutate(false);
     };
+    useEffect(() => {
+        setUpvote(data?.voteNo);
+        setDownvote(data?.voteNo);
+    }, [data]);
 
     return (
         data && (
             <>
                 <div className="flex flex-col items-center">
-                    <button onClick={upVote} disabled={isUpvote}>
+                    <button onClick={upVote} disabled={isUpvote == 1}>
                         <FontAwesomeIcon
                             icon={faCaretUp}
                             fontSize={25}
-                            color={isUpvote ? "green" : "black"}
+                            color={isUpvote == 1 ? "green" : "black"}
                         />
                     </button>
                     <p className="ml-1 font-medium text-[14px]">{score}</p>
-                    <button onClick={downVote} disabled={isDownvote}>
+                    <button onClick={downVote} disabled={isDownvote == -1}>
                         <FontAwesomeIcon
                             icon={faCaretDown}
                             fontSize={25}
-                            color={isDownvote ? "green" : "black"}
+                            color={isDownvote == -1 ? "green" : "black"}
                         />
                     </button>
                 </div>
+                {mutation.isError && (
+                    <p className="text-red">
+                        {mutation.error.response.data.message
+                            ? mutation.error.response.data.message
+                            : mutation.error.message}
+                    </p>
+                )}
             </>
         )
     );

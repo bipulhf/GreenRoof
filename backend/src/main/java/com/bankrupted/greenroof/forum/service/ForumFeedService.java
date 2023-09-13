@@ -58,7 +58,7 @@ public class ForumFeedService {
         return questionModelMapper.modelMap(forumQuestionList, ForumQuestionDto.class);
     }
 
-    private FeedResponseDto<ForumQuestionDto> getResponseDto(Page<ForumQuestion> forumQuestionPage) {
+    public FeedResponseDto<ForumQuestionDto> getResponseDto(Page<ForumQuestion> forumQuestionPage) {
         List<ForumQuestion> forumQuestionList = forumQuestionPage.getContent();
         List<ForumQuestionDto> forumQuestionDtoList = questionModelMapper.modelMap(forumQuestionList, ForumQuestionDto.class);
 
