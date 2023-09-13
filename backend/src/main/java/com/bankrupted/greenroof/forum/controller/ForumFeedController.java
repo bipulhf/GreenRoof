@@ -19,7 +19,7 @@ public class ForumFeedController {
     }
 
     @GetMapping("recent")
-    public ResponseEntity<?> getAllRecentForumQuestions(@RequestParam(defaultValue = "0", required = false) Integer pageNo) {
+    public ResponseEntity<?> getAllRecentForumQuestions(@RequestParam Integer pageNo) {
         return new ResponseEntity<>(forumFeedService.getAllRecentForumQuestions(pageNo), HttpStatus.OK);
     }
 

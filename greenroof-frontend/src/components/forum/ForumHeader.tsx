@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import AIAssistant from "../AIAssistant";
-import ForumMobileMenu from "./forum_sidebar/ForumMobileMenu";
 import forum_logo from "/assets/forum/forum_logo.png";
 
 export default function ForumHeader() {
@@ -28,7 +27,6 @@ export default function ForumHeader() {
                             </h3>
                         </Link>
                     </div>
-                    <ForumMobileMenu />
                 </div>
                 <div className="col-span-2 justify-self-end max-[1200px]:hidden my-[60px] w-[174px] h-[36px] rounded-[100px] border-2 border-solid border-greenbtn">
                     <AIAssistant />

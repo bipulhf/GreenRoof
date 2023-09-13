@@ -11,7 +11,7 @@ export default function ReadMore({ id, children, fullText }: Props) {
     return (
         <>
             <h3 className="text-[11px] md:text-[14px] text-justify">
-                {fullText ? text : text.slice(0, 100) + "... "}
+                {fullText ? text : text.slice(0, 200) + "... "}
                 {fullText ? null : (
                     <Link to={"/forum/post/" + id} className="font-semibold">
                         Read More

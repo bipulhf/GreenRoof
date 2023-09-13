@@ -1,13 +1,16 @@
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import APIClient from "../services/apiClient";
 import { Content, Question } from "../services/types";
 
 const contentApiClient = new APIClient<Content, Question>("/forum/feed");
 
 const useContent = () => {
-    return useQuery<Content, Error>({
+    return useInfiniteQuery<Content, Error>({
         queryKey: ["forum"],
-        queryFn: () => contentApiClient.get("/recent"),
+        queryFn: ({ pageParam = 0 }) =>
+            contentApiClient.get("/recent", { params: { pageNo: pageParam } }),
+        getNextPageParam: (lastPage) =>
+            lastPage.last ? undefined : lastPage.pageNo + 1,
     });
 };
 

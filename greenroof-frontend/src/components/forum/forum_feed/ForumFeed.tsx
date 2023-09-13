@@ -1,10 +1,24 @@
+import React from "react";
 import useContent from "../../../hooks/useContent";
 import AskQuestion from "../AskQuestion";
 import ForumFeedQuestion from "./ForumFeedQuestion";
 import ForumQuestionerInfo from "./ForumQuestionerInfo";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 export default function ForumFeed() {
-    const { data: questions, error, isLoading } = useContent();
+    const {
+        data: questions,
+        error,
+        isLoading,
+        hasNextPage,
+        fetchNextPage,
+    } = useContent();
+
+    const fetchedQuestionCount =
+        questions?.pages.reduce(
+            (total, page) => total + page.contentList.length,
+            0
+        ) || 0;
 
     return (
         <>
@@ -17,27 +31,40 @@ export default function ForumFeed() {
                 </h2>
                 <AskQuestion />
             </div>
-            <ul className="divide-y divide-graybg">
-                {questions?.contentList.map((question) => (
-                    <li
-                        className="grid grid-cols-10 pt-5 pb-5"
-                        key={question.id}
-                    >
-                        <ForumQuestionerInfo
-                            id={question.id}
-                            firstName={question.questioner.firstName}
-                            lastName={question.questioner.lastName}
-                            username={question.questioner.username}
-                        />
-                        <ForumFeedQuestion
-                            id={question.id}
-                            questionTitle={question.questionTitle}
-                            questionText={question.questionText}
-                            createdAt={question.createdAt}
-                        />
-                    </li>
-                ))}
-            </ul>
+            <InfiniteScroll
+                dataLength={fetchedQuestionCount}
+                hasMore={!!hasNextPage}
+                next={() => fetchNextPage()}
+                loader="<p>Loading</p>"
+            >
+                <ul className="divide-y divide-graybg">
+                    {questions?.pages.map((page, index) => (
+                        <React.Fragment key={index}>
+                            {page.contentList.map((question) => (
+                                <li
+                                    className="grid grid-cols-10 pt-5 pb-5"
+                                    key={question.id}
+                                >
+                                    <ForumQuestionerInfo
+                                        id={question.id}
+                                        firstName={
+                                            question.questioner.firstName
+                                        }
+                                        lastName={question.questioner.lastName}
+                                        username={question.questioner.username}
+                                    />
+                                    <ForumFeedQuestion
+                                        id={question.id}
+                                        questionTitle={question.questionTitle}
+                                        questionText={question.questionText}
+                                        createdAt={question.createdAt}
+                                    />
+                                </li>
+                            ))}
+                        </React.Fragment>
+                    ))}
+                </ul>
+            </InfiniteScroll>
         </>
     );
 }

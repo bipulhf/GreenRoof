@@ -8,5 +8,6 @@
     html {
         font-family: Montserrat;
         font-size: 12px;
+        overflow-x: hidden;
     }
 }

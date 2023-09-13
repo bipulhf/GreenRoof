@@ -31,7 +31,7 @@ public class ForumFeedService {
     private final ForumAnswerRepository forumAnswerRepository;
     private final ModelMapperUtility<ForumQuestion, ForumQuestionDto> questionModelMapper;
     private final ModelMapperUtility<User, UserDto> userModelMapper;
-    private int pageSize = 5;
+    private int pageSize = 7;
 
     public FeedResponseDto<ForumQuestionDto> getAllForumQuestions(Integer pageNo) {
         Pageable pageable = PageRequest.of(pageNo, pageSize);

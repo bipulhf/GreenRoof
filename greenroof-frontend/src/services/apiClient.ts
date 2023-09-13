@@ -11,9 +11,9 @@ class APIClient<T, V> {
         this.subbase = subbase;
     }
 
-    get = (endpoint: string) =>
+    get = (endpoint: string, params: object = {}) =>
         axiosInstance(this.subbase)
-            .get<T>(endpoint)
+            .get<T>(endpoint, params)
             .then((res) => res.data);
     getWithAuth = (endpoint: string, headers: object) =>
         axiosInstance(this.subbase)
