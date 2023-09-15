@@ -14,6 +14,7 @@ export default {
         md: '724px'
       },
       colors: {
+        black: '#222A22',
         white: '#FDFDFD',
         brown: '#B97246',
         blue: '#2F3E46',

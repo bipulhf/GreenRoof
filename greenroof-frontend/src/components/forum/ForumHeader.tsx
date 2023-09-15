@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import AIAssistant from "../AIAssistant";
-import forum_logo from "/assets/forum/forum_logo.png";
+import forum_logo from "/assets/forum/forum_logo.svg";
 
 export default function ForumHeader() {
     return (

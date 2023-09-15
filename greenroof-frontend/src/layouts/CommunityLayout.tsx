@@ -5,10 +5,10 @@ import CommunityRightSidebar from "../components/community/community_sidebar/Com
 export default function CommunityLayout() {
     return (
         <>
-            <div className="">
+            <div className="divide-x divide-graybg">
                 <CommunityLeftSidebar />
-                <Outlet />
                 <CommunityRightSidebar />
+                <Outlet />
             </div>
         </>
     );
