@@ -12,7 +12,7 @@ import forum_logo from "/assets/forum/forum_logo.svg";
 
 export default function CommunityLeftSidebar() {
     return (
-        <div className="fixed h-screen w-[20%]">
+        <div className="fixed h-screen max-md:hidden md:w-[30%] min-[1000px]:w-[20%]">
             <div className="">
                 <Link to={"/community"}>
                     <img src={forum_logo} />

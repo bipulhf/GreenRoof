@@ -5,11 +5,11 @@ import CommunityUserProfileCard from "./CommunityUserProfileCard";
 
 export default function CommunityUserProfile() {
     return (
-        <div className="min-h-screen w-[53%] ml-[22%] divide-y divide-graybg">
+        <div className="min-h-screen md:w-[68%] min-[1000px]:w-[53%] md:ml-[30%] min-[1000px]:ml-[22%] divide-y divide-graybg">
             <CommunityHeading heading="Profile" />
             <CommunityUserProfileCard />
             <CommunityCreatePost />
-            <CommunityFeedPost />
+            <CommunityFeedPost fullPost={false} />
         </div>
     );
 }

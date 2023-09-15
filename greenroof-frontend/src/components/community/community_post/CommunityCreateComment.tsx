@@ -9,7 +9,7 @@ export default function CommunityCreateComment() {
                     alt="Profile Photo"
                     className="col-span-1 ml-5 h-[25px] w-[25px]"
                 />
-                <form action="post" className="col-span-9 flex">
+                <form action="post" className="col-span-9 flex ml-8">
                     <textarea
                         className="text-[14px] h-[60px] w-[90%] resize-none focus:outline-none"
                         name="post"

@@ -7,15 +7,15 @@ export default function CommunityComment() {
                 <img
                     src={user_profile_photo}
                     alt="Profile Photo"
-                    className="col-span-1 ml-5 w-[40px] h-[40px]"
+                    className="col-span-1 max-[350px]:col-span-2 ml-2 min-w-[40px] min-h-[40px]"
                 />
-                <div className="col-span-9">
+                <div className="ml-5 max-[350px]:col-span-8 col-span-9">
                     <div className="flex justify-between pb-1">
-                        <div className="flex">
+                        <div className="flex max-sm:flex-col">
                             <h2 className="font-semibold text-[15px] mr-2">
                                 Karim Biswas
                             </h2>
-                            <h2 className="font-medium text-[13px] text-gray self-center">
+                            <h2 className="font-medium text-[13px] text-gray sm:self-center">
                                 @KarimB
                             </h2>
                         </div>

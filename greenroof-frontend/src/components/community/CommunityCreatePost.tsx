@@ -8,11 +8,11 @@ export default function CommunityCreatePost() {
             <img
                 src={user_profile_photo}
                 alt="Profile Photo"
-                className="col-span-1 ml-5 h-[40px] w-[40px]"
+                className="col-span-1 ml-5 min-h-[40px] min-w-[40px]"
             />
-            <form action="post" className="col-span-7 flex">
+            <form action="post" className="col-span-7 flex max-[500px]:ml-10">
                 <textarea
-                    className="text-[16px] h-[105px] w-[90%] resize-none focus:outline-none"
+                    className="text-[16px] h-[80px] md:h-[105px] w-[90%] resize-none focus:outline-none"
                     name="post"
                     id="post"
                     placeholder="Share your photos, experiences..."
