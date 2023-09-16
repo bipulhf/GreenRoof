@@ -56,6 +56,20 @@ const useGetPost = (postId: number) => {
     });
 };
 
+const useGetUserPost = (username: string) => {
+    const headers = { Authorization: `Bearer ${token}` };
+    return useInfiniteQuery<Content<Post>, Error>({
+        queryKey: ["community-post", username],
+        queryFn: ({ pageParam = 0 }) =>
+            contentApiClient.getWithAuth("/feed/user", {
+                headers: headers,
+                params: { pageNo: pageParam, username: username },
+            }),
+        getNextPageParam: (lastPage) =>
+            lastPage.last ? undefined : lastPage.pageNo + 1,
+    });
+};
+
 const useCreatePost = () => {
     const navigate = useNavigate();
     const query = useQueryClient();
@@ -73,7 +87,7 @@ const useCreatePost = () => {
     });
 };
 
-const useEditPost = (token: string, postId: number) => {
+const useEditPost = (postId: number) => {
     const navigate = useNavigate();
     const query = useQueryClient();
     const headers = { Authorization: `Bearer ${token}` };
@@ -90,7 +104,7 @@ const useEditPost = (token: string, postId: number) => {
     });
 };
 
-const useDeletePost = (token: string) => {
+const useDeletePost = () => {
     const navigate = useNavigate();
     const query = useQueryClient();
     const headers = { Authorization: `Bearer ${token}` };
@@ -114,4 +128,5 @@ export {
     useDeletePost,
     useCreatePost,
     useEditPost,
+    useGetUserPost,
 };

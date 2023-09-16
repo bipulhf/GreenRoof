@@ -1,5 +1,6 @@
 package com.bankrupted.greenroof.community.repository;
 
+import com.bankrupted.greenroof.community.entity.CommunityPost;
 import com.bankrupted.greenroof.community.entity.CommunityPostLike;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,4 +16,6 @@ public interface CommunityPostLikeRepository extends JpaRepository<CommunityPost
 
     @Query(value = "SELECT COUNT(id) FROM community_posts_likes WHERE post_id=:postId", nativeQuery = true)
     Integer totalNumberOfLikes(Long postId);
+
+    void deleteByPostId(CommunityPost postId);
 }

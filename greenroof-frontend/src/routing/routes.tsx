@@ -12,6 +12,7 @@ import CommunityMainPage from "../pages/Community/CommunityMainPage";
 import CommunitySinglePostPage from "../pages/Community/CommunitySinglePostPage";
 import CommunityUserProfilePage from "../pages/Community/CommunityUserProfilePage";
 import CommunitySearchPage from "../pages/Community/CommunitySearchPage";
+import CommunityFollowersFollowings from "../components/community/community_profile/CommunityFollowersFollowings";
 
 const router = createBrowserRouter([
     { path: "/", element: <App /> },
@@ -43,6 +44,14 @@ const router = createBrowserRouter([
                 element: <ForumEditAnswer />,
             },
             { path: "user/:username", element: <CommunityUserProfilePage /> },
+            {
+                path: "user/:username/followers",
+                element: <CommunityFollowersFollowings />,
+            },
+            {
+                path: "user/:username/followings",
+                element: <CommunityFollowersFollowings />,
+            },
             { path: "search", element: <CommunitySearchPage /> },
         ],
     },

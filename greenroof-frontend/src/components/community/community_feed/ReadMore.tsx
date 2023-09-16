@@ -10,7 +10,7 @@ export default function ReadMore({ children }: Props) {
         setReadMore(!readMore);
     };
     return (
-        <span>
+        <span className="break-words">
             {readMore && children.length > 200 ? (
                 <>
                     {children.slice(0, 200)}

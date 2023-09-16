@@ -15,6 +15,7 @@ export default function CommunityCreateComment() {
                         name="post"
                         id="post"
                         placeholder="Type your thoughts about the post ..."
+                        autoFocus
                     />
                     <button
                         type="submit"

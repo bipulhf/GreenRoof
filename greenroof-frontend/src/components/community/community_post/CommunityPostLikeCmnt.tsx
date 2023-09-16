@@ -46,7 +46,7 @@ export default function CommunityPostLikeCmnt({ postId }: Props) {
                         {numberOfLikes?.totalLikes}
                     </span>
                 </div>
-                <Link to={"post/" + postId}>
+                <Link to={"/community/post/" + postId}>
                     <FontAwesomeIcon
                         icon={faComment}
                         className="hover:cursor-pointer text-[16px] text-brown"
@@ -55,6 +55,13 @@ export default function CommunityPostLikeCmnt({ postId }: Props) {
                         {numberOfComments?.numberOfComments}
                     </span>
                 </Link>
+                {mutation.isError && (
+                    <p className="text-red">
+                        {mutation.error.response.data.message
+                            ? mutation.error.response.data.message
+                            : mutation.error.message}
+                    </p>
+                )}
             </div>
         </>
     );

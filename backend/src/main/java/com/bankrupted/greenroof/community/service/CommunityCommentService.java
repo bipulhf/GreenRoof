@@ -91,7 +91,7 @@ public class CommunityCommentService {
 
     private FeedResponseDto<CommunityCommentDto> getResponseDto(Page<CommunityComment> communityComments) {
         List<CommunityComment> communityPostList = communityComments.getContent();
-        List<CommunityCommentDto> communityCommentDtos = modelMapper.modelMap(communityPostList, CommunityPostDto.class);
+        List<CommunityCommentDto> communityCommentDtos = modelMapper.modelMap(communityPostList, CommunityCommentDto.class);
 
         FeedResponseDto<CommunityCommentDto> feedResponseDto = FeedResponseDto.<CommunityCommentDto>builder()
                 .contentList(communityCommentDtos)

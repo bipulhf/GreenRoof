@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 public interface CommunityPostRepository extends JpaRepository<CommunityPost, Long> {
-    List<CommunityPost> findByUserId(Long userId);
+    Page<CommunityPost> findByUserId(Long userId, Pageable pageable);
 
     Page<CommunityPost> findAllByOrderByCreatedAtDesc(Pageable pageable);
 

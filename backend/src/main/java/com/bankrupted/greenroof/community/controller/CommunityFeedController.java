@@ -29,7 +29,7 @@ public class CommunityFeedController {
     }
 
     @GetMapping("user")
-    public ResponseEntity<?> getUserCommunityPost(@RequestParam String username) {
-        return new ResponseEntity<>(communityFeedService.getUserCommunityPost(username), HttpStatus.OK);
+    public ResponseEntity<?> getUserCommunityPost(@RequestParam String username, @RequestParam Integer pageNo) {
+        return new ResponseEntity<>(communityFeedService.getUserCommunityPost(username, pageNo), HttpStatus.OK);
     }
 }

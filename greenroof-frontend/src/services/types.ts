@@ -5,6 +5,7 @@ export interface User {
     username: string;
     score: number;
     profilePhoto: string;
+    city: string;
 }
 
 export interface UserProfile {
@@ -66,4 +67,13 @@ export interface Comment {
     commentText: string;
     createdAt: Date;
     commenter: User;
+}
+
+export interface Follower {
+    id: number;
+    follower: User;
+}
+export interface Following {
+    id: number;
+    following: User;
 }

@@ -42,8 +42,8 @@ public class CommunityCommentController {
     }
 
     @GetMapping("")
-    public ResponseEntity<?> getCommentsOfSinglePost(@RequestParam Long commentId, @RequestParam Integer pageNo) {
-        return new ResponseEntity<>(communityCommentService.getCommentsOfSinglePost(commentId, pageNo), HttpStatus.OK);
+    public ResponseEntity<?> getCommentsOfSinglePost(@RequestParam Long postId, @RequestParam Integer pageNo) {
+        return new ResponseEntity<>(communityCommentService.getCommentsOfSinglePost(postId, pageNo), HttpStatus.OK);
     }
     @GetMapping("count/{postId}")
     public ResponseEntity<?> getCommentCountOfAPost(@PathVariable Long postId) {

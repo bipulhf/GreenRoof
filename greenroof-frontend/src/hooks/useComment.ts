@@ -5,7 +5,7 @@ import {
     useQueryClient,
 } from "@tanstack/react-query";
 import APIClient from "../services/apiClient";
-import { Content, ValidationError } from "../services/types";
+import { Comment, Content, ValidationError } from "../services/types";
 import { token } from "../services/jwt-token";
 
 interface CommentText {
@@ -66,11 +66,7 @@ const useCreateComment = (token: string, postId: number) => {
     const headers = { Authorization: `Bearer ${token}` };
     return useMutation({
         mutationFn: (comment: CommentText) =>
-            singleCommentApiClient.post(
-                "/answer/add/" + postId,
-                headers,
-                comment
-            ),
+            singleCommentApiClient.post("/add/" + postId, headers, comment),
         onSuccess: () => {
             query.invalidateQueries({
                 queryKey: ["community-comment", postId],
@@ -80,13 +76,13 @@ const useCreateComment = (token: string, postId: number) => {
     });
 };
 
-const useEditComment = (token: string, commentId: number) => {
+const useEditComment = (commentId: number) => {
     const query = useQueryClient();
     const headers = { Authorization: `Bearer ${token}` };
     return useMutation({
         mutationFn: (comment: CommentText) =>
             singleCommentApiClient.update(
-                "/answer/update",
+                "/update",
                 headers,
                 commentId,
                 comment
@@ -100,12 +96,12 @@ const useEditComment = (token: string, commentId: number) => {
     });
 };
 
-const useDeleteComment = (token: string) => {
+const useDeleteComment = () => {
     const query = useQueryClient();
     const headers = { Authorization: `Bearer ${token}` };
     return useMutation({
         mutationFn: (id: number) =>
-            singleCommentApiClient.delete("/answer/delete", headers, id),
+            singleCommentApiClient.delete("/delete", headers, id),
         onSuccess: () => {
             query.invalidateQueries({
                 queryKey: ["community-comment"],

@@ -57,8 +57,8 @@ public class CommunityPostService {
 
         if(!Objects.equals(prevPost.getUser().getUsername(), username))
             throw new GenericException("You are not allowed to delete this post.");
-
-        communityCommentService.deleteComment(postId);
+        if(communityPostLikeRepository.totalNumberOfLikes(postId) > 0) communityPostLikeRepository.deleteByPostId(prevPost);
+        if(communityCommentService.getCommentCountOfAPost(postId).get("numberOfComments") > 0) communityCommentService.deleteComment(postId);
         communityPostRepository.deleteById(postId);
         return new ResponseEntity<>("Post Deleted", HttpStatus.OK);
     }
