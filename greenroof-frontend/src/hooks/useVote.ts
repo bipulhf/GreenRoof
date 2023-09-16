@@ -32,10 +32,9 @@ const useGetVoteStatus = (token: string, answerId: number) => {
     return useQuery<HasVoted, ValidationError>({
         queryKey: ["vote", answerId],
         queryFn: () =>
-            answerApiClient.getWithAuth(
-                "/answer/vote?answerId=" + answerId,
-                headers
-            ),
+            answerApiClient.getWithAuth("/answer/vote?answerId=" + answerId, {
+                headers,
+            }),
     });
 };
 

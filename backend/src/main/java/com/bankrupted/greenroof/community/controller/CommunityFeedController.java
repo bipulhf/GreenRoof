@@ -14,12 +14,12 @@ public class CommunityFeedController {
     private final CommunityFeedService communityFeedService;
 
     @GetMapping("")
-    public ResponseEntity<?> getAllCommunityPosts(@RequestParam(defaultValue = "0", required = false)  Integer pageNo) {
+    public ResponseEntity<?> getAllCommunityPosts(@RequestParam Integer pageNo) {
         return new ResponseEntity<>(communityFeedService.getAllCommunityPosts(pageNo), HttpStatus.OK);
     }
 
     @GetMapping("recent")
-    public ResponseEntity<?> getAllRecentCommunityPosts(@RequestParam(defaultValue = "0", required = false)  Integer pageNo) {
+    public ResponseEntity<?> getAllRecentCommunityPosts(@RequestParam Integer pageNo) {
         return new ResponseEntity<>(communityFeedService.getAllRecentCommunityPosts(pageNo), HttpStatus.OK);
     }
 

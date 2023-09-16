@@ -28,10 +28,27 @@ public class CommunityPostController {
     }
 
     @Transactional
-    @DeleteMapping("delete/{questionId}")
-    public ResponseEntity<?> deleteCommunityPost(@PathVariable Long questionId) {
+    @DeleteMapping("delete/{postId}")
+    public ResponseEntity<?> deleteCommunityPost(@PathVariable Long postId) {
         String username = GetUsername.get();
-        return communityPostService.deleteCommmunityPost(username, questionId);
+        return communityPostService.deleteCommmunityPost(username, postId);
     }
 
+    @GetMapping("{postId}/like")
+    public ResponseEntity<?> totalNumberOfLikeOfAPost(@PathVariable Long postId) {
+        return communityPostService.totalNumberOfLikeOfAPost(postId);
+    }
+
+    @Transactional
+    @PostMapping("{postId}/like")
+    public ResponseEntity<?> likeCommunityPost(@PathVariable Long postId) {
+        String username = GetUsername.get();
+        return communityPostService.likeCommunityPost(postId, username);
+    }
+
+    @GetMapping("{postId}/userLike")
+    public ResponseEntity<?> hasUserLiked(@PathVariable Long postId) {
+        String username = GetUsername.get();
+        return communityPostService.hasUserLiked(postId, username);
+    }
 }

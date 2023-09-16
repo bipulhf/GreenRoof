@@ -36,8 +36,17 @@ public class CommunityCommentController {
         return communityCommentService.deleteComment(username, commentId);
     }
 
+    @GetMapping("{commentId}")
+    public ResponseEntity<?> getSingleComment(@PathVariable Long commentId) {
+        return new ResponseEntity<>(communityCommentService.getSingleComment(commentId), HttpStatus.OK);
+    }
+
     @GetMapping("")
-    public ResponseEntity<?> getCommentsOfSinglePost(@RequestParam Long postId) {
-        return new ResponseEntity<>(communityCommentService.getCommentsOfSinglePost(postId), HttpStatus.OK);
+    public ResponseEntity<?> getCommentsOfSinglePost(@RequestParam Long commentId, @RequestParam Integer pageNo) {
+        return new ResponseEntity<>(communityCommentService.getCommentsOfSinglePost(commentId, pageNo), HttpStatus.OK);
+    }
+    @GetMapping("count/{postId}")
+    public ResponseEntity<?> getCommentCountOfAPost(@PathVariable Long postId) {
+        return new ResponseEntity<>(communityCommentService.getCommentCountOfAPost(postId), HttpStatus.OK);
     }
 }

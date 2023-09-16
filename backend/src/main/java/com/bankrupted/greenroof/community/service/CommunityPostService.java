@@ -1,5 +1,7 @@
 package com.bankrupted.greenroof.community.service;
 
+import com.bankrupted.greenroof.community.entity.CommunityPostLike;
+import com.bankrupted.greenroof.community.repository.CommunityPostLikeRepository;
 import com.bankrupted.greenroof.exception.GenericException;
 import com.bankrupted.greenroof.user.entity.User;
 import com.bankrupted.greenroof.community.entity.CommunityPost;
@@ -13,9 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.NoSuchElementException;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +24,7 @@ public class CommunityPostService {
     private final CommunityPostRepository communityPostRepository;
     private final UserRepository userRepository;
     private final CommunityCommentService communityCommentService;
+    private final CommunityPostLikeRepository communityPostLikeRepository;
 
     public ResponseEntity<?> createNewCommunityPost(String username, CommunityPost communityPost) {
         User user = userRepository.findByUsername(username)
@@ -60,5 +61,48 @@ public class CommunityPostService {
         communityCommentService.deleteComment(postId);
         communityPostRepository.deleteById(postId);
         return new ResponseEntity<>("Post Deleted", HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> totalNumberOfLikeOfAPost(Long postId) {
+        CommunityPost post = communityPostRepository.findById(postId)
+                .orElseThrow(() -> new NoSuchElementException("Post with id " + postId + " does not exists."));
+        Map<String, Integer> mp = new HashMap<>();
+        mp.put("totalLikes", communityPostLikeRepository.totalNumberOfLikes(postId));
+        return new ResponseEntity<>(mp, HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> likeCommunityPost(Long postId, String username) {
+        CommunityPost post = communityPostRepository.findById(postId)
+                .orElseThrow(() -> new NoSuchElementException("Post with id " + postId + " does not exists."));
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new NoSuchElementException("No user found with this username " + username + "."));
+
+        CommunityPostLike communityPostLike = new CommunityPostLike();
+        communityPostLike.setPostId(post);
+        communityPostLike.setCreatedAt(new Date());
+        communityPostLike.setLiker(user);
+
+        if(communityPostLikeRepository.existsByPostIdAndLikerId(postId, user.getId()) > 0) {
+            CommunityPostLike postLike = communityPostLikeRepository.findByPostIdAndLikerId(postId, user.getId()).get();
+            communityPostLikeRepository.deleteById(postLike.getId());
+            return new ResponseEntity<>("Post Disliked Successful", HttpStatus.OK);
+        }
+        communityPostLikeRepository.save(communityPostLike);
+        return new ResponseEntity<>("Post Liked Successful", HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> hasUserLiked(Long postId, String username) {
+        CommunityPost post = communityPostRepository.findById(postId)
+                .orElseThrow(() -> new NoSuchElementException("Post with id " + postId + " does not exists."));
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new NoSuchElementException("No user found with this username " + username + "."));
+
+        Map<String, Boolean> mp = new HashMap<>();
+        if(communityPostLikeRepository.existsByPostIdAndLikerId(postId, user.getId()) > 0) {
+            mp.put("userLiked", true);
+            return new ResponseEntity<>(mp, HttpStatus.OK);
+        }
+        mp.put("userLiked", false);
+        return new ResponseEntity<>(mp, HttpStatus.OK);
     }
 }

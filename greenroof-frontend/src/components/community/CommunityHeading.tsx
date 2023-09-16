@@ -13,7 +13,7 @@ export default function CommunityHeading({ heading }: Props) {
                     <img src={forum_logo} />
                 </Link>
             </div>
-            <div className="pt-9 pb-5">
+            <div className="pt-10 pb-5">
                 <h1 className="font-bold text-[22px] text-brown text-center">
                     {heading}
                 </h1>

@@ -36,7 +36,7 @@ export default function CommunityLeftSidebar() {
                         <span className="ml-5">Search</span>
                     </li>
                     <li>
-                        <FontAwesomeIcon icon={faUser} fontSize={20} />{" "}
+                        <FontAwesomeIcon icon={faUser} fontSize={20} />
                         <span className="ml-5">Profile</span>
                     </li>
                     <li>

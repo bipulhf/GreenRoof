@@ -25,7 +25,7 @@ public class CommunityFeedService {
     private final CommunityPostRepository communityPostRepository;
     private final UserRepository userRepository;
     private final ModelMapperUtility<CommunityPost, CommunityPostDto> modelMapper;
-    private int pageSize = 5;
+    private int pageSize = 7;
 
     public FeedResponseDto<CommunityPostDto> getAllCommunityPosts(Integer pageNo) {
         Pageable pageable = PageRequest.of(pageNo, pageSize);
