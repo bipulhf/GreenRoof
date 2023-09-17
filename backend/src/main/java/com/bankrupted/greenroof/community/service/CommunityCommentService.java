@@ -1,11 +1,15 @@
 package com.bankrupted.greenroof.community.service;
 
+import com.bankrupted.greenroof.community.Notification.Notification;
+import com.bankrupted.greenroof.community.Notification.NotificationStorageService;
+import com.bankrupted.greenroof.community.Notification.NotificationType;
 import com.bankrupted.greenroof.community.dto.CommunityCommentDto;
 import com.bankrupted.greenroof.exception.GenericException;
 import com.bankrupted.greenroof.user.entity.User;
 import com.bankrupted.greenroof.community.entity.CommunityComment;
 import com.bankrupted.greenroof.community.entity.CommunityPost;
 import com.bankrupted.greenroof.user.repository.UserRepository;
+import com.bankrupted.greenroof.user.service.UserService;
 import com.bankrupted.greenroof.community.repository.CommunityCommentRepository;
 import com.bankrupted.greenroof.community.repository.CommunityPostRepository;
 import com.bankrupted.greenroof.utils.ModelMapperUtility;
@@ -27,27 +31,37 @@ public class CommunityCommentService {
     private final UserRepository userRepository;
     private final CommunityPostRepository communityPostRepository;
     private final ModelMapperUtility<CommunityComment, CommunityCommentDto> modelMapper;
-
+    private final NotificationStorageService notificationStorageService;
 
     public ResponseEntity<?> addComment(String username, Long postId, CommunityComment communityComment) {
-        User user = userRepository.findByUsername(username)
+        User commentUser = userRepository.findByUsername(username)
                 .orElseThrow(() -> new NoSuchElementException("No user found with this username " + username + "."));
 
         CommunityPost post = communityPostRepository.findById(postId)
                 .orElseThrow(() -> new NoSuchElementException("Post with id " + postId + " does not exists."));
+        User postUser = post.getUser();
 
-        communityComment.setCommenter(user);
+        communityComment.setCommenter(commentUser);
         communityComment.setCreatedAt(new Date());
         communityComment.setPost(post);
         communityCommentRepository.save(communityComment);
+
+        notificationStorageService.createNotificationStorage(Notification.builder()
+                .delivered(false)
+                .content("new comment from " + commentUser.getUsername())
+                .notificationType(NotificationType.COMMENT)
+                .userFrom(commentUser)
+                .userTo(postUser).build());
         return new ResponseEntity<>("Comment Successful", HttpStatus.CREATED);
     }
 
     public ResponseEntity<?> updateComment(String username, Long commentId, CommunityComment communityComment) {
         CommunityComment prevComment = communityCommentRepository.findById(commentId)
-                .orElseThrow(() -> new NoSuchElementException("Comment with id " + commentId + " does not exists."));;;
+                .orElseThrow(() -> new NoSuchElementException("Comment with id " + commentId + " does not exists."));
+        ;
+        ;
 
-        if(!Objects.equals(prevComment.getCommenter().getUsername(), username))
+        if (!Objects.equals(prevComment.getCommenter().getUsername(), username))
             throw new GenericException("You are not allowed to edit this comment.");
 
         communityComment.setId(commentId);
@@ -62,7 +76,7 @@ public class CommunityCommentService {
         CommunityComment prevComment = communityCommentRepository.findById(commentId)
                 .orElseThrow(() -> new NoSuchElementException("Comment with id " + commentId + " does not exists."));
 
-        if(!Objects.equals(prevComment.getCommenter().getUsername(), username))
+        if (!Objects.equals(prevComment.getCommenter().getUsername(), username))
             throw new GenericException("You are not allowed to delete this comment.");
 
         communityCommentRepository.deleteById(commentId);
