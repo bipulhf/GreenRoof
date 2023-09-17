@@ -7,8 +7,8 @@ import CommunityUserProfileCard from "./CommunityUserProfileCard";
 import { useGetUserPost } from "../../../hooks/usePost";
 import { useParams } from "react-router-dom";
 import {
-    useFollowers,
-    useFollwings,
+    useTotalFollowers,
+    useTotalFollowings,
 } from "../../../hooks/useFollowersFollowings";
 
 export default function CommunityUserProfile() {
@@ -21,8 +21,8 @@ export default function CommunityUserProfile() {
             0
         ) || 0;
     const user = data?.pages[0].contentList[0].user;
-    const { data: followers } = useFollowers(username || "");
-    const { data: followings } = useFollwings(username || "");
+    const { data: totalFollowers } = useTotalFollowers(username || "");
+    const { data: totalFollowings } = useTotalFollowings(username || "");
     return (
         <div className="min-h-screen md:w-[68%] min-[1000px]:w-[53%] md:ml-[30%] min-[1000px]:ml-[22%] divide-y divide-graybg">
             <CommunityHeading heading="Profile" />
@@ -31,8 +31,8 @@ export default function CommunityUserProfile() {
                 lastname={user?.lastName || ""}
                 username={user?.username || ""}
                 city={user?.city || ""}
-                followers={followers || []}
-                followings={followings || []}
+                followers={totalFollowers?.total || 0}
+                followings={totalFollowings?.total || 0}
             />
             <CommunityCreatePost />
             {isLoading && <p>Loading...</p>}

@@ -1,5 +1,4 @@
 import { Link, useParams } from "react-router-dom";
-import { Follower, Following } from "../../../services/types";
 import user_photo from "/assets/forum/user_profile_photo_104x104.png";
 import { useEffect, useState } from "react";
 import {
@@ -13,8 +12,8 @@ interface Props {
     lastname: string;
     username: string;
     city: string;
-    followers: Follower[];
-    followings: Following[];
+    followers: number;
+    followings: number;
 }
 
 export default function CommunityUserProfileCard({
@@ -86,7 +85,7 @@ export default function CommunityUserProfileCard({
                             className="text-center self-center mx-5 md:mx-8"
                         >
                             <h2 className="font-semibold text-[22px] max-[490px]:text-[16px]">
-                                {followers.length}
+                                {followers}
                             </h2>
                             <h3 className="text-gray font-medium max-[490px]:text-[14px] text-[18px]">
                                 Followers
@@ -97,7 +96,7 @@ export default function CommunityUserProfileCard({
                             className="text-center self-center mx-5 md:mx-8"
                         >
                             <h2 className="font-semibold text-[22px] max-[490px]:text-[16px]">
-                                {followings.length}
+                                {followings}
                             </h2>
                             <h3 className="text-gray font-medium max-[490px]:text-[14px] text-[18px]">
                                 Followings

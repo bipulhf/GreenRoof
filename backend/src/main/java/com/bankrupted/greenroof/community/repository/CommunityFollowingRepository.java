@@ -12,7 +12,7 @@ public interface CommunityFollowingRepository extends JpaRepository<UserFollowin
     List<UserFollowing> findByUserId(Long userId);
 
     @Query(value = "SELECT COUNT(followings_id) FROM user_followings WHERE user_id=:userId", nativeQuery = true)
-    Long findTotalFollowingsNumber(Long userId);
+    Integer findTotalFollowingsNumber(Long userId);
 
     void deleteByUserId(Long userId);
 }

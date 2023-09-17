@@ -1,5 +1,4 @@
 import { createBrowserRouter } from "react-router-dom";
-import App from "../App";
 import ForumLayout from "../layouts/ForumLayout";
 import ForumMainPage from "../pages/Forum/ForumMainPage";
 import ForumSinglePostPage from "../pages/Forum/ForumSinglePostPage";
@@ -15,9 +14,10 @@ import CommunitySearchPage from "../pages/Community/CommunitySearchPage";
 import CommunityFollowersFollowings from "../components/community/community_profile/CommunityFollowersFollowings";
 import CommunityEditPost from "../components/community/community_post/CommunityEditPost";
 import CommunityEditComment from "../components/community/community_post/CommunityEditComment";
+import MainPage from "../pages/MainPage";
 
 const router = createBrowserRouter([
-    { path: "/", element: <App /> },
+    { path: "/", element: <MainPage /> },
     {
         path: "forum",
         element: <ForumLayout />,

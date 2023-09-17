@@ -6,10 +6,40 @@ import { token } from "../services/jwt-token";
 interface IsFollow {
     isFollow: boolean;
 }
+interface TotalNumber {
+    total: number;
+}
 
 const followerApiClient = new APIClient<Follower[], Follower>("/community");
 const followingApiClient = new APIClient<Following[], Following>("/community");
 const isFollowApiClient = new APIClient<IsFollow, IsFollow>("/community");
+const totalNumberApiClient = new APIClient<TotalNumber, TotalNumber>(
+    "/community"
+);
+
+const useTotalFollowers = (username: string) => {
+    const headers = { Authorization: `Bearer ${token}` };
+    return useQuery<TotalNumber, Error>({
+        queryKey: ["followers-number", username],
+        queryFn: () =>
+            totalNumberApiClient.getWithAuth("/total/followers", {
+                headers: headers,
+                params: { username: username },
+            }),
+    });
+};
+
+const useTotalFollowings = (username: string) => {
+    const headers = { Authorization: `Bearer ${token}` };
+    return useQuery<TotalNumber, Error>({
+        queryKey: ["followings-number", username],
+        queryFn: () =>
+            totalNumberApiClient.getWithAuth("/total/followings", {
+                headers: headers,
+                params: { username: username },
+            }),
+    });
+};
 
 const useFollowers = (username: string) => {
     const headers = { Authorization: `Bearer ${token}` };
@@ -22,7 +52,7 @@ const useFollowers = (username: string) => {
             }),
     });
 };
-const useFollwings = (username: string) => {
+const useFollowings = (username: string) => {
     const headers = { Authorization: `Bearer ${token}` };
     return useQuery<Following[], Error>({
         queryKey: ["followings", username],
@@ -73,4 +103,12 @@ const useIsFollow = (username: string) => {
             }),
     });
 };
-export { useFollowers, useFollwings, useFollows, useUnfollow, useIsFollow };
+export {
+    useFollowers,
+    useFollowings,
+    useFollows,
+    useUnfollow,
+    useIsFollow,
+    useTotalFollowers,
+    useTotalFollowings,
+};

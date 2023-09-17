@@ -23,21 +23,19 @@ export default function CommunityComment({ postId }: Props) {
                 dataLength={fetchedPostCount}
                 hasMore={!!hasNextPage}
                 next={() => fetchNextPage()}
-                loader="<p>Loading</p>"
+                loader="<p>Loading...</p>"
             >
                 {data?.pages.map((comments, index) => (
                     <React.Fragment key={index}>
                         {comments.contentList.map((comment) => (
-                            <>
-                                <CommunityCommentmMarkup
-                                    key={comment.id}
-                                    id={comment.id}
-                                    postId={postId}
-                                    commenter={comment.commenter}
-                                    text={comment.commentText}
-                                    createdAt={comment.createdAt}
-                                />
-                            </>
+                            <CommunityCommentmMarkup
+                                key={comment.id}
+                                id={comment.id}
+                                postId={postId}
+                                commenter={comment.commenter}
+                                text={comment.commentText}
+                                createdAt={comment.createdAt}
+                            />
                         ))}
                     </React.Fragment>
                 ))}

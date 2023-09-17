@@ -102,16 +102,20 @@ public class CommunityFollowService {
         return modelMapperFollowing.modelMap(userFollowings, UserFollowingDto.class);
     }
 
-    public ResponseEntity<?> getTotalFollowersNumber(String username) {
+    public Map getTotalFollowersNumber(String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new NoSuchElementException("No user found with this username " + username + "."));
-        return ResponseEntity.ok(communityFollowerRepository.findTotalFollowersNumber(user.getId()));
+        Map<String, Integer> mp = new HashMap<>();
+        mp.put("total", communityFollowerRepository.findTotalFollowersNumber(user.getId()));
+        return mp;
     }
 
-    public ResponseEntity<?> getTotalFollowingsNumber(String username) {
+    public Map getTotalFollowingsNumber(String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new NoSuchElementException("No user found with this username " + username + "."));
-        return ResponseEntity.ok(communityFollowingRepository.findTotalFollowingsNumber(user.getId()));
+        Map<String, Integer> mp = new HashMap<>();
+        mp.put("total", communityFollowingRepository.findTotalFollowingsNumber(user.getId()));
+        return mp;
     }
 
 }
