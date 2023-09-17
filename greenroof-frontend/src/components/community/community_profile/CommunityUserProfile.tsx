@@ -47,6 +47,7 @@ export default function CommunityUserProfile() {
                     <React.Fragment key={index}>
                         {posts.contentList.map((post) => (
                             <CommunityFeedPost
+                                key={post.id}
                                 postId={post.id}
                                 postText={post.postText}
                                 createdAt={post.createdAt}

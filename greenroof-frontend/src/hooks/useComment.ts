@@ -39,7 +39,7 @@ const useGetComments = (postId: number) => {
     });
 };
 
-const useGetComment = (token: string, commentId: number) => {
+const useGetComment = (commentId: number) => {
     const headers = { Authorization: `Bearer ${token}` };
     return useQuery<Comment, Error>({
         queryKey: ["community-comment", commentId],
@@ -61,7 +61,7 @@ const useGetNumberOfComment = (postId: number) => {
     });
 };
 
-const useCreateComment = (token: string, postId: number) => {
+const useCreateComment = (postId: number) => {
     const query = useQueryClient();
     const headers = { Authorization: `Bearer ${token}` };
     return useMutation({
@@ -89,7 +89,7 @@ const useEditComment = (commentId: number) => {
             ),
         onSuccess: () => {
             query.invalidateQueries({
-                queryKey: ["comment", commentId],
+                queryKey: ["community-comment"],
             });
         },
         onError: (err: ValidationError) => err,

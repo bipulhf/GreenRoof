@@ -49,7 +49,7 @@ public class CommunityFeedService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new NoSuchElementException("No user found with this username " + username + "."));
         Pageable pageable = PageRequest.of(pageNo, pageSize);
-        Page<CommunityPost> communityPosts = communityPostRepository.findByUserId(user.getId(), pageable);
+        Page<CommunityPost> communityPosts = communityPostRepository.findByUserIdOrderByCreatedAtDesc(user.getId(), pageable);
         return getResponseDto(communityPosts);
     }
 

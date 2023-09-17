@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 public interface CommunityCommentRepository extends JpaRepository<CommunityComment, Long> {
-    Page<CommunityComment> findByPostId(Long postId, Pageable pageable);
+    Page<CommunityComment> findByPostIdOrderByCreatedAtDesc(Long postId, Pageable pageable);
 
     void deleteByPostId(Long postId);
 

@@ -15,9 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +34,6 @@ public class CommunityFollowService {
 
         if(person1 == person2)
             throw new GenericException("You can't follow yourself.");
-
 
         if(communityFollowerRepository.existsByUserIdAndFollowersId(person2.getId(), person1.getId()) > 0)
             throw new GenericException("Already Followed");
@@ -63,6 +60,17 @@ public class CommunityFollowService {
         communityFollowingRepository.deleteByUserId(person1.getId());
 
         return new ResponseEntity<>("Unfollowed successful", HttpStatus.CREATED);
+    }
+
+    public Map<String, Boolean> isFollowerOfUser(String user1, String user2) {
+        User person1 = userRepository.findByUsername(user1)
+                .orElseThrow(() -> new NoSuchElementException("No user found with this username " + user1 + "."));
+        User person2 = userRepository.findByUsername(user2)
+                .orElseThrow(() -> new NoSuchElementException("No user found with this username " + user2 + "."));
+        Map<String, Boolean> mp = new HashMap<>();
+        if(communityFollowerRepository.existsByUserIdAndFollowersId(person2.getId(), person1.getId()) > 0) mp.put("isFollow", true);
+        else mp.put("isFollow", false);
+        return mp;
     }
 
     private void setFollowing(User person2, User person1) {
@@ -105,4 +113,5 @@ public class CommunityFollowService {
                 .orElseThrow(() -> new NoSuchElementException("No user found with this username " + username + "."));
         return ResponseEntity.ok(communityFollowingRepository.findTotalFollowingsNumber(user.getId()));
     }
+
 }

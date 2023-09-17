@@ -30,7 +30,9 @@ export default function CommunityComment({ postId }: Props) {
                         {comments.contentList.map((comment) => (
                             <>
                                 <CommunityCommentmMarkup
+                                    key={comment.id}
                                     id={comment.id}
+                                    postId={postId}
                                     commenter={comment.commenter}
                                     text={comment.commentText}
                                     createdAt={comment.createdAt}

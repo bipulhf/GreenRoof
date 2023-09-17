@@ -56,6 +56,18 @@ const useGetPost = (postId: number) => {
     });
 };
 
+const useSearchPost = (text: string) => {
+    const headers = { Authorization: `Bearer ${token}` };
+    return useQuery<Post[], Error>({
+        queryKey: ["search-post", text],
+        queryFn: () =>
+            postApiClient.getAllWithAuth("/search/post", {
+                params: { text: text },
+                headers: headers,
+            }),
+    });
+};
+
 const useGetUserPost = (username: string) => {
     const headers = { Authorization: `Bearer ${token}` };
     return useInfiniteQuery<Content<Post>, Error>({
@@ -129,4 +141,5 @@ export {
     useCreatePost,
     useEditPost,
     useGetUserPost,
+    useSearchPost,
 };

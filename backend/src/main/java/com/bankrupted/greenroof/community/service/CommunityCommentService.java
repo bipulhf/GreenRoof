@@ -85,7 +85,7 @@ public class CommunityCommentService {
                 .orElseThrow(() -> new NoSuchElementException("Post with id " + postId + " does not exists."));
 
         Pageable pageable = PageRequest.of(pageNo, pageSize);
-        Page<CommunityComment> communityComments = communityCommentRepository.findByPostId(postId, pageable);
+        Page<CommunityComment> communityComments = communityCommentRepository.findByPostIdOrderByCreatedAtDesc(postId, pageable);
         return getResponseDto(communityComments);
     }
 

@@ -13,6 +13,8 @@ import CommunitySinglePostPage from "../pages/Community/CommunitySinglePostPage"
 import CommunityUserProfilePage from "../pages/Community/CommunityUserProfilePage";
 import CommunitySearchPage from "../pages/Community/CommunitySearchPage";
 import CommunityFollowersFollowings from "../components/community/community_profile/CommunityFollowersFollowings";
+import CommunityEditPost from "../components/community/community_post/CommunityEditPost";
+import CommunityEditComment from "../components/community/community_post/CommunityEditComment";
 
 const router = createBrowserRouter([
     { path: "/", element: <App /> },
@@ -38,10 +40,10 @@ const router = createBrowserRouter([
             { index: true, element: <CommunityMainPage /> },
             { path: "post/:postId", element: <CommunitySinglePostPage /> },
             { path: "post/create", element: <ForumCreatePost /> },
-            { path: "post/edit/:postId", element: <ForumEditPost /> },
+            { path: "post/edit/:postId", element: <CommunityEditPost /> },
             {
-                path: "answer/edit/:postId/:answerId",
-                element: <ForumEditAnswer />,
+                path: "comment/edit/:postId/:commentId",
+                element: <CommunityEditComment />,
             },
             { path: "user/:username", element: <CommunityUserProfilePage /> },
             {

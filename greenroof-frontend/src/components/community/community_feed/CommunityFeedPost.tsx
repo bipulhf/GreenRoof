@@ -2,9 +2,8 @@ import user_profile_photo from "/assets/forum/forum_top_user_photo_40x40.png";
 import ReadMore from "./ReadMore";
 import { User } from "../../../services/types";
 import CommunityPostLikeCmnt from "../community_post/CommunityPostLikeCmnt";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDeletePost, useEditPost } from "../../../hooks/usePost";
-
 interface Props {
     postId: number;
     postText: string;
@@ -22,8 +21,11 @@ export default function CommunityFeedPost({
 }: Props) {
     const editMutation = useEditPost(postId);
     const deleteMutation = useDeletePost();
+    const navigate = useNavigate();
 
-    const onEdit = () => {};
+    const onEdit = () => {
+        navigate("/community/post/edit/" + postId);
+    };
     const onDelete = () => {
         if (window.confirm("Do you really want to delete this post?"))
             deleteMutation.mutate(postId);

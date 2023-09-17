@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function CommunityMobileMenu() {
     return (
-        <div className="md:hidden fixed w-[100%] bottom-5 divide-y divide-graybg">
+        <div className="md:hidden bg-white fixed w-[100%] bottom-0 pb-4 divide-y divide-graybg">
             <div></div>
             <div className="pt-3 flex justify-between px-10">
                 <FontAwesomeIcon icon={faHouse} fontSize={20} />

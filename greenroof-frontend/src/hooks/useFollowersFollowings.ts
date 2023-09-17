@@ -1,10 +1,15 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import APIClient from "../services/apiClient";
-import { Follower, Following } from "../services/types";
+import { Follower, Following, ValidationError } from "../services/types";
 import { token } from "../services/jwt-token";
+
+interface IsFollow {
+    isFollow: boolean;
+}
 
 const followerApiClient = new APIClient<Follower[], Follower>("/community");
 const followingApiClient = new APIClient<Following[], Following>("/community");
+const isFollowApiClient = new APIClient<IsFollow, IsFollow>("/community");
 
 const useFollowers = (username: string) => {
     const headers = { Authorization: `Bearer ${token}` };
@@ -29,4 +34,43 @@ const useFollwings = (username: string) => {
     });
 };
 
-export { useFollowers, useFollwings };
+const useFollows = (username: string) => {
+    const query = useQueryClient();
+    const headers = { Authorization: `Bearer ${token}` };
+    return useMutation({
+        mutationFn: () =>
+            isFollowApiClient.follow("/follows/" + username, headers),
+        onSuccess: () => {
+            query.invalidateQueries({
+                queryKey: ["followers"],
+            });
+        },
+        onError: (err: ValidationError) => err,
+    });
+};
+
+const useUnfollow = (username: string) => {
+    const query = useQueryClient();
+    const headers = { Authorization: `Bearer ${token}` };
+    return useMutation({
+        mutationFn: () =>
+            followingApiClient.unfollow("/unfollows/" + username, headers),
+        onSuccess: () => {
+            query.invalidateQueries({
+                queryKey: ["followers"],
+            });
+        },
+        onError: (err: ValidationError) => err,
+    });
+};
+const useIsFollow = (username: string) => {
+    const headers = { Authorization: `Bearer ${token}` };
+    return useQuery<IsFollow, Error>({
+        queryKey: ["isFollow", username],
+        queryFn: () =>
+            isFollowApiClient.getWithAuth("/isFollow/" + username, {
+                headers: headers,
+            }),
+    });
+};
+export { useFollowers, useFollwings, useFollows, useUnfollow, useIsFollow };

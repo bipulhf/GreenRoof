@@ -1,9 +1,11 @@
-import { useDeleteComment, useEditComment } from "../../../hooks/useComment";
+import { useNavigate } from "react-router-dom";
+import { useDeleteComment } from "../../../hooks/useComment";
 import { User } from "../../../services/types";
 import user_profile_photo from "/assets/forum/forum_top_user_photo_40x40.png";
 
 interface Props {
     id: number;
+    postId: number;
     text: string;
     commenter: User;
     createdAt: Date;
@@ -11,13 +13,16 @@ interface Props {
 
 export default function CommunityCommentmMarkup({
     id,
+    postId,
     text,
     commenter,
     createdAt,
 }: Props) {
     const deleteMutation = useDeleteComment();
-    const editMutation = useEditComment(id);
-    const onEdit = () => {};
+    const navigate = useNavigate();
+    const onEdit = () => {
+        navigate("/community/comment/edit/" + postId + "/" + id);
+    };
     const onDelete = () => {
         if (window.confirm("Do you really want to delete this post?"))
             deleteMutation.mutate(id);
@@ -65,13 +70,6 @@ export default function CommunityCommentmMarkup({
                         {deleteMutation.error.response.data.message
                             ? deleteMutation.error.response.data.message
                             : deleteMutation.error.message}
-                    </p>
-                )}
-                {editMutation.isError && (
-                    <p className="text-red">
-                        {editMutation.error.response.data.message
-                            ? editMutation.error.response.data.message
-                            : editMutation.error.message}
                     </p>
                 )}
             </div>
