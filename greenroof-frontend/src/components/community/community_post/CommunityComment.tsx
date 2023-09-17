@@ -1,44 +1,47 @@
-import user_profile_photo from "/assets/forum/forum_top_user_photo_40x40.png";
+import React from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { useGetComments } from "../../../hooks/useComment";
+import CommunityCommentmMarkup from "./CommunityCommentMarkup";
 
-export default function CommunityComment() {
+interface Props {
+    postId: number;
+}
+
+export default function CommunityComment({ postId }: Props) {
+    const { data, isLoading, isError, error, hasNextPage, fetchNextPage } =
+        useGetComments(postId);
+    const fetchedPostCount =
+        data?.pages.reduce(
+            (total, page) => total + page.contentList.length,
+            0
+        ) || 0;
     return (
         <>
-            <div className="py-5 px-2 grid grid-cols-10">
-                <img
-                    src={user_profile_photo}
-                    alt="Profile Photo"
-                    className="col-span-1 max-[350px]:col-span-2 ml-2 min-w-[40px] min-h-[40px]"
-                />
-                <div className="ml-5 max-[350px]:col-span-8 col-span-9">
-                    <div className="flex justify-between pb-1">
-                        <div className="flex max-sm:flex-col">
-                            <h2 className="font-semibold text-[15px] mr-2">
-                                Karim Biswas
-                            </h2>
-                            <h2 className="font-medium text-[13px] text-gray sm:self-center">
-                                @KarimB
-                            </h2>
-                        </div>
-                        <div className="flex text-gray">
-                            <h3 className="mx-5">Edit</h3>
-                            <h3>Delete</h3>
-                        </div>
-                    </div>
-                    <div className="pb-2">
-                        <h3 className="text-[14px] text-justify">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing
-                            elit. Sequi enim impedit, dolore ipsum itaque ut
-                            asperiores cum excepturi sint aliquid non unde
-                            quisquam quia aut, voluptate nobis magni quas esse.
-                        </h3>
-                    </div>
-                    <div>
-                        <h3 className="text-gray text-[13px]">
-                            15 September, 2023
-                        </h3>
-                    </div>
-                </div>
-            </div>
+            {isLoading && <p>Loading...</p>}
+            {isError && <p>{error.message}</p>}
+            <InfiniteScroll
+                dataLength={fetchedPostCount}
+                hasMore={!!hasNextPage}
+                next={() => fetchNextPage()}
+                loader="<p>Loading</p>"
+            >
+                {data?.pages.map((comments, index) => (
+                    <React.Fragment key={index}>
+                        {comments.contentList.map((comment) => (
+                            <>
+                                <CommunityCommentmMarkup
+                                    key={comment.id}
+                                    id={comment.id}
+                                    postId={postId}
+                                    commenter={comment.commenter}
+                                    text={comment.commentText}
+                                    createdAt={comment.createdAt}
+                                />
+                            </>
+                        ))}
+                    </React.Fragment>
+                ))}
+            </InfiniteScroll>
         </>
     );
 }

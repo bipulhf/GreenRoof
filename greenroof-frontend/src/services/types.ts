@@ -5,6 +5,7 @@ export interface User {
     username: string;
     score: number;
     profilePhoto: string;
+    city: string;
 }
 
 export interface UserProfile {
@@ -18,8 +19,8 @@ export interface UserProfile {
     createdAt: Date;
 }
 
-export interface Content {
-    contentList: Question[];
+export interface Content<T> {
+    contentList: T[];
     pageNo: number;
     pageSize: number;
     totalElements: number;
@@ -50,4 +51,29 @@ export interface ValidationError {
             message: string;
         };
     };
+}
+
+export interface Post {
+    id: number;
+    postText: string;
+    postAttatchments: string;
+    createdAt: Date;
+    priorityValue: number;
+    user: User;
+}
+
+export interface Comment {
+    id: number;
+    commentText: string;
+    createdAt: Date;
+    commenter: User;
+}
+
+export interface Follower {
+    id: number;
+    follower: User;
+}
+export interface Following {
+    id: number;
+    following: User;
 }

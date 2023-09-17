@@ -4,24 +4,26 @@ import com.bankrupted.greenroof.community.Notification.Notification;
 import com.bankrupted.greenroof.community.Notification.NotificationStorageService;
 import com.bankrupted.greenroof.community.Notification.NotificationType;
 import com.bankrupted.greenroof.community.dto.CommunityCommentDto;
+import com.bankrupted.greenroof.community.dto.CommunityPostDto;
+import com.bankrupted.greenroof.community.entity.CommunityPost;
 import com.bankrupted.greenroof.exception.GenericException;
+import com.bankrupted.greenroof.forum.dto.FeedResponseDto;
 import com.bankrupted.greenroof.user.entity.User;
 import com.bankrupted.greenroof.community.entity.CommunityComment;
-import com.bankrupted.greenroof.community.entity.CommunityPost;
 import com.bankrupted.greenroof.user.repository.UserRepository;
 import com.bankrupted.greenroof.user.service.UserService;
 import com.bankrupted.greenroof.community.repository.CommunityCommentRepository;
 import com.bankrupted.greenroof.community.repository.CommunityPostRepository;
 import com.bankrupted.greenroof.utils.ModelMapperUtility;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +33,7 @@ public class CommunityCommentService {
     private final UserRepository userRepository;
     private final CommunityPostRepository communityPostRepository;
     private final ModelMapperUtility<CommunityComment, CommunityCommentDto> modelMapper;
+    private int pageSize = 7;
     private final NotificationStorageService notificationStorageService;
 
     public ResponseEntity<?> addComment(String username, Long postId, CommunityComment communityComment) {
@@ -87,11 +90,40 @@ public class CommunityCommentService {
         communityCommentRepository.deleteByPostId(postId);
     }
 
-    public List<CommunityCommentDto> getCommentsOfSinglePost(Long postId) {
+    public CommunityCommentDto getSingleComment(Long commentId) {
+        CommunityComment communityComment = communityCommentRepository.findById(commentId).get();
+        return (CommunityCommentDto) modelMapper.modelMap(communityComment, CommunityCommentDto.class);
+    }
+
+    public FeedResponseDto<CommunityCommentDto> getCommentsOfSinglePost(Long postId, Integer pageNo) {
         communityPostRepository.findById(postId)
                 .orElseThrow(() -> new NoSuchElementException("Post with id " + postId + " does not exists."));
 
-        List<CommunityComment> communityComments = communityCommentRepository.findByPostId(postId);
-        return modelMapper.modelMap(communityComments, CommunityCommentDto.class);
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Page<CommunityComment> communityComments = communityCommentRepository.findByPostIdOrderByCreatedAtDesc(postId,
+                pageable);
+        return getResponseDto(communityComments);
+    }
+
+    private FeedResponseDto<CommunityCommentDto> getResponseDto(Page<CommunityComment> communityComments) {
+        List<CommunityComment> communityPostList = communityComments.getContent();
+        List<CommunityCommentDto> communityCommentDtos = modelMapper.modelMap(communityPostList,
+                CommunityCommentDto.class);
+
+        FeedResponseDto<CommunityCommentDto> feedResponseDto = FeedResponseDto.<CommunityCommentDto>builder()
+                .contentList(communityCommentDtos)
+                .pageNo(communityComments.getNumber())
+                .pageSize(communityComments.getSize())
+                .totalPages(communityComments.getTotalPages())
+                .totalElements(communityComments.getTotalElements())
+                .last(communityComments.isLast())
+                .build();
+        return feedResponseDto;
+    }
+
+    public Map<String, Integer> getCommentCountOfAPost(Long postId) {
+        Map<String, Integer> mp = new HashMap<>();
+        mp.put("numberOfComments", communityCommentRepository.getNumberOfComments(postId));
+        return mp;
     }
 }

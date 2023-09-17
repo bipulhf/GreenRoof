@@ -27,6 +27,12 @@ public class CommunityFollowController {
         return communityFollowService.unfollowUser(user1, user2);
     }
 
+    @GetMapping("isFollow/{user2}")
+    public ResponseEntity<?> isFollowerOfUser(@PathVariable String user2) {
+        String user1 = GetUsername.get();
+        return new ResponseEntity<>(communityFollowService.isFollowerOfUser(user1, user2), HttpStatus.OK);
+    }
+
     @GetMapping("followers")
     public ResponseEntity<?> getFollowersList(@RequestParam String username) {
         return new ResponseEntity<>(communityFollowService.getFollowersList(username), HttpStatus.OK);

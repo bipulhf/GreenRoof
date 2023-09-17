@@ -17,7 +17,7 @@ public class GreenRoofApplication {
 
 	@Bean
 	public WebMvcConfigurer corsConfigurer() {
-		WebMvcConfigurer webMvcConfigurer = new WebMvcConfigurer() {
+        return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry
@@ -28,7 +28,6 @@ public class GreenRoofApplication {
 						.allowedOrigins("http://localhost:5173/");
 			}
 		};
-		return webMvcConfigurer;
 	}
 
 }

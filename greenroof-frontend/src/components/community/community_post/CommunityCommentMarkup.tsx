@@ -1,37 +1,35 @@
-import user_profile_photo from "/assets/forum/forum_top_user_photo_40x40.png";
-import ReadMore from "./ReadMore";
+import { useNavigate } from "react-router-dom";
+import { useDeleteComment } from "../../../hooks/useComment";
 import { User } from "../../../services/types";
-import CommunityPostLikeCmnt from "../community_post/CommunityPostLikeCmnt";
-import { Link, useNavigate } from "react-router-dom";
-import { useDeletePost, useEditPost } from "../../../hooks/usePost";
+import user_profile_photo from "/assets/forum/forum_top_user_photo_40x40.png";
+
 interface Props {
+    id: number;
     postId: number;
-    postText: string;
-    user: User;
+    text: string;
+    commenter: User;
     createdAt: Date;
-    fullPost: boolean;
 }
 
-export default function CommunityFeedPost({
+export default function CommunityCommentmMarkup({
+    id,
     postId,
-    fullPost,
-    postText,
-    user,
+    text,
+    commenter,
     createdAt,
 }: Props) {
-    const editMutation = useEditPost(postId);
-    const deleteMutation = useDeletePost();
+    const deleteMutation = useDeleteComment();
     const navigate = useNavigate();
-
     const onEdit = () => {
-        navigate("/community/post/edit/" + postId);
+        navigate("/community/comment/edit/" + postId + "/" + id);
     };
     const onDelete = () => {
         if (window.confirm("Do you really want to delete this post?"))
-            deleteMutation.mutate(postId);
+            deleteMutation.mutate(id);
     };
+
     return (
-        <div className="py-5 px-3 grid grid-cols-10">
+        <div className="py-5 px-2 grid grid-cols-10">
             <img
                 src={user_profile_photo}
                 alt="Profile Photo"
@@ -39,17 +37,14 @@ export default function CommunityFeedPost({
             />
             <div className="ml-5 max-[350px]:col-span-8 col-span-9">
                 <div className="flex justify-between pb-1">
-                    <Link
-                        to={"user/" + user.username}
-                        className="flex max-sm:flex-col"
-                    >
-                        <h2 className="font-semibold text-[15px] sm:mr-2">
-                            {user.firstName + " " + user.lastName}
+                    <div className="flex max-sm:flex-col">
+                        <h2 className="font-semibold text-[15px] mr-2">
+                            {commenter.firstName + " " + commenter.lastName}
                         </h2>
                         <h2 className="font-medium text-[13px] text-gray sm:self-center">
-                            @{user.username}
+                            @{commenter.username}
                         </h2>
-                    </Link>
+                    </div>
                     <div className="flex text-gray">
                         <h3
                             className="mx-5 hover:cursor-pointer"
@@ -62,29 +57,19 @@ export default function CommunityFeedPost({
                         </h3>
                     </div>
                 </div>
-                <div className="pb-2 ">
-                    <h3 className="text-[14px] text-justify">
-                        {fullPost ? postText : <ReadMore>{postText}</ReadMore>}
-                    </h3>
+                <div className="pb-2">
+                    <h3 className="text-[14px] text-justify">{text}</h3>
                 </div>
                 <div>
                     <h3 className="text-gray text-[13px]">
                         {new Date(createdAt).toLocaleString()}
                     </h3>
                 </div>
-                <CommunityPostLikeCmnt postId={postId} />
                 {deleteMutation.isError && (
                     <p className="text-red">
                         {deleteMutation.error.response.data.message
                             ? deleteMutation.error.response.data.message
                             : deleteMutation.error.message}
-                    </p>
-                )}
-                {editMutation.isError && (
-                    <p className="text-red">
-                        {editMutation.error.response.data.message
-                            ? editMutation.error.response.data.message
-                            : editMutation.error.message}
                     </p>
                 )}
             </div>

@@ -21,10 +21,9 @@ const useGetAnswer = (token: string, answerId: number) => {
     return useQuery<Answer, Error>({
         queryKey: ["answer", answerId],
         queryFn: () =>
-            answerApiClient.getWithAuth(
-                "/answer/get?answerId=" + answerId,
-                headers
-            ),
+            answerApiClient.getWithAuth("/answer/get?answerId=" + answerId, {
+                headers,
+            }),
     });
 };
 

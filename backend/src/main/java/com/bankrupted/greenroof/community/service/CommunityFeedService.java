@@ -25,7 +25,7 @@ public class CommunityFeedService {
     private final CommunityPostRepository communityPostRepository;
     private final UserRepository userRepository;
     private final ModelMapperUtility<CommunityPost, CommunityPostDto> modelMapper;
-    private int pageSize = 5;
+    private int pageSize = 7;
 
     public FeedResponseDto<CommunityPostDto> getAllCommunityPosts(Integer pageNo) {
         Pageable pageable = PageRequest.of(pageNo, pageSize);
@@ -45,11 +45,12 @@ public class CommunityFeedService {
         return (CommunityPostDto) modelMapper.modelMap(post, CommunityPostDto.class);
     }
 
-    public List<CommunityPostDto> getUserCommunityPost(String username) {
+    public FeedResponseDto<CommunityPostDto> getUserCommunityPost(String username, Integer pageNo) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new NoSuchElementException("No user found with this username " + username + "."));
-        List<CommunityPost> communityPosts = communityPostRepository.findByUserId(user.getId());
-        return modelMapper.modelMap(communityPosts, CommunityPostDto.class);
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Page<CommunityPost> communityPosts = communityPostRepository.findByUserIdOrderByCreatedAtDesc(user.getId(), pageable);
+        return getResponseDto(communityPosts);
     }
 
     private FeedResponseDto<CommunityPostDto> getResponseDto(Page<CommunityPost> communityPostPage) {

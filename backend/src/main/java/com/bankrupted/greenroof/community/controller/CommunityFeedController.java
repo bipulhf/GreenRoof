@@ -14,12 +14,12 @@ public class CommunityFeedController {
     private final CommunityFeedService communityFeedService;
 
     @GetMapping("")
-    public ResponseEntity<?> getAllCommunityPosts(@RequestParam(defaultValue = "0", required = false)  Integer pageNo) {
+    public ResponseEntity<?> getAllCommunityPosts(@RequestParam Integer pageNo) {
         return new ResponseEntity<>(communityFeedService.getAllCommunityPosts(pageNo), HttpStatus.OK);
     }
 
     @GetMapping("recent")
-    public ResponseEntity<?> getAllRecentCommunityPosts(@RequestParam(defaultValue = "0", required = false)  Integer pageNo) {
+    public ResponseEntity<?> getAllRecentCommunityPosts(@RequestParam Integer pageNo) {
         return new ResponseEntity<>(communityFeedService.getAllRecentCommunityPosts(pageNo), HttpStatus.OK);
     }
 
@@ -29,7 +29,7 @@ public class CommunityFeedController {
     }
 
     @GetMapping("user")
-    public ResponseEntity<?> getUserCommunityPost(@RequestParam String username) {
-        return new ResponseEntity<>(communityFeedService.getUserCommunityPost(username), HttpStatus.OK);
+    public ResponseEntity<?> getUserCommunityPost(@RequestParam String username, @RequestParam Integer pageNo) {
+        return new ResponseEntity<>(communityFeedService.getUserCommunityPost(username, pageNo), HttpStatus.OK);
     }
 }

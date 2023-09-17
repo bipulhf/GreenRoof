@@ -21,41 +21,53 @@ export default function CommunityLeftSidebar() {
             <nav className="h-[90%]">
                 <ul className="h-[80%] flex flex-col text-[17px] lg:text-[18px] justify-between font-medium p-[10%] ml-[5%] min-[1250px]:ml-[20%]">
                     <li>
-                        <FontAwesomeIcon icon={faHouse} fontSize={20} />
-                        <span className="ml-5">Home</span>
+                        <Link to={"/community"}>
+                            <FontAwesomeIcon icon={faHouse} fontSize={20} />
+                            <span className="ml-5">Home</span>
+                        </Link>
                     </li>
                     <li>
-                        <FontAwesomeIcon icon={faBell} fontSize={20} />
-                        <span className="ml-5">Notifications</span>
+                        <Link to={"/community/notifications"}>
+                            <FontAwesomeIcon icon={faBell} fontSize={20} />
+                            <span className="ml-5">Notifications</span>{" "}
+                        </Link>
                     </li>
                     <li>
-                        <FontAwesomeIcon
-                            icon={faMagnifyingGlass}
-                            fontSize={20}
-                        />
-                        <span className="ml-5">Search</span>
+                        <Link to={"/community/search"}>
+                            <FontAwesomeIcon
+                                icon={faMagnifyingGlass}
+                                fontSize={20}
+                            />
+                            <span className="ml-5">Search</span>
+                        </Link>
                     </li>
                     <li>
-                        <FontAwesomeIcon icon={faUser} fontSize={20} />{" "}
-                        <span className="ml-5">Profile</span>
+                        <Link to={"/community/"}>
+                            <FontAwesomeIcon icon={faUser} fontSize={20} />
+                            <span className="ml-5">Profile</span>
+                        </Link>
                     </li>
                     <li>
-                        <FontAwesomeIcon
-                            icon={faRobot}
-                            color="#347E32"
-                            fontSize={20}
-                        />
-                        <span className="font-medium text-greenbtn ml-5">
-                            AI Assistant
-                        </span>
+                        <Link to={"/AI"}>
+                            <FontAwesomeIcon
+                                icon={faRobot}
+                                color="#347E32"
+                                fontSize={20}
+                            />
+                            <span className="font-medium text-greenbtn ml-5">
+                                AI Assistant
+                            </span>
+                        </Link>
                     </li>
                     <li>
-                        <FontAwesomeIcon
-                            icon={faRightFromBracket}
-                            fontSize={20}
-                            rotation={180}
-                        />
-                        <span className="ml-5">Logout</span>
+                        <Link to={"/logout"}>
+                            <FontAwesomeIcon
+                                icon={faRightFromBracket}
+                                fontSize={20}
+                                rotation={180}
+                            />
+                            <span className="ml-5">Logout</span>
+                        </Link>
                     </li>
                 </ul>
             </nav>
