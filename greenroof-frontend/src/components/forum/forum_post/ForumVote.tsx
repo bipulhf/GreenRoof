@@ -2,7 +2,6 @@ import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { useGetVoteStatus, useVote } from "../../../hooks/useVote";
-import { token } from "../../../services/jwt-token";
 
 interface Props {
     answerId: number;
@@ -10,8 +9,8 @@ interface Props {
 }
 
 export default function ForumVote({ answerId, score }: Props) {
-    const { data } = useGetVoteStatus(token, answerId);
-    const mutation = useVote(token, answerId);
+    const { data } = useGetVoteStatus(answerId);
+    const mutation = useVote(answerId);
 
     const [isUpvote, setUpvote] = useState(data?.voteNo);
     const [isDownvote, setDownvote] = useState(data?.voteNo);

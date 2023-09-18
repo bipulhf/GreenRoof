@@ -1,5 +1,4 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import { token } from "../../../services/jwt-token";
 import { useCreateQuestion } from "../../../hooks/useQuestion";
 import { useEffect } from "react";
 
@@ -9,7 +8,7 @@ interface Inputs {
 }
 
 export default function ForumCreatePost() {
-    const mutation = useCreateQuestion(token);
+    const mutation = useCreateQuestion();
 
     const {
         register,

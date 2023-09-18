@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import APIClient from "../services/apiClient";
 import { ValidationError } from "../services/types";
+import useAuth from "./useAuth";
 
 interface HasVoted {
     voteNo?: number;
@@ -8,9 +9,10 @@ interface HasVoted {
 
 const answerApiClient = new APIClient<HasVoted, HasVoted>("/forum");
 
-const useVote = (token: string, answerId: number) => {
+const useVote = (answerId: number) => {
     const queryClient = useQueryClient();
-    const headers = { Authorization: `Bearer ${token}` };
+    const { auth } = useAuth();
+    const headers = { Authorization: `Bearer ${auth.accessToken}` };
     return useMutation({
         mutationFn: (up: boolean) =>
             answerApiClient.post(
@@ -27,8 +29,9 @@ const useVote = (token: string, answerId: number) => {
     });
 };
 
-const useGetVoteStatus = (token: string, answerId: number) => {
-    const headers = { Authorization: `Bearer ${token}` };
+const useGetVoteStatus = (answerId: number) => {
+    const { auth } = useAuth();
+    const headers = { Authorization: `Bearer ${auth.accessToken}` };
     return useQuery<HasVoted, ValidationError>({
         queryKey: ["vote", answerId],
         queryFn: () =>

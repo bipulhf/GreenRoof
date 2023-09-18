@@ -1,5 +1,4 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import { token } from "../../../services/jwt-token";
 import { useCreateAnswer } from "../../../hooks/useAnswer";
 import { useEffect } from "react";
 
@@ -11,7 +10,7 @@ interface Props {
 }
 
 export default function ForumAddAnswer({ id }: Props) {
-    const mutation = useCreateAnswer(token, id);
+    const mutation = useCreateAnswer(id);
 
     const {
         register,

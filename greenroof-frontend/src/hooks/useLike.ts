@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import APIClient from "../services/apiClient";
 import { ValidationError } from "../services/types";
-import { token } from "../services/jwt-token";
+import useAuth from "./useAuth";
 
 interface NumberOfLikes {
     totalLikes?: number;
@@ -18,7 +18,8 @@ const userLikedApiClient = new APIClient<UserLiked, UserLiked>(
 );
 
 const useGetNumberOfLikes = (postId: number) => {
-    const headers = { Authorization: `Bearer ${token}` };
+    const { auth } = useAuth();
+    const headers = { Authorization: `Bearer ${auth.accessToken}` };
     return useQuery<NumberOfLikes, Error>({
         queryKey: ["likes", postId],
         queryFn: () =>
@@ -29,7 +30,8 @@ const useGetNumberOfLikes = (postId: number) => {
 };
 
 const useLikedByUser = (postId: number) => {
-    const headers = { Authorization: `Bearer ${token}` };
+    const { auth } = useAuth();
+    const headers = { Authorization: `Bearer ${auth.accessToken}` };
     return useQuery<UserLiked, Error>({
         queryKey: ["liked-user", postId],
         queryFn: () =>
@@ -41,7 +43,8 @@ const useLikedByUser = (postId: number) => {
 
 const useLike = (postId: number) => {
     const query = useQueryClient();
-    const headers = { Authorization: `Bearer ${token}` };
+    const { auth } = useAuth();
+    const headers = { Authorization: `Bearer ${auth.accessToken}` };
     return useMutation({
         mutationFn: () =>
             likesNumberApiClient.post("/" + postId + "/like", headers, {}),

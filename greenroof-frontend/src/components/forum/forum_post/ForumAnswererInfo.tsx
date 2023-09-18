@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import user_photo from "/assets/forum/forum_question_user_photo_30x30.png";
-import { token } from "../../../services/jwt-token";
 import { useDeleteAnswer } from "../../../hooks/useAnswer";
 
 interface Props {
@@ -18,7 +17,7 @@ export default function ForumAnswererInfo({
     lastName,
     username,
 }: Props) {
-    const mutation = useDeleteAnswer(token);
+    const mutation = useDeleteAnswer();
     const deleteAnswer = (id: number) => {
         if (window.confirm("Do you really want to delete the answer?"))
             mutation.mutate(id);

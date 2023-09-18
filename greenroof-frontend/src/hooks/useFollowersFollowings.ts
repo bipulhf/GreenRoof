@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import APIClient from "../services/apiClient";
 import { Follower, Following, ValidationError } from "../services/types";
-import { token } from "../services/jwt-token";
+import useAuth from "./useAuth";
 
 interface IsFollow {
     isFollow: boolean;
@@ -18,7 +18,8 @@ const totalNumberApiClient = new APIClient<TotalNumber, TotalNumber>(
 );
 
 const useTotalFollowers = (username: string) => {
-    const headers = { Authorization: `Bearer ${token}` };
+    const { auth } = useAuth();
+    const headers = { Authorization: `Bearer ${auth.accessToken}` };
     return useQuery<TotalNumber, Error>({
         queryKey: ["followers-number", username],
         queryFn: () =>
@@ -30,7 +31,8 @@ const useTotalFollowers = (username: string) => {
 };
 
 const useTotalFollowings = (username: string) => {
-    const headers = { Authorization: `Bearer ${token}` };
+    const { auth } = useAuth();
+    const headers = { Authorization: `Bearer ${auth.accessToken}` };
     return useQuery<TotalNumber, Error>({
         queryKey: ["followings-number", username],
         queryFn: () =>
@@ -42,7 +44,8 @@ const useTotalFollowings = (username: string) => {
 };
 
 const useFollowers = (username: string) => {
-    const headers = { Authorization: `Bearer ${token}` };
+    const { auth } = useAuth();
+    const headers = { Authorization: `Bearer ${auth.accessToken}` };
     return useQuery<Follower[], Error>({
         queryKey: ["followers", username],
         queryFn: () =>
@@ -53,7 +56,8 @@ const useFollowers = (username: string) => {
     });
 };
 const useFollowings = (username: string) => {
-    const headers = { Authorization: `Bearer ${token}` };
+    const { auth } = useAuth();
+    const headers = { Authorization: `Bearer ${auth.accessToken}` };
     return useQuery<Following[], Error>({
         queryKey: ["followings", username],
         queryFn: () =>
@@ -66,7 +70,8 @@ const useFollowings = (username: string) => {
 
 const useFollows = (username: string) => {
     const query = useQueryClient();
-    const headers = { Authorization: `Bearer ${token}` };
+    const { auth } = useAuth();
+    const headers = { Authorization: `Bearer ${auth.accessToken}` };
     return useMutation({
         mutationFn: () =>
             isFollowApiClient.follow("/follows/" + username, headers),
@@ -81,7 +86,8 @@ const useFollows = (username: string) => {
 
 const useUnfollow = (username: string) => {
     const query = useQueryClient();
-    const headers = { Authorization: `Bearer ${token}` };
+    const { auth } = useAuth();
+    const headers = { Authorization: `Bearer ${auth.accessToken}` };
     return useMutation({
         mutationFn: () =>
             followingApiClient.unfollow("/unfollows/" + username, headers),
@@ -94,7 +100,8 @@ const useUnfollow = (username: string) => {
     });
 };
 const useIsFollow = (username: string) => {
-    const headers = { Authorization: `Bearer ${token}` };
+    const { auth } = useAuth();
+    const headers = { Authorization: `Bearer ${auth.accessToken}` };
     return useQuery<IsFollow, Error>({
         queryKey: ["isFollow", username],
         queryFn: () =>

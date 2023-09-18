@@ -6,8 +6,8 @@ import {
 } from "@tanstack/react-query";
 import APIClient from "../services/apiClient";
 import { Content, Post, ValidationError } from "../services/types";
-import { token } from "../services/jwt-token";
 import { useNavigate } from "react-router-dom";
+import useAuth from "./useAuth";
 
 interface PostText {
     postText: string;
@@ -17,7 +17,8 @@ const contentApiClient = new APIClient<Content<Post>, Post>("/community");
 const postApiClient = new APIClient<Post, PostText>("/community");
 
 const useTopPost = () => {
-    const headers = { Authorization: `Bearer ${token}` };
+    const { auth } = useAuth();
+    const headers = { Authorization: `Bearer ${auth.accessToken}` };
     return useInfiniteQuery<Content<Post>, Error>({
         queryKey: ["community-top"],
         queryFn: ({ pageParam = 0 }) =>
@@ -31,7 +32,8 @@ const useTopPost = () => {
 };
 
 const useLatestPost = () => {
-    const headers = { Authorization: `Bearer ${token}` };
+    const { auth } = useAuth();
+    const headers = { Authorization: `Bearer ${auth.accessToken}` };
     return useInfiniteQuery<Content<Post>, Error>({
         queryKey: ["community-recent"],
         queryFn: ({ pageParam = 0 }) =>
@@ -45,7 +47,8 @@ const useLatestPost = () => {
 };
 
 const useGetPost = (postId: number) => {
-    const headers = { Authorization: `Bearer ${token}` };
+    const { auth } = useAuth();
+    const headers = { Authorization: `Bearer ${auth.accessToken}` };
     return useQuery<Post, Error>({
         queryKey: ["post", postId],
         queryFn: () =>
@@ -57,7 +60,8 @@ const useGetPost = (postId: number) => {
 };
 
 const useSearchPost = (text: string) => {
-    const headers = { Authorization: `Bearer ${token}` };
+    const { auth } = useAuth();
+    const headers = { Authorization: `Bearer ${auth.accessToken}` };
     return useQuery<Post[], Error>({
         queryKey: ["search-post", text],
         queryFn: () =>
@@ -69,7 +73,8 @@ const useSearchPost = (text: string) => {
 };
 
 const useGetUserPost = (username: string) => {
-    const headers = { Authorization: `Bearer ${token}` };
+    const { auth } = useAuth();
+    const headers = { Authorization: `Bearer ${auth.accessToken}` };
     return useInfiniteQuery<Content<Post>, Error>({
         queryKey: ["community-post", username],
         queryFn: ({ pageParam = 0 }) =>
@@ -85,7 +90,8 @@ const useGetUserPost = (username: string) => {
 const useCreatePost = () => {
     const navigate = useNavigate();
     const query = useQueryClient();
-    const headers = { Authorization: `Bearer ${token}` };
+    const { auth } = useAuth();
+    const headers = { Authorization: `Bearer ${auth.accessToken}` };
     return useMutation({
         mutationFn: (post: PostText) =>
             postApiClient.post("/post/create", headers, post),
@@ -102,7 +108,8 @@ const useCreatePost = () => {
 const useEditPost = (postId: number) => {
     const navigate = useNavigate();
     const query = useQueryClient();
-    const headers = { Authorization: `Bearer ${token}` };
+    const { auth } = useAuth();
+    const headers = { Authorization: `Bearer ${auth.accessToken}` };
     return useMutation({
         mutationFn: (post: PostText) =>
             postApiClient.update("/post/update", headers, postId, post),
@@ -119,7 +126,8 @@ const useEditPost = (postId: number) => {
 const useDeletePost = () => {
     const navigate = useNavigate();
     const query = useQueryClient();
-    const headers = { Authorization: `Bearer ${token}` };
+    const { auth } = useAuth();
+    const headers = { Authorization: `Bearer ${auth.accessToken}` };
     return useMutation({
         mutationFn: (id: number) =>
             postApiClient.delete("/post/delete", headers, id),

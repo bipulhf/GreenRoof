@@ -1,5 +1,4 @@
 import { Link, useParams } from "react-router-dom";
-import { token } from "../../../services/jwt-token";
 import user_photo from "/assets/forum/forum_question_user_photo_30x30.png";
 import useNumberOfAnswer from "../../../hooks/useNumberOfAnswer";
 import { useDeleteQuestion } from "../../../hooks/useQuestion";
@@ -17,7 +16,7 @@ export default function ForumQuestionerInfo({
     username,
     id,
 }: Props) {
-    const mutation = useDeleteQuestion(token);
+    const mutation = useDeleteQuestion();
     const deletePost = (id: number) => {
         if (window.confirm("Do you really want to delete the post?"))
             mutation.mutate(id);

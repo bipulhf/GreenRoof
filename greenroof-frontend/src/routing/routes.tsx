@@ -19,6 +19,7 @@ import Login from "../components/home/Login";
 import Registration from "../components/home/Registration";
 import Home from "../components/home/Home";
 import RequireAuth from "../components/RequireAuth";
+import Logout from "../components/home/Logout";
 
 const router = createBrowserRouter([
     {
@@ -28,6 +29,14 @@ const router = createBrowserRouter([
             { index: true, element: <Home /> },
             { path: "login", element: <Login /> },
             { path: "register", element: <Registration /> },
+            {
+                path: "logout",
+                element: (
+                    <RequireAuth>
+                        <Logout />
+                    </RequireAuth>
+                ),
+            },
         ],
     },
     {

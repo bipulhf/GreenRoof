@@ -1,7 +1,6 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
-import { token } from "../../../services/jwt-token";
 import { useEditAnswer, useGetAnswer } from "../../../hooks/useAnswer";
 
 interface Inputs {
@@ -11,8 +10,8 @@ interface Inputs {
 export default function ForumEditAnswer() {
     const { postId, answerId } = useParams();
     const navigate = useNavigate();
-    const mutation = useEditAnswer(token, parseInt(answerId || "0"));
-    const { data: preData } = useGetAnswer(token, parseInt(answerId || "0"));
+    const mutation = useEditAnswer(parseInt(answerId || "0"));
+    const { data: preData } = useGetAnswer(parseInt(answerId || "0"));
     const {
         register,
         handleSubmit,

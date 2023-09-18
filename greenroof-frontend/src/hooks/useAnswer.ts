@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import APIClient from "../services/apiClient";
 import { Answer, ValidationError } from "../services/types";
+import useAuth from "./useAuth";
 
 interface AnswerText {
     answerText: string;
@@ -16,8 +17,9 @@ const useGetAnswers = (questionId: number) => {
     });
 };
 
-const useGetAnswer = (token: string, answerId: number) => {
-    const headers = { Authorization: `Bearer ${token}` };
+const useGetAnswer = (answerId: number) => {
+    const { auth } = useAuth();
+    const headers = { Authorization: `Bearer ${auth.accessToken}` };
     return useQuery<Answer, Error>({
         queryKey: ["answer", answerId],
         queryFn: () =>
@@ -27,9 +29,10 @@ const useGetAnswer = (token: string, answerId: number) => {
     });
 };
 
-const useCreateAnswer = (token: string, questionId: number) => {
+const useCreateAnswer = (questionId: number) => {
     const query = useQueryClient();
-    const headers = { Authorization: `Bearer ${token}` };
+    const { auth } = useAuth();
+    const headers = { Authorization: `Bearer ${auth.accessToken}` };
     return useMutation({
         mutationFn: (answer: AnswerText) =>
             answerApiClient.post("/answer/add/" + questionId, headers, answer),
@@ -42,9 +45,10 @@ const useCreateAnswer = (token: string, questionId: number) => {
     });
 };
 
-const useEditAnswer = (token: string, answerId: number) => {
+const useEditAnswer = (answerId: number) => {
     const query = useQueryClient();
-    const headers = { Authorization: `Bearer ${token}` };
+    const { auth } = useAuth();
+    const headers = { Authorization: `Bearer ${auth.accessToken}` };
     return useMutation({
         mutationFn: (answer: AnswerText) =>
             answerApiClient.update("/answer/update", headers, answerId, answer),
@@ -57,9 +61,10 @@ const useEditAnswer = (token: string, answerId: number) => {
     });
 };
 
-const useDeleteAnswer = (token: string) => {
+const useDeleteAnswer = () => {
     const query = useQueryClient();
-    const headers = { Authorization: `Bearer ${token}` };
+    const { auth } = useAuth();
+    const headers = { Authorization: `Bearer ${auth.accessToken}` };
     return useMutation({
         mutationFn: (id: number) =>
             answerApiClient.delete("/answer/delete", headers, id),

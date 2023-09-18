@@ -34,12 +34,20 @@ const useCreateLogin = () => {
     });
 };
 
+const useLogout = () => {
+    return useMutation({
+        mutationFn: () => loginApiClient.login("/logout"),
+        onError: (err: ValidationError) => err,
+    });
+};
+
 const useRefreshTkn = (refreshTkn: string) => {
-    const headers = { Authorization: `Bearer ${refreshTkn}` };
+    const { auth } = useAuth();
+    const headers = { Authorization: `Bearer ${auth.accessToken}` };
     return useQuery({
         queryKey: ["rfrsh-tkn"],
         queryFn: () =>
             refreshApiClient.post("/refresh-token", headers, refreshTkn),
     });
 };
-export { useCreateLogin, useRefreshTkn };
+export { useCreateLogin, useRefreshTkn, useLogout };

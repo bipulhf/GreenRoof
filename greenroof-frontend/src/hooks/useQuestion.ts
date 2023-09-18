@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import APIClient from "../services/apiClient";
 import { Question, ValidationError } from "../services/types";
 import { useNavigate } from "react-router-dom";
+import useAuth from "./useAuth";
 
 interface QuestionText {
     questionTitle: string;
@@ -18,10 +19,11 @@ const useGetQuestion = (questionId: number) => {
     });
 };
 
-const useCreateQuestion = (token: string) => {
+const useCreateQuestion = () => {
     const navigate = useNavigate();
     const query = useQueryClient();
-    const headers = { Authorization: `Bearer ${token}` };
+    const { auth } = useAuth();
+    const headers = { Authorization: `Bearer ${auth.accessToken}` };
     return useMutation({
         mutationFn: (question: QuestionText) =>
             questionApiClient.post("/question/create", headers, question),
@@ -35,10 +37,11 @@ const useCreateQuestion = (token: string) => {
     });
 };
 
-const useEditQuestion = (token: string, questionId: number) => {
+const useEditQuestion = (questionId: number) => {
     const navigate = useNavigate();
     const query = useQueryClient();
-    const headers = { Authorization: `Bearer ${token}` };
+    const { auth } = useAuth();
+    const headers = { Authorization: `Bearer ${auth.accessToken}` };
     return useMutation({
         mutationFn: (question: QuestionText) =>
             questionApiClient.update(
@@ -57,10 +60,11 @@ const useEditQuestion = (token: string, questionId: number) => {
     });
 };
 
-const useDeleteQuestion = (token: string) => {
+const useDeleteQuestion = () => {
     const navigate = useNavigate();
     const query = useQueryClient();
-    const headers = { Authorization: `Bearer ${token}` };
+    const { auth } = useAuth();
+    const headers = { Authorization: `Bearer ${auth.accessToken}` };
     return useMutation({
         mutationFn: (id: number) =>
             questionApiClient.delete("/question/delete", headers, id),

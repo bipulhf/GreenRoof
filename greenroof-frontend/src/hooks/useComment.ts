@@ -6,7 +6,7 @@ import {
 } from "@tanstack/react-query";
 import APIClient from "../services/apiClient";
 import { Comment, Content, ValidationError } from "../services/types";
-import { token } from "../services/jwt-token";
+import useAuth from "./useAuth";
 
 interface CommentText {
     commentText: string;
@@ -26,7 +26,8 @@ const commentCountApiClient = new APIClient<NumberOfComments, CommentText>(
 );
 
 const useGetComments = (postId: number) => {
-    const headers = { Authorization: `Bearer ${token}` };
+    const { auth } = useAuth();
+    const headers = { Authorization: `Bearer ${auth.accessToken}` };
     return useInfiniteQuery<Content<Comment>, Error>({
         queryKey: ["community-comment", postId],
         queryFn: ({ pageParam = 0 }) =>
@@ -40,7 +41,8 @@ const useGetComments = (postId: number) => {
 };
 
 const useGetComment = (commentId: number) => {
-    const headers = { Authorization: `Bearer ${token}` };
+    const { auth } = useAuth();
+    const headers = { Authorization: `Bearer ${auth.accessToken}` };
     return useQuery<Comment, Error>({
         queryKey: ["community-comment", commentId],
         queryFn: () =>
@@ -51,7 +53,8 @@ const useGetComment = (commentId: number) => {
 };
 
 const useGetNumberOfComment = (postId: number) => {
-    const headers = { Authorization: `Bearer ${token}` };
+    const { auth } = useAuth();
+    const headers = { Authorization: `Bearer ${auth.accessToken}` };
     return useQuery<NumberOfComments, Error>({
         queryKey: ["community-comment-number", postId],
         queryFn: () =>
@@ -63,7 +66,8 @@ const useGetNumberOfComment = (postId: number) => {
 
 const useCreateComment = (postId: number) => {
     const query = useQueryClient();
-    const headers = { Authorization: `Bearer ${token}` };
+    const { auth } = useAuth();
+    const headers = { Authorization: `Bearer ${auth.accessToken}` };
     return useMutation({
         mutationFn: (comment: CommentText) =>
             singleCommentApiClient.post("/add/" + postId, headers, comment),
@@ -78,7 +82,8 @@ const useCreateComment = (postId: number) => {
 
 const useEditComment = (commentId: number) => {
     const query = useQueryClient();
-    const headers = { Authorization: `Bearer ${token}` };
+    const { auth } = useAuth();
+    const headers = { Authorization: `Bearer ${auth.accessToken}` };
     return useMutation({
         mutationFn: (comment: CommentText) =>
             singleCommentApiClient.update(
@@ -98,7 +103,8 @@ const useEditComment = (commentId: number) => {
 
 const useDeleteComment = () => {
     const query = useQueryClient();
-    const headers = { Authorization: `Bearer ${token}` };
+    const { auth } = useAuth();
+    const headers = { Authorization: `Bearer ${auth.accessToken}` };
     return useMutation({
         mutationFn: (id: number) =>
             singleCommentApiClient.delete("/delete", headers, id),
