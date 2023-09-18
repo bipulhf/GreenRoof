@@ -72,7 +72,7 @@ const useFollows = (username: string) => {
             isFollowApiClient.follow("/follows/" + username, headers),
         onSuccess: () => {
             query.invalidateQueries({
-                queryKey: ["followers"],
+                queryKey: ["followers-number"],
             });
         },
         onError: (err: ValidationError) => err,
@@ -87,7 +87,7 @@ const useUnfollow = (username: string) => {
             followingApiClient.unfollow("/unfollows/" + username, headers),
         onSuccess: () => {
             query.invalidateQueries({
-                queryKey: ["followers"],
+                queryKey: ["followers-number"],
             });
         },
         onError: (err: ValidationError) => err,

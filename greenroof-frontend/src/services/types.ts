@@ -77,3 +77,7 @@ export interface Following {
     id: number;
     following: User;
 }
+export interface AuthObject {
+    name: string;
+    accessToken: string;
+}

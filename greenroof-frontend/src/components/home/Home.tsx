@@ -4,7 +4,7 @@ import vector from "/assets/community/vector1.png";
 
 export default function Home() {
     return (
-        <div className="flex max-lg:flex-col justify-between">
+        <div className="flex max-lg:flex-col justify-between max-lg:min-h-screen">
             <div className="m-[8%]">
                 <h1 className="font-extrabold text-greenbtn text-5xl sm:text-7xl md:text-9xl">
                     Roof to Root

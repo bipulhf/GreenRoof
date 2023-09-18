@@ -15,6 +15,10 @@ class APIClient<T, V> {
         axiosInstance(this.subbase)
             .get<T>(endpoint, params)
             .then((res) => res.data);
+    getWithCred = (endpoint: string, params: object = {}) =>
+        axiosInstance(this.subbase)
+            .get<T>(endpoint, { params, withCredentials: true })
+            .then((res) => res.data);
     getWithAuth = (endpoint: string, headers: object) =>
         axiosInstance(this.subbase)
             .get<T>(endpoint, headers)
@@ -30,6 +34,10 @@ class APIClient<T, V> {
     post = (endpoint: string, headers: object, data: V) =>
         axiosInstance(this.subbase)
             .post<V>(endpoint, data, { headers })
+            .then((res) => res.data);
+    login = (endpoint: string, data = {}) =>
+        axiosInstance(this.subbase)
+            .post<V>(endpoint, data, { withCredentials: true })
             .then((res) => res.data);
     follow = (endpoint: string, headers: object, data = {}) =>
         axiosInstance(this.subbase)

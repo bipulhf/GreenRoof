@@ -1,10 +1,9 @@
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import Background from "../components/home/Background";
 import Header from "../components/home/Header";
-import Home from "../components/home/Home";
 import forum_logo from "/assets/forum/forum_logo.svg";
 
-export default function MainPage() {
+export default function MainLayout() {
     return (
         <div className="bg-gradient-to-b from-bluebg to-greenbg min-h-screen relative">
             <div className="flex min-w-[100%]">
@@ -15,7 +14,7 @@ export default function MainPage() {
                     <Header />
                 </span>
             </div>
-            <Home />
+            <Outlet />
             <Background />
         </div>
     );
