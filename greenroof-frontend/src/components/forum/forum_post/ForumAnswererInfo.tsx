@@ -42,7 +42,7 @@ export default function ForumAnswererInfo({
                         </h4>
                     </Link>
                 </div>
-                {auth.name === username && (
+                {auth.username === username && (
                     <div className="flex justify-evenly">
                         <Link
                             to={"/forum/answer/edit/" + postId + "/" + answerId}

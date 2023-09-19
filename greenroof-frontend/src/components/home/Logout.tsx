@@ -7,7 +7,7 @@ export default function Logout() {
     const mutation = useLogout();
     useEffect(() => {
         setAuth({
-            name: "",
+            username: "",
             accessToken: "",
         });
         localStorage.clear();

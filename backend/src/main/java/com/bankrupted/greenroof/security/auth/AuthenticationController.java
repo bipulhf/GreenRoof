@@ -1,5 +1,6 @@
 package com.bankrupted.greenroof.security.auth;
 
+import com.bankrupted.greenroof.security.token.IsTokenValid;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,11 @@ public class AuthenticationController {
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
         return ResponseEntity.ok(service.authenticate(request));
+    }
+
+    @PostMapping("/isTokenValid")
+    public ResponseEntity<?> isTokenValid(@RequestBody IsTokenValid token) {
+        return ResponseEntity.ok(service.isTokenValid(token));
     }
 
     @PostMapping("/refresh-token")

@@ -52,7 +52,7 @@ export default function CommunityFeedPost({
                             @{user.username}
                         </h2>
                     </Link>
-                    {auth.name === user.username && (
+                    {auth.username === user.username && (
                         <div className="flex text-gray">
                             <h3
                                 className="mx-5 hover:cursor-pointer"

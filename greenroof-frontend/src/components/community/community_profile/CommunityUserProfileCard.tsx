@@ -63,7 +63,7 @@ export default function CommunityUserProfileCard({
                             From {city}
                         </h3>
                     </div>
-                    {auth.name != uname && (
+                    {auth.username != uname && (
                         <button
                             onClick={onFollow}
                             className="min-[415px]:hidden self-center h-fit border rounded-full bg-greenbtn text-white text-[13px] md:text-[16px] px-3 md:px-5 py-1 md:py-2 ml-[20%]"
@@ -72,7 +72,7 @@ export default function CommunityUserProfileCard({
                         </button>
                     )}
                 </div>
-                {auth.name != uname && (
+                {auth.username != uname && (
                     <button
                         onClick={onFollow}
                         className="max-[1110px]:hidden self-center h-fit border rounded-full bg-greenbtn text-white text-[13px] lg:text-[16px] px-3 lg:px-5 py-1 lg:py-2"
@@ -81,7 +81,7 @@ export default function CommunityUserProfileCard({
                     </button>
                 )}
                 <div className="flex flex-col max-sm:mt-5 justify-evenly">
-                    {auth.name != uname && (
+                    {auth.username != uname && (
                         <button
                             onClick={onFollow}
                             className="min-[1110px]:hidden max-[414px]:hidden self-center h-fit border rounded-full bg-greenbtn text-white text-[13px] md:text-[16px] px-3 md:px-5 py-1 md:py-2"

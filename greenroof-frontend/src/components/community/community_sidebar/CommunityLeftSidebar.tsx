@@ -44,7 +44,7 @@ export default function CommunityLeftSidebar() {
                         </Link>
                     </li>
                     <li>
-                        <Link to={"/community/user/" + auth.name}>
+                        <Link to={"/community/user/" + auth.username}>
                             <FontAwesomeIcon icon={faUser} fontSize={20} />
                             <span className="ml-5">Profile</span>
                         </Link>

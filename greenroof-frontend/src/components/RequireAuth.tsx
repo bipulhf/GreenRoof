@@ -12,7 +12,7 @@ export default function RequireAuth({ children }: Props) {
 
     return (
         <>
-            {auth.name && auth.accessToken ? (
+            {auth.username && auth.accessToken ? (
                 children
             ) : (
                 <Navigate to={"/login"} state={{ from: location }} replace />

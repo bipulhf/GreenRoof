@@ -47,7 +47,7 @@ export default function CommunityCommentmMarkup({
                             @{commenter.username}
                         </h2>
                     </div>
-                    {auth.name === commenter.username && (
+                    {auth.username === commenter.username && (
                         <div className="flex text-gray">
                             <h3
                                 className="mx-5 hover:cursor-pointer"

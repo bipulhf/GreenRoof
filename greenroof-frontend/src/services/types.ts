@@ -78,6 +78,6 @@ export interface Following {
     following: User;
 }
 export interface AuthObject {
-    name: string;
+    username: string;
     accessToken: string;
 }

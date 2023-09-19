@@ -4,9 +4,11 @@ import {
     ReactNode,
     SetStateAction,
     createContext,
+    useEffect,
     useState,
 } from "react";
 import { AuthObject } from "../services/types";
+import { useTokenValidity } from "../hooks/useLogin";
 
 interface Props {
     children?: ReactNode;
@@ -19,7 +21,7 @@ interface IAuthContext {
 
 const defaultState = {
     auth: {
-        name: localStorage.getItem("name"),
+        username: localStorage.getItem("name"),
         accessToken: localStorage.getItem("accessToken"),
     },
     setAuth: (auth: AuthObject) => {},
@@ -28,10 +30,27 @@ const defaultState = {
 const AuthContext = createContext(defaultState);
 
 export const AuthProvider = ({ children }: Props) => {
+    const mutation = useTokenValidity();
     const [auth, setAuth] = useState<AuthObject>({
-        name: localStorage.getItem("name") || "",
-        accessToken: localStorage.getItem("accessToken") || "",
+        username: "",
+        accessToken: "",
     });
+
+    useEffect(() => {
+        mutation.mutate({
+            username: localStorage.getItem("name") || "",
+            accessToken: localStorage.getItem("accessToken") || "",
+        });
+    }, []);
+
+    useEffect(() => {
+        if (mutation.data?.isTokenValid) {
+            setAuth({
+                username: localStorage.getItem("name") || "",
+                accessToken: localStorage.getItem("accessToken") || "",
+            });
+        }
+    }, [mutation.data]);
 
     return (
         <AuthContext.Provider value={{ auth, setAuth }}>

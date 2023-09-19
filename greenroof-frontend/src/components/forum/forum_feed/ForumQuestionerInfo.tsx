@@ -61,7 +61,7 @@ export default function ForumQuestionerInfo({
                     <h3 className="font-semibold text-gray text-[10px] sm:text-[12px]">
                         {noOfAns?.noa} Answers
                     </h3>
-                    {postId != null && auth.name === username && (
+                    {postId != null && auth.username === username && (
                         <div className="flex justify-evenly">
                             <Link
                                 to={"/forum/post/edit/" + id}

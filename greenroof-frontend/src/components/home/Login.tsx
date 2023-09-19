@@ -38,7 +38,7 @@ export default function Login() {
 
     return (
         <>
-            {auth.name && auth.accessToken ? (
+            {auth.username && auth.accessToken ? (
                 <Navigate
                     to={"/community"}
                     state={{ from: location }}
@@ -47,7 +47,7 @@ export default function Login() {
             ) : (
                 <div className="flex max-lg:flex-col justify-between max-lg:min-h-screen">
                     <div className="m-[10%]">
-                        <div className="flex mb-10">
+                        <div className="flex mb-10 animate-fade-right animate-once animate-ease-in-out">
                             <img src={loginIcon} alt="Login" />
                             <h2 className="text-3xl min-[414px]:text-4xl font-semibold self-center">
                                 Login to your profile
@@ -59,7 +59,7 @@ export default function Login() {
                         >
                             <label
                                 htmlFor="username"
-                                className=" font-semibold p-5"
+                                className=" font-semibold p-5 animate-fade-right animate-once animate-delay-200 animate-ease-in-out"
                             >
                                 Username:
                             </label>
@@ -71,12 +71,12 @@ export default function Login() {
                                 id="username"
                                 placeholder="Enter your username..."
                                 autoFocus
-                                className="px-6 py-2 rounded-full w-[100%] mx-5 mt-3 mb-10"
+                                className="px-6 py-2 rounded-full w-[100%] mx-5 mt-3 mb-10 animate-fade-right animate-once animate-delay-200 animate-ease-in-out"
                             />{" "}
                             <br />
                             <label
                                 htmlFor="password"
-                                className=" font-semibold p-5"
+                                className=" font-semibold p-5 animate-fade-right animate-once animate-delay-300 animate-ease-in-out"
                             >
                                 Password:
                             </label>
@@ -87,7 +87,7 @@ export default function Login() {
                                 name="password"
                                 id="password"
                                 placeholder="Enter your password..."
-                                className="px-6 py-2 rounded-full w-[100%] mx-5 mt-3"
+                                className="px-6 py-2 rounded-full w-[100%] mx-5 mt-3 animate-fade-right animate-once animate-delay-300 animate-ease-in-out"
                             />{" "}
                             {mutation.isError && (
                                 <p className="text-red mx-5">
@@ -100,7 +100,7 @@ export default function Login() {
                                 <button
                                     type="submit"
                                     disabled={mutation.isLoading}
-                                    className="bg-blue px-5 py-3 rounded-full text-white font-medium text-xl min-[414px]:text-2xl max-sm:mb-5 hover:underline"
+                                    className="bg-blue px-5 py-3 rounded-full text-white font-medium text-xl min-[414px]:text-2xl max-sm:mb-5 hover:underline animate-fade-right animate-once animate-delay-500 animate-ease-in-out"
                                 >
                                     <FontAwesomeIcon
                                         icon={faRightToBracket}
@@ -108,9 +108,9 @@ export default function Login() {
                                     />
                                     {mutation.isLoading
                                         ? "Entering..."
-                                        : "Login"}
+                                        : "Enter"}
                                 </button>
-                                <button className="bg-brown px-5 py-3 rounded-full text-white font-medium text-xl min-[414px]:text-2xl hover:underline">
+                                <button className="bg-brown px-5 py-3 rounded-full text-white font-medium text-xl min-[414px]:text-2xl hover:underline animate-fade-right animate-once animate-delay-600 animate-ease-in-out">
                                     <FontAwesomeIcon
                                         icon={faLock}
                                         className="mr-3"
@@ -119,7 +119,7 @@ export default function Login() {
                                 </button>
                             </div>
                         </form>
-                        <h2 className="text-xl min-[414px]:text-2xl min-[590px]:text-3xl">
+                        <h2 className="text-xl min-[414px]:text-2xl min-[590px]:text-3xl animate-fade-right animate-once animate-delay-700 animate-ease-in-out">
                             Don't have an account?{" "}
                             <Link
                                 to={"/register"}

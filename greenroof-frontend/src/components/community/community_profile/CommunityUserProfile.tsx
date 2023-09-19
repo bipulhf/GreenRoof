@@ -36,7 +36,7 @@ export default function CommunityUserProfile() {
                 followers={totalFollowers?.total || 0}
                 followings={totalFollowings?.total || 0}
             />
-            {auth.name === user?.username && <CommunityCreatePost />}
+            {auth.username === user?.username && <CommunityCreatePost />}
             {isLoading && <p>Loading...</p>}
             {isError && <p>{error.message}</p>}
             <InfiniteScroll
