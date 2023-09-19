@@ -58,20 +58,19 @@ public class CommunityCommentService {
 //        notification.setNotificationType(NotificationType.COMMENT);
 //        notificationStorageService.createNotificationStorage(notification);
 
-        notificationStorageService.createNotificationStorage(Notification.builder()
-                        .id(1l)
-                .delivered(false)
-                .content("new comment from " + commentUser.getUsername())
-                .notificationType(NotificationType.COMMENT)
-                .userFrom(commentUser)
-                .userTo(postUser).build());
+//        notificationStorageService.createNotificationStorage(Notification.builder()
+//                        .id(1l)
+//                .delivered(false)
+//                .content("new comment from " + commentUser.getUsername())
+//                .notificationType(NotificationType.COMMENT)
+//                .userFrom(commentUser)
+//                .userTo(postUser).build());
         return new ResponseEntity<>("Comment Successful", HttpStatus.CREATED);
     }
 
     public ResponseEntity<?> updateComment(String username, Long commentId, CommunityComment communityComment) {
         CommunityComment prevComment = communityCommentRepository.findById(commentId)
                 .orElseThrow(() -> new NoSuchElementException("Comment with id " + commentId + " does not exists."));
-        ;
         ;
 
         if (!Objects.equals(prevComment.getCommenter().getUsername(), username))

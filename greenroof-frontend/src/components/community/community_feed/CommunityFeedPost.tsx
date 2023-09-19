@@ -4,6 +4,7 @@ import { User } from "../../../services/types";
 import CommunityPostLikeCmnt from "../community_post/CommunityPostLikeCmnt";
 import { Link, useNavigate } from "react-router-dom";
 import { useDeletePost, useEditPost } from "../../../hooks/usePost";
+import useAuth from "../../../hooks/useAuth";
 interface Props {
     postId: number;
     postText: string;
@@ -19,6 +20,7 @@ export default function CommunityFeedPost({
     user,
     createdAt,
 }: Props) {
+    const { auth } = useAuth();
     const editMutation = useEditPost(postId);
     const deleteMutation = useDeletePost();
     const navigate = useNavigate();
@@ -50,17 +52,22 @@ export default function CommunityFeedPost({
                             @{user.username}
                         </h2>
                     </Link>
-                    <div className="flex text-gray">
-                        <h3
-                            className="mx-5 hover:cursor-pointer"
-                            onClick={onEdit}
-                        >
-                            Edit
-                        </h3>
-                        <h3 className="hover:cursor-pointer" onClick={onDelete}>
-                            Delete
-                        </h3>
-                    </div>
+                    {auth.name === user.username && (
+                        <div className="flex text-gray">
+                            <h3
+                                className="mx-5 hover:cursor-pointer"
+                                onClick={onEdit}
+                            >
+                                Edit
+                            </h3>
+                            <h3
+                                className="hover:cursor-pointer"
+                                onClick={onDelete}
+                            >
+                                Delete
+                            </h3>
+                        </div>
+                    )}
                 </div>
                 <div className="pb-2 ">
                     <h3 className="text-[14px] text-justify">

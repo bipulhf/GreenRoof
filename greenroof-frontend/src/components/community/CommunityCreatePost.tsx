@@ -45,11 +45,21 @@ export default function CommunityCreatePost() {
                     autoComplete="off"
                 />
                 <div className="flex flex-col justify-evenly">
-                    <FontAwesomeIcon
-                        icon={faImage}
-                        fontSize={16}
-                        color="#B97246"
-                    />
+                    <label>
+                        <FontAwesomeIcon
+                            icon={faImage}
+                            fontSize={16}
+                            color="#B97246"
+                            className="hover:cursor-pointer"
+                        />{" "}
+                        <input
+                            type="file"
+                            name="img"
+                            id="img"
+                            style={{ display: "none" }}
+                            accept="image/*"
+                        />
+                    </label>
                     <button
                         type="submit"
                         disabled={mutation.isLoading}

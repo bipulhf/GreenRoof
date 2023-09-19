@@ -2,6 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import user_photo from "/assets/forum/forum_question_user_photo_30x30.png";
 import useNumberOfAnswer from "../../../hooks/useNumberOfAnswer";
 import { useDeleteQuestion } from "../../../hooks/useQuestion";
+import useAuth from "../../../hooks/useAuth";
 
 interface Props {
     firstName: string;
@@ -16,6 +17,7 @@ export default function ForumQuestionerInfo({
     username,
     id,
 }: Props) {
+    const { auth } = useAuth();
     const mutation = useDeleteQuestion();
     const deletePost = (id: number) => {
         if (window.confirm("Do you really want to delete the post?"))
@@ -59,7 +61,7 @@ export default function ForumQuestionerInfo({
                     <h3 className="font-semibold text-gray text-[10px] sm:text-[12px]">
                         {noOfAns?.noa} Answers
                     </h3>
-                    {postId != null && (
+                    {postId != null && auth.name === username && (
                         <div className="flex justify-evenly">
                             <Link
                                 to={"/forum/post/edit/" + id}

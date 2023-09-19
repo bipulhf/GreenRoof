@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import user_photo from "/assets/forum/forum_question_user_photo_30x30.png";
 import { useDeleteAnswer } from "../../../hooks/useAnswer";
+import useAuth from "../../../hooks/useAuth";
 
 interface Props {
     postId: number;
@@ -17,6 +18,7 @@ export default function ForumAnswererInfo({
     lastName,
     username,
 }: Props) {
+    const { auth } = useAuth();
     const mutation = useDeleteAnswer();
     const deleteAnswer = (id: number) => {
         if (window.confirm("Do you really want to delete the answer?"))
@@ -40,21 +42,23 @@ export default function ForumAnswererInfo({
                         </h4>
                     </Link>
                 </div>
-                <div className="flex justify-evenly">
-                    <Link
-                        to={"/forum/answer/edit/" + postId + "/" + answerId}
-                        className="text-gray font-medium text-[12px]"
-                    >
-                        Edit
-                    </Link>
+                {auth.name === username && (
+                    <div className="flex justify-evenly">
+                        <Link
+                            to={"/forum/answer/edit/" + postId + "/" + answerId}
+                            className="text-gray font-medium text-[12px]"
+                        >
+                            Edit
+                        </Link>
 
-                    <button
-                        className="text-gray font-medium text-[12px]"
-                        onClick={() => deleteAnswer(answerId)}
-                    >
-                        Delete
-                    </button>
-                </div>
+                        <button
+                            className="text-gray font-medium text-[12px]"
+                            onClick={() => deleteAnswer(answerId)}
+                        >
+                            Delete
+                        </button>
+                    </div>
+                )}
                 {mutation.isError && (
                     <p className="text-red">
                         {mutation.error.response.data.message

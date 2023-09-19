@@ -9,8 +9,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import forum_logo from "/assets/forum/forum_logo.svg";
+import useAuth from "../../../hooks/useAuth";
 
 export default function CommunityLeftSidebar() {
+    const { auth } = useAuth();
     return (
         <div className="fixed h-screen max-md:hidden md:w-[30%] min-[1000px]:w-[20%]">
             <div className="">
@@ -42,7 +44,7 @@ export default function CommunityLeftSidebar() {
                         </Link>
                     </li>
                     <li>
-                        <Link to={"/community/"}>
+                        <Link to={"/community/user/" + auth.name}>
                             <FontAwesomeIcon icon={faUser} fontSize={20} />
                             <span className="ml-5">Profile</span>
                         </Link>

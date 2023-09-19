@@ -77,9 +77,9 @@ public class ForumAnswerService {
         user.setScore(user.getScore() - 1);
         userRepository.save(user);
 
-        Long answerId = forumAnswerRepository.findByQuestionIdOrderByScoreDescCreatedAtDesc(questionId).get(0).getId();
-        Integer voteListSize = forumVoteRepository.findByAnswerId(answerId).size();
-        if(voteListSize > 0) forumVoteRepository.deleteByAnswerId(answerId);
+        List<ForumAnswer> answers = forumAnswerRepository.findByQuestionIdOrderByScoreDescCreatedAtDesc(questionId);
+        for(ForumAnswer answer : answers)
+            if(!forumVoteRepository.findByAnswerId(answer.getId()).isEmpty()) forumVoteRepository.deleteByAnswerId(answer.getId());
         forumAnswerRepository.deleteByQuestionId(questionId);
     }
 

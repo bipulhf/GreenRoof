@@ -28,6 +28,7 @@ export default function CommunityFeed() {
                 hasMore={!!hasNextPage}
                 next={() => fetchNextPage()}
                 loader="<p>Loading</p>"
+                className="divide-y divide-graybg"
             >
                 {data?.pages.map((posts, index) => (
                     <React.Fragment key={index}>

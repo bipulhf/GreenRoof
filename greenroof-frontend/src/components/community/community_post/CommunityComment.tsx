@@ -24,6 +24,7 @@ export default function CommunityComment({ postId }: Props) {
                 hasMore={!!hasNextPage}
                 next={() => fetchNextPage()}
                 loader="<p>Loading...</p>"
+                className="divide-y divide-graybg"
             >
                 {data?.pages.map((comments, index) => (
                     <React.Fragment key={index}>

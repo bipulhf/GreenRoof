@@ -10,6 +10,7 @@ export default function Logout() {
             name: "",
             accessToken: "",
         });
+        localStorage.clear();
         mutation.mutate();
     }, [auth]);
     return (

@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useDeleteComment } from "../../../hooks/useComment";
 import { User } from "../../../services/types";
 import user_profile_photo from "/assets/forum/forum_top_user_photo_40x40.png";
+import useAuth from "../../../hooks/useAuth";
 
 interface Props {
     id: number;
@@ -18,6 +19,7 @@ export default function CommunityCommentmMarkup({
     commenter,
     createdAt,
 }: Props) {
+    const { auth } = useAuth();
     const deleteMutation = useDeleteComment();
     const navigate = useNavigate();
     const onEdit = () => {
@@ -45,17 +47,22 @@ export default function CommunityCommentmMarkup({
                             @{commenter.username}
                         </h2>
                     </div>
-                    <div className="flex text-gray">
-                        <h3
-                            className="mx-5 hover:cursor-pointer"
-                            onClick={onEdit}
-                        >
-                            Edit
-                        </h3>
-                        <h3 className="hover:cursor-pointer" onClick={onDelete}>
-                            Delete
-                        </h3>
-                    </div>
+                    {auth.name === commenter.username && (
+                        <div className="flex text-gray">
+                            <h3
+                                className="mx-5 hover:cursor-pointer"
+                                onClick={onEdit}
+                            >
+                                Edit
+                            </h3>
+                            <h3
+                                className="hover:cursor-pointer"
+                                onClick={onDelete}
+                            >
+                                Delete
+                            </h3>
+                        </div>
+                    )}
                 </div>
                 <div className="pb-2">
                     <h3 className="text-[14px] text-justify">{text}</h3>

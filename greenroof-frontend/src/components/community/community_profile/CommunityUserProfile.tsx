@@ -10,8 +10,10 @@ import {
     useTotalFollowers,
     useTotalFollowings,
 } from "../../../hooks/useFollowersFollowings";
+import useAuth from "../../../hooks/useAuth";
 
 export default function CommunityUserProfile() {
+    const { auth } = useAuth();
     const { username } = useParams();
     const { data, isLoading, isError, error, hasNextPage, fetchNextPage } =
         useGetUserPost(username || "");
@@ -34,7 +36,7 @@ export default function CommunityUserProfile() {
                 followers={totalFollowers?.total || 0}
                 followings={totalFollowings?.total || 0}
             />
-            <CommunityCreatePost />
+            {auth.name === user?.username && <CommunityCreatePost />}
             {isLoading && <p>Loading...</p>}
             {isError && <p>{error.message}</p>}
             <InfiniteScroll

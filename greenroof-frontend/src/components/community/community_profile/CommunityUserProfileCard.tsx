@@ -6,6 +6,7 @@ import {
     useIsFollow,
     useUnfollow,
 } from "../../../hooks/useFollowersFollowings";
+import useAuth from "../../../hooks/useAuth";
 
 interface Props {
     firstname: string;
@@ -24,6 +25,7 @@ export default function CommunityUserProfileCard({
     followers,
     followings,
 }: Props) {
+    const { auth } = useAuth();
     const { username: uname } = useParams();
     const [follow, setFollow] = useState(false);
     const { data: isFollow } = useIsFollow(uname || "");
@@ -33,12 +35,14 @@ export default function CommunityUserProfileCard({
     const onFollow = () => {
         if (follow) unfollowMutation.mutate();
         else followMutation.mutate();
-        if (followMutation.isSuccess || unfollowMutation.isSuccess)
-            setFollow(!follow);
     };
     useEffect(() => {
         setFollow(isFollow?.isFollow || false);
     }, [isFollow]);
+    useEffect(() => {
+        if (followMutation.isSuccess || unfollowMutation.isSuccess)
+            setFollow(!follow);
+    }, [followMutation.isSuccess, unfollowMutation.isSuccess]);
     return (
         <>
             <div className="sm:flex justify-evenly py-7">
@@ -59,26 +63,32 @@ export default function CommunityUserProfileCard({
                             From {city}
                         </h3>
                     </div>
-                    <button
-                        onClick={onFollow}
-                        className="min-[415px]:hidden self-center h-fit border rounded-full bg-greenbtn text-white text-[13px] md:text-[16px] px-3 md:px-5 py-1 md:py-2 ml-[20%]"
-                    >
-                        {follow ? "Unfollow" : "Follow"}
-                    </button>
+                    {auth.name != uname && (
+                        <button
+                            onClick={onFollow}
+                            className="min-[415px]:hidden self-center h-fit border rounded-full bg-greenbtn text-white text-[13px] md:text-[16px] px-3 md:px-5 py-1 md:py-2 ml-[20%]"
+                        >
+                            {follow ? "Unfollow" : "Follow"}
+                        </button>
+                    )}
                 </div>
-                <button
-                    onClick={onFollow}
-                    className="max-[1110px]:hidden self-center h-fit border rounded-full bg-greenbtn text-white text-[13px] lg:text-[16px] px-3 lg:px-5 py-1 lg:py-2"
-                >
-                    {follow ? "Unfollow" : "Follow"}
-                </button>
-                <div className="flex flex-col max-sm:mt-5 justify-evenly">
+                {auth.name != uname && (
                     <button
                         onClick={onFollow}
-                        className="min-[1110px]:hidden max-[414px]:hidden self-center h-fit border rounded-full bg-greenbtn text-white text-[13px] md:text-[16px] px-3 md:px-5 py-1 md:py-2"
+                        className="max-[1110px]:hidden self-center h-fit border rounded-full bg-greenbtn text-white text-[13px] lg:text-[16px] px-3 lg:px-5 py-1 lg:py-2"
                     >
                         {follow ? "Unfollow" : "Follow"}
                     </button>
+                )}
+                <div className="flex flex-col max-sm:mt-5 justify-evenly">
+                    {auth.name != uname && (
+                        <button
+                            onClick={onFollow}
+                            className="min-[1110px]:hidden max-[414px]:hidden self-center h-fit border rounded-full bg-greenbtn text-white text-[13px] md:text-[16px] px-3 md:px-5 py-1 md:py-2"
+                        >
+                            {follow ? "Unfollow" : "Follow"}
+                        </button>
+                    )}
                     <div className="flex mt-5 self-center">
                         <Link
                             to={"followers"}

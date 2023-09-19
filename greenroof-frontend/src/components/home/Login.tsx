@@ -31,10 +31,10 @@ export default function Login() {
     };
 
     useEffect(() => {
-        if (isSubmitSuccessful) {
+        if (isSubmitSuccessful && mutation.data) {
             navigate(from, { replace: true });
         }
-    }, [isSubmitSuccessful]);
+    }, [isSubmitSuccessful, mutation.data]);
 
     return (
         <>
@@ -96,7 +96,7 @@ export default function Login() {
                                         : mutation.error.message}
                                 </p>
                             )}
-                            <div className="flex max-sm:flex-col  justify-between my-10">
+                            <div className="flex max-sm:flex-col justify-between my-10">
                                 <button
                                     type="submit"
                                     disabled={mutation.isLoading}
@@ -107,7 +107,7 @@ export default function Login() {
                                         className="mr-3"
                                     />
                                     {mutation.isLoading
-                                        ? "Logging in..."
+                                        ? "Entering..."
                                         : "Login"}
                                 </button>
                                 <button className="bg-brown px-5 py-3 rounded-full text-white font-medium text-xl min-[414px]:text-2xl hover:underline">
