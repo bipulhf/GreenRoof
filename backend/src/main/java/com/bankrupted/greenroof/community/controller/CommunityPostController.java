@@ -1,5 +1,6 @@
 package com.bankrupted.greenroof.community.controller;
 
+import com.bankrupted.greenroof.community.Notification.NotificationType;
 import com.bankrupted.greenroof.community.entity.CommunityPost;
 import com.bankrupted.greenroof.community.service.CommunityPostService;
 import com.bankrupted.greenroof.utils.GetUsername;
@@ -42,8 +43,8 @@ public class CommunityPostController {
     @Transactional
     @PostMapping("{postId}/like")
     public ResponseEntity<?> likeCommunityPost(@PathVariable Long postId) {
-        String username = GetUsername.get();
-        return communityPostService.likeCommunityPost(postId, username);
+        String liker = GetUsername.get();
+        return communityPostService.likeCommunityPost(postId, liker);
     }
 
     @GetMapping("{postId}/userLike")
