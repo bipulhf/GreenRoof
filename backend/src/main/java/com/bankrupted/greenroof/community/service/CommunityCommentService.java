@@ -49,22 +49,7 @@ public class CommunityCommentService {
         communityComment.setPost(post);
         communityCommentRepository.save(communityComment);
 
-//        Notification notification = new Notification();
-//        notification.setDelivered(false);
-//        notification.setContent("new comment from " + commentUser.getUsername());
-//        notification.setRead(false);
-//        notification.setUserFrom(commentUser);
-//        notification.setUserTo(postUser);
-//        notification.setNotificationType(NotificationType.COMMENT);
-//        notificationStorageService.createNotificationStorage(notification);
-
-//        notificationStorageService.createNotificationStorage(Notification.builder()
-//                        .id(1l)
-//                .delivered(false)
-//                .content("new comment from " + commentUser.getUsername())
-//                .notificationType(NotificationType.COMMENT)
-//                .userFrom(commentUser)
-//                .userTo(postUser).build());
+        notificationStorageService.createNotificationStorage(postUser, commentUser, NotificationType.Comment);
         return new ResponseEntity<>("Comment Successful", HttpStatus.CREATED);
     }
 

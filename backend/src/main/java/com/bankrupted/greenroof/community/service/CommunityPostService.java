@@ -4,6 +4,9 @@ import com.bankrupted.greenroof.community.entity.CommunityPostLike;
 import com.bankrupted.greenroof.community.repository.CommunityPostLikeRepository;
 import com.bankrupted.greenroof.exception.GenericException;
 import com.bankrupted.greenroof.user.entity.User;
+import com.bankrupted.greenroof.community.Notification.NotificationStorageRepository;
+import com.bankrupted.greenroof.community.Notification.NotificationStorageService;
+import com.bankrupted.greenroof.community.Notification.NotificationType;
 import com.bankrupted.greenroof.community.entity.CommunityPost;
 import com.bankrupted.greenroof.user.repository.UserRepository;
 import com.bankrupted.greenroof.community.repository.CommunityPostRepository;
@@ -23,6 +26,7 @@ public class CommunityPostService {
 
     private final CommunityPostRepository communityPostRepository;
     private final UserRepository userRepository;
+    private final NotificationStorageService notificationStorageService;
     private final CommunityCommentService communityCommentService;
     private final CommunityPostLikeRepository communityPostLikeRepository;
 
@@ -38,9 +42,10 @@ public class CommunityPostService {
 
     public ResponseEntity<?> updateCommunityPost(String username, Long postId, CommunityPost communityPost) {
         CommunityPost prevPost = communityPostRepository.findById(postId)
-                .orElseThrow(() -> new NoSuchElementException("Post with id " + postId + " does not exists."));;
+                .orElseThrow(() -> new NoSuchElementException("Post with id " + postId + " does not exists."));
+        ;
 
-        if(!Objects.equals(prevPost.getUser().getUsername(), username))
+        if (!Objects.equals(prevPost.getUser().getUsername(), username))
             throw new GenericException("You are not allowed to edit this post.");
 
         communityPost.setId(postId);
@@ -53,12 +58,15 @@ public class CommunityPostService {
 
     public ResponseEntity<?> deleteCommmunityPost(String username, Long postId) {
         CommunityPost prevPost = communityPostRepository.findById(postId)
-                .orElseThrow(() -> new NoSuchElementException("Post with id " + postId + " does not exists."));;
+                .orElseThrow(() -> new NoSuchElementException("Post with id " + postId + " does not exists."));
+        ;
 
-        if(!Objects.equals(prevPost.getUser().getUsername(), username))
+        if (!Objects.equals(prevPost.getUser().getUsername(), username))
             throw new GenericException("You are not allowed to delete this post.");
-        if(communityPostLikeRepository.totalNumberOfLikes(postId) > 0) communityPostLikeRepository.deleteByPostId(prevPost);
-        if(communityCommentService.getCommentCountOfAPost(postId).get("numberOfComments") > 0) communityCommentService.deleteComment(postId);
+        if (communityPostLikeRepository.totalNumberOfLikes(postId) > 0)
+            communityPostLikeRepository.deleteByPostId(prevPost);
+        if (communityCommentService.getCommentCountOfAPost(postId).get("numberOfComments") > 0)
+            communityCommentService.deleteComment(postId);
         communityPostRepository.deleteById(postId);
         return new ResponseEntity<>("Post Deleted", HttpStatus.OK);
     }
@@ -74,20 +82,24 @@ public class CommunityPostService {
     public ResponseEntity<?> likeCommunityPost(Long postId, String username) {
         CommunityPost post = communityPostRepository.findById(postId)
                 .orElseThrow(() -> new NoSuchElementException("Post with id " + postId + " does not exists."));
-        User user = userRepository.findByUsername(username)
+        User liker = userRepository.findByUsername(username)
+                .orElseThrow(() -> new NoSuchElementException("No user found with this username " + username + "."));
+        User postOwner = userRepository.findByUsername(username)
                 .orElseThrow(() -> new NoSuchElementException("No user found with this username " + username + "."));
 
         CommunityPostLike communityPostLike = new CommunityPostLike();
         communityPostLike.setPostId(post);
         communityPostLike.setCreatedAt(new Date());
-        communityPostLike.setLiker(user);
+        communityPostLike.setLiker(liker);
 
-        if(communityPostLikeRepository.existsByPostIdAndLikerId(postId, user.getId()) > 0) {
-            CommunityPostLike postLike = communityPostLikeRepository.findByPostIdAndLikerId(postId, user.getId()).get();
+        if (communityPostLikeRepository.existsByPostIdAndLikerId(postId, liker.getId()) > 0) {
+            CommunityPostLike postLike = communityPostLikeRepository.findByPostIdAndLikerId(postId, liker.getId())
+                    .get();
             communityPostLikeRepository.deleteById(postLike.getId());
             return new ResponseEntity<>("Post Disliked Successful", HttpStatus.OK);
         }
         communityPostLikeRepository.save(communityPostLike);
+        notificationStorageService.createNotificationStorage(postOwner, liker, NotificationType.Like);
         return new ResponseEntity<>("Post Liked Successful", HttpStatus.OK);
     }
 
@@ -98,7 +110,7 @@ public class CommunityPostService {
                 .orElseThrow(() -> new NoSuchElementException("No user found with this username " + username + "."));
 
         Map<String, Boolean> mp = new HashMap<>();
-        if(communityPostLikeRepository.existsByPostIdAndLikerId(postId, user.getId()) > 0) {
+        if (communityPostLikeRepository.existsByPostIdAndLikerId(postId, user.getId()) > 0) {
             mp.put("userLiked", true);
             return new ResponseEntity<>(mp, HttpStatus.OK);
         }
