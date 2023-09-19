@@ -1,6 +1,8 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useCreateQuestion } from "../../../hooks/useQuestion";
 import { useEffect } from "react";
+import Popup from "reactjs-popup";
+import PopupLoading from "../../PopupLoading";
 
 interface Inputs {
     questionTitle: string;
@@ -26,10 +28,15 @@ export default function ForumCreatePost() {
         }
     }, [isSubmitSuccessful, reset]);
     return (
-        <>
+        <div className={`${mutation.isLoading ? `bg-grabg opacity-10` : ``}`}>
             <h2 className="font-bold text-[14px] sm:text-[16px] md:text-[22px]">
                 Ask Question
             </h2>
+            {mutation.isLoading && (
+                <Popup modal open={mutation.isLoading} closeOnDocumentClick>
+                    <PopupLoading />
+                </Popup>
+            )}
             <form
                 onSubmit={handleSubmit(onSubmit)}
                 className="flex flex-col mr-[10px] m-[15px] sm:m-[25px] md:m-[30px]"
@@ -89,6 +96,6 @@ export default function ForumCreatePost() {
                     {mutation.isLoading ? "Posting..." : "Ask your question"}
                 </button>
             </form>
-        </>
+        </div>
     );
 }

@@ -6,6 +6,7 @@ import ForumAnswererInfo from "./ForumAnswererInfo";
 import ForumAddAnswer from "./ForumAddAnswer";
 import { useGetQuestion } from "../../../hooks/useQuestion";
 import { useGetAnswers } from "../../../hooks/useAnswer";
+import QuestionLoader from "../QuestionLoader";
 
 export default function ForumPost() {
     const { postId } = useParams();
@@ -15,16 +16,18 @@ export default function ForumPost() {
         isLoading,
     } = useGetQuestion(parseInt(postId || "0"));
 
-    const { data: answers } = useGetAnswers(parseInt(postId || "0"));
+    const { data: answers, isLoading: answerLoading } = useGetAnswers(
+        parseInt(postId || "0")
+    );
 
     return (
         <>
-            {isLoading && <p>Loading...</p>}
             {error && <p>Network Error...</p>}
             <div className="divide-y divide-graybg">
                 <div className="font-semibold text-gray text-[11px] sm:text-[13px] md:text-[16px]">
                     Question
                 </div>
+                {isLoading && <QuestionLoader />}
                 <div className="grid grid-cols-10 pt-5 pb-5">
                     <ForumQuestionerInfo
                         firstName={questions?.questioner.firstName || ""}
@@ -49,6 +52,7 @@ export default function ForumPost() {
                     <span className="text-gray font-semibold text-[11px] sm:text-[13px] md:text-[16px]">
                         Answers
                     </span>
+                    {answerLoading && <QuestionLoader />}
                     <ul className="divide-y divide-graybg">
                         {answers?.map((answer) => (
                             <li

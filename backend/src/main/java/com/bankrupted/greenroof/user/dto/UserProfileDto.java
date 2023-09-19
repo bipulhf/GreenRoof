@@ -14,6 +14,7 @@ public class UserProfileDto {
     private String firstName;
     private String lastName;
     private String username;
+    private Integer score;
     private String city;
     private String profilePhoto;
     private Date createdAt;

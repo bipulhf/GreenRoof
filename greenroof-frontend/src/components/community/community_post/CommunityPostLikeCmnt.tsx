@@ -39,7 +39,9 @@ export default function CommunityPostLikeCmnt({ postId }: Props) {
                 <div>
                     <FontAwesomeIcon
                         icon={solid ? fasHeart : farHeart}
-                        className="hover:cursor-pointer text-[16px] text-red"
+                        className={`hover:cursor-pointer text-[16px] text-red ${
+                            solid ? `animate-jump animate-once` : ``
+                        }`}
                         onClick={like}
                     />
                     <span className="font-medium text-[16px] pl-2 pr-10">

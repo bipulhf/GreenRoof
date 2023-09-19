@@ -4,6 +4,7 @@ import ForumFeedQuestion from "./ForumFeedQuestion";
 import ForumQuestionerInfo from "./ForumQuestionerInfo";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useContent } from "../../../hooks/useContent";
+import QuestionLoader from "../QuestionLoader";
 
 export default function ForumFeed() {
     const {
@@ -22,7 +23,6 @@ export default function ForumFeed() {
 
     return (
         <>
-            {isLoading && <p>Loading...</p>}
             {error && <p>Network Error...</p>}
 
             <div className="flex justify-between mb-5">
@@ -35,7 +35,7 @@ export default function ForumFeed() {
                 dataLength={fetchedQuestionCount}
                 hasMore={!!hasNextPage}
                 next={() => fetchNextPage()}
-                loader="<p>Loading</p>"
+                loader={<QuestionLoader />}
             >
                 <ul className="divide-y divide-graybg">
                     {questions?.pages.map((page, index) => (
@@ -65,6 +65,13 @@ export default function ForumFeed() {
                     ))}
                 </ul>
             </InfiniteScroll>
+            {isLoading && (
+                <>
+                    <QuestionLoader />
+                    <QuestionLoader />
+                    <QuestionLoader />
+                </>
+            )}
         </>
     );
 }

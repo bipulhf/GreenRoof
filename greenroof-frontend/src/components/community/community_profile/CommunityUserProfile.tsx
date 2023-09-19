@@ -11,6 +11,9 @@ import {
     useTotalFollowings,
 } from "../../../hooks/useFollowersFollowings";
 import useAuth from "../../../hooks/useAuth";
+import PostLoader from "../../PostLoader";
+import { useProfile } from "../../../hooks/useProfile";
+import ProfileLoader from "../../ProfileLoader";
 
 export default function CommunityUserProfile() {
     const { auth } = useAuth();
@@ -22,12 +25,20 @@ export default function CommunityUserProfile() {
             (total, page) => total + page.contentList.length,
             0
         ) || 0;
-    const user = data?.pages[0].contentList[0].user;
+    const {
+        data: users,
+        isLoading: userLoading,
+        isError: userErrors,
+        error: userError,
+    } = useProfile(username || "");
+    const user = users != null ? users[0] : null;
     const { data: totalFollowers } = useTotalFollowers(username || "");
     const { data: totalFollowings } = useTotalFollowings(username || "");
     return (
         <div className="min-h-screen md:w-[68%] min-[1000px]:w-[53%] md:ml-[30%] min-[1000px]:ml-[22%] divide-y divide-graybg">
             <CommunityHeading heading="Profile" />
+            {userLoading && <ProfileLoader />}
+            {userErrors && <p>{userError.message}</p>}
             <CommunityUserProfileCard
                 firstname={user?.firstName || ""}
                 lastname={user?.lastName || ""}
@@ -37,13 +48,12 @@ export default function CommunityUserProfile() {
                 followings={totalFollowings?.total || 0}
             />
             {auth.username === user?.username && <CommunityCreatePost />}
-            {isLoading && <p>Loading...</p>}
             {isError && <p>{error.message}</p>}
             <InfiniteScroll
                 dataLength={fetchedPostCount}
                 hasMore={!!hasNextPage}
                 next={() => fetchNextPage()}
-                loader="<p>Loading...</p>"
+                loader={<PostLoader />}
             >
                 {data?.pages.map((posts, index) => (
                     <React.Fragment key={index}>
@@ -60,6 +70,13 @@ export default function CommunityUserProfile() {
                     </React.Fragment>
                 ))}
             </InfiniteScroll>
+            {isLoading && (
+                <>
+                    <PostLoader />
+                    <PostLoader />
+                    <PostLoader />
+                </>
+            )}
         </div>
     );
 }

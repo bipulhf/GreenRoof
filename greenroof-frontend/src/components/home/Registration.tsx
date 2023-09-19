@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import roofTopImage from "/assets/community/roof-desktop.svg";
 import { faRightToBracket } from "@fortawesome/free-solid-svg-icons";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useRegistration } from "../../hooks/useLogin";
 import { useEffect, useState } from "react";
@@ -9,6 +9,7 @@ import useAuth from "../../hooks/useAuth";
 import { districts } from "../../services/districts";
 import EmailVerification from "./EmailVerification";
 import Popup from "reactjs-popup";
+import PopupLoading from "../PopupLoading";
 
 interface Inputs {
     firstname: string;
@@ -20,12 +21,10 @@ interface Inputs {
 }
 
 export default function Registration() {
-    const navigate = useNavigate();
     const location = useLocation();
     const { auth } = useAuth();
     const mutation = useRegistration();
     const [open, setOpen] = useState(false);
-    const from = location.state?.from?.pathname || "/community";
 
     const {
         register,
@@ -40,7 +39,6 @@ export default function Registration() {
     useEffect(() => {
         if (isSubmitSuccessful && mutation.data) {
             setOpen(!open);
-            navigate("/");
         }
     }, [isSubmitSuccessful, mutation.data]);
 
@@ -62,12 +60,23 @@ export default function Registration() {
                     >
                         <EmailVerification />
                     </Popup>
+                    {mutation.isLoading && (
+                        <Popup
+                            modal
+                            open={mutation.isLoading}
+                            closeOnDocumentClick
+                        >
+                            <PopupLoading />
+                        </Popup>
+                    )}
                     <div
                         className={`flex max-lg:flex-col justify-between max-lg:min-h-screen ${
-                            open ? `bg-grabg opacity-10` : ``
+                            open || mutation.isLoading
+                                ? `bg-grabg opacity-10`
+                                : ``
                         }`}
                     >
-                        <div className="m-[4%]">
+                        <div className="mx-[5%] my-[2%]">
                             <div className="flex mb-10">
                                 <h2 className="text-3xl min-[414px]:text-4xl font-semibold self-center animate-fade-right animate-once animate-ease-in-out">
                                     Join Our Beautiful Community
@@ -76,6 +85,7 @@ export default function Registration() {
                             <form
                                 onSubmit={handleSubmit(onSubmit)}
                                 className="text-xl min-[414px]:text-2xl"
+                                autoComplete="off"
                             >
                                 <label
                                     htmlFor="firstname"

@@ -1,5 +1,6 @@
 package com.bankrupted.greenroof.community.Notification;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-@RequestMapping("/notification")
+@RequestMapping("api/v1/notification")
 @RestController
 @RequiredArgsConstructor
 public class NotificationStorageController {
@@ -24,7 +25,7 @@ public class NotificationStorageController {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new NoSuchElementException("No user found with this username " + username + "."));
         Long userID = user.getId();
-        return ResponseEntity.ok(notifService.getNotificationsByUserID(userID));
+        return new ResponseEntity<>(notifService.getNotificationsByUserID(userID), HttpStatus.OK);
     }
 
     // @GetMapping("/{username}")

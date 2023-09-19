@@ -6,6 +6,7 @@ export interface User {
     score: number;
     profilePhoto: string;
     city: string;
+    createdAt: Date;
 }
 
 export interface UserProfile {
@@ -13,7 +14,8 @@ export interface UserProfile {
     firstName: string;
     lastName: string;
     username: string;
-    email: string;
+    score: number;
+    email?: string;
     profilePhoto: string;
     city: string;
     createdAt: Date;

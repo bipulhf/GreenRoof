@@ -2,6 +2,7 @@ import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useGetComments } from "../../../hooks/useComment";
 import CommunityCommentmMarkup from "./CommunityCommentMarkup";
+import PostLoader from "../../PostLoader";
 
 interface Props {
     postId: number;
@@ -17,13 +18,13 @@ export default function CommunityComment({ postId }: Props) {
         ) || 0;
     return (
         <>
-            {isLoading && <p>Loading...</p>}
+            {isLoading && <PostLoader />}
             {isError && <p>{error.message}</p>}
             <InfiniteScroll
                 dataLength={fetchedPostCount}
                 hasMore={!!hasNextPage}
                 next={() => fetchNextPage()}
-                loader="<p>Loading...</p>"
+                loader={<PostLoader />}
                 className="divide-y divide-graybg"
             >
                 {data?.pages.map((comments, index) => (

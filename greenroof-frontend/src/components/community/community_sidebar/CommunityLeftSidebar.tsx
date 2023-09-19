@@ -10,6 +10,7 @@ import {
 import { Link } from "react-router-dom";
 import forum_logo from "/assets/forum/forum_logo.svg";
 import useAuth from "../../../hooks/useAuth";
+import forum from "/assets/community/forum.svg";
 
 export default function CommunityLeftSidebar() {
     const { auth } = useAuth();
@@ -47,6 +48,16 @@ export default function CommunityLeftSidebar() {
                         <Link to={"/community/user/" + auth.username}>
                             <FontAwesomeIcon icon={faUser} fontSize={20} />
                             <span className="ml-5">Profile</span>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to={"/forum"} className="hover:underline">
+                            <img
+                                src={forum}
+                                alt="Forum Icon"
+                                className="inline pr-3"
+                            />
+                            Forum
                         </Link>
                     </li>
                     <li>

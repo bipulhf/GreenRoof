@@ -2,6 +2,7 @@ package com.bankrupted.greenroof.community.Notification;
 
 import com.bankrupted.greenroof.user.entity.User;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,10 +21,12 @@ public class Notification {
     private String content;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "user_to_id")
     private User userTo;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "user_from_id")
     private User userFrom;
 

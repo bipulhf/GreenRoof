@@ -4,6 +4,7 @@ import CommunityCreatePost from "../CommunityCreatePost";
 import CommunityHeading from "../CommunityHeading";
 import CommunityFeedPost from "./CommunityFeedPost";
 import React from "react";
+import PostLoader from "../../PostLoader";
 
 export default function CommunityFeed() {
     const { data, isLoading, isError, error, hasNextPage, fetchNextPage } =
@@ -21,13 +22,12 @@ export default function CommunityFeed() {
                 <h2 className="font-bold text-[16px] text-brown">Top Posts</h2>
                 <h2 className="font-medium text-[16px] text-gray">Following</h2>
             </div>
-            {isLoading && <p>Loading...</p>}
             {isError && <p>{error.message}</p>}
             <InfiniteScroll
                 dataLength={fetchedPostCount}
                 hasMore={!!hasNextPage}
                 next={() => fetchNextPage()}
-                loader="<p>Loading</p>"
+                loader={<PostLoader />}
                 className="divide-y divide-graybg"
             >
                 {data?.pages.map((posts, index) => (
@@ -45,6 +45,13 @@ export default function CommunityFeed() {
                     </React.Fragment>
                 ))}
             </InfiniteScroll>
+            {isLoading && (
+                <>
+                    <PostLoader />
+                    <PostLoader />
+                    <PostLoader />
+                </>
+            )}
         </div>
     );
 }

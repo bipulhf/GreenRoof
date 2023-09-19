@@ -6,8 +6,10 @@ import com.bankrupted.greenroof.registration.RegistrationRequest;
 import com.bankrupted.greenroof.registration.password.PasswordResetTokenService;
 import com.bankrupted.greenroof.security.token.VerificationToken;
 import com.bankrupted.greenroof.security.token.repository.VerificationTokenRepository;
+import com.bankrupted.greenroof.user.dto.UserProfileDto;
 import com.bankrupted.greenroof.user.entity.User;
 import com.bankrupted.greenroof.user.repository.UserRepository;
+import com.bankrupted.greenroof.utils.ModelMapperUtility;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,6 +25,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final VerificationTokenRepository tokenRepository;
     private final PasswordResetTokenService passwordResetTokenService;
+    private final ModelMapperUtility<User, UserProfileDto> modelMapperUtility;
     private final AuthenticationService authService;
 
     public User registerUser(RegistrationRequest request) {
@@ -113,5 +116,4 @@ public class UserService {
     public boolean oldPasswordIsValid(User user, String oldPassword) {
         return passwordEncoder.matches(oldPassword, user.getPassword());
     }
-
 }

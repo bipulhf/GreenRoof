@@ -39,7 +39,6 @@ export default function ForumAddAnswer({ id }: Props) {
                 <textarea
                     {...register("answerText", {
                         required: true,
-                        minLength: 10,
                     })}
                     name="answerText"
                     className="text-[13px] border-2 border-gray rounded-lg p-1 sm:p-3"
