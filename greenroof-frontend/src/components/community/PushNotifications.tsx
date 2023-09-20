@@ -1,13 +1,16 @@
 import { useState, useEffect } from "react";
 import { fetchEventSource } from "@microsoft/fetch-event-source";
-
-const URL = "http://localhost:8080/push-notifications/1";
+import useAuth from "../../hooks/useAuth";
 
 const PushNotifications = () => {
-  const [data, setData] = useState([]);
-  const jwtToken =
-    "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzaGlmYXQ3MSIsImlhdCI6MTY5NTIxNTI3MywiZXhwIjoxNjk1ODIwMDczfQ.ddx867_2r2u_s_ZhTMSaDsCNbxgPuRlHjY-lq84WPGg";
+  const { auth } = useAuth();
+  const username = auth.username;
+  const jwtToken = auth.accessToken;
+
   useEffect(() => {
+    if (username.length === 0 || jwtToken.length === 0) return;
+    const URL = "http://localhost:8080/push-notifications/" + username;
+
     const fetchData = async () => {
       await fetchEventSource(URL, {
         method: "GET",
@@ -25,14 +28,11 @@ const PushNotifications = () => {
       });
     };
     fetchData();
-  }, []);
+  }, [auth]);
 
   return (
     <>
-      <div>
-        <h1>hi</h1>
-        <h1>{data}</h1>
-      </div>
+      <div></div>
     </>
   );
 };
