@@ -23,6 +23,7 @@
     "react-infinite-scroll-component": "^6.1.0",
     "react-router-dom": "^6.15.0",
     "reactjs-popup": "^2.0.6",
+    "tailwindcss-animate": "^1.0.7",
     "tailwindcss-animated": "^1.0.1"
   },
   "devDependencies": {
