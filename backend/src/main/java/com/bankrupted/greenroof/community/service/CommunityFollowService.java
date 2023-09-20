@@ -3,6 +3,7 @@ package com.bankrupted.greenroof.community.service;
 import com.bankrupted.greenroof.community.dto.UserFollowerDto;
 import com.bankrupted.greenroof.community.dto.UserFollowingDto;
 import com.bankrupted.greenroof.exception.GenericException;
+import com.bankrupted.greenroof.user.dto.UserProfileDto;
 import com.bankrupted.greenroof.user.entity.User;
 import com.bankrupted.greenroof.community.entity.UserFollower;
 import com.bankrupted.greenroof.community.entity.UserFollowing;
@@ -25,6 +26,7 @@ public class CommunityFollowService {
     private final UserRepository userRepository;
     private final ModelMapperUtility<UserFollower, UserFollowerDto> modelMapperFollower;
     private final ModelMapperUtility<UserFollowing, UserFollowingDto> modelMapperFollowing;
+    private final ModelMapperUtility<User, UserProfileDto> modelMapperUser;
 
     public ResponseEntity<?> followUser(String user1, String user2) {
         User person1 = userRepository.findByUsername(user1)
@@ -118,4 +120,10 @@ public class CommunityFollowService {
         return mp;
     }
 
+    public List<UserProfileDto> whoToFollow(String username) {
+        List<Long> userId = new ArrayList<>();
+        userId.add(userRepository.findByUsername(username).get().getId());
+        getFollowingsList(username).forEach(userFollowingDto -> userId.add(userFollowingDto.getFollowing().getId()));
+        return modelMapperUser.modelMap(userRepository.getRecommendation(userId), UserProfileDto.class);
+    }
 }

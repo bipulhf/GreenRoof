@@ -76,7 +76,7 @@ export default function Registration() {
                                 : ``
                         }`}
                     >
-                        <div className="mx-[5%] my-[2%]">
+                        <div className="mx-[5%] my-[2%] relative z-10">
                             <div className="flex mb-10">
                                 <h2 className="text-3xl min-[414px]:text-4xl font-semibold self-center animate-fade-right animate-once animate-ease-in-out">
                                     Join Our Beautiful Community

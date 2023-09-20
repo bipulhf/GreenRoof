@@ -8,7 +8,7 @@ import AIAssistant from "../AIAssistant";
 
 export default function Header() {
     return (
-        <header>
+        <header className="relative z-10">
             <nav className="flex justify-between self-center">
                 <ul className="w-[70%] flex justify-evenly text-[20px] font-medium text-black">
                     <Link

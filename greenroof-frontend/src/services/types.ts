@@ -55,10 +55,15 @@ export interface ValidationError {
     };
 }
 
+export interface Attatchments {
+    id: number;
+    link: string;
+}
+
 export interface Post {
     id: number;
     postText: string;
-    postAttatchments: string;
+    postAttatchments: Attatchments[];
     createdAt: Date;
     priorityValue: number;
     user: User;

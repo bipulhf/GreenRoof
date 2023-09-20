@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import loginIcon from "/assets/community/login.svg";
 import roofTopImage from "/assets/community/roof-desktop.svg";
-import { faLock, faRightToBracket } from "@fortawesome/free-solid-svg-icons";
+import { faLock } from "@fortawesome/free-solid-svg-icons";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useCreateLogin } from "../../hooks/useLogin";
@@ -11,11 +11,10 @@ import Popup from "reactjs-popup";
 import PopupLoading from "../PopupLoading";
 
 interface Inputs {
-    username: string;
-    password: string;
+    email: string;
 }
 
-export default function Login() {
+export default function ForgotPassword() {
     const navigate = useNavigate();
     const location = useLocation();
     const { auth } = useAuth();
@@ -66,7 +65,7 @@ export default function Login() {
                             <div className="flex mb-10 animate-fade-right animate-once animate-ease-in-out">
                                 <img src={loginIcon} alt="Login" />
                                 <h2 className="text-3xl min-[414px]:text-4xl font-semibold self-center relative z-10">
-                                    Login to your profile
+                                    Reset Your Password
                                 </h2>
                             </div>
                             <form
@@ -77,38 +76,21 @@ export default function Login() {
                                     htmlFor="username"
                                     className=" font-semibold p-5 animate-fade-right animate-once animate-delay-200 animate-ease-in-out"
                                 >
-                                    Username:
+                                    Email:
                                 </label>
                                 <br />
                                 <input
-                                    {...register("username", {
+                                    {...register("email", {
                                         required: true,
                                     })}
-                                    type="text"
-                                    name="username"
-                                    id="username"
-                                    placeholder="Enter your username..."
+                                    type="email"
+                                    name="email"
+                                    id="email"
+                                    placeholder="Enter your Email..."
                                     autoFocus
                                     className="px-6 py-2 rounded-full w-[100%] mx-5 mt-3 mb-10 animate-fade-right animate-once animate-delay-200 animate-ease-in-out"
                                 />{" "}
                                 <br />
-                                <label
-                                    htmlFor="password"
-                                    className=" font-semibold p-5 animate-fade-right animate-once animate-delay-300 animate-ease-in-out"
-                                >
-                                    Password:
-                                </label>
-                                <br />
-                                <input
-                                    {...register("password", {
-                                        required: true,
-                                    })}
-                                    type="password"
-                                    name="password"
-                                    id="password"
-                                    placeholder="Enter your password..."
-                                    className="px-6 py-2 rounded-full w-[100%] mx-5 mt-3 animate-fade-right animate-once animate-delay-300 animate-ease-in-out"
-                                />{" "}
                                 {mutation.isError && (
                                     <p className="text-red mx-5">
                                         {mutation.error.response.data.message
@@ -117,41 +99,17 @@ export default function Login() {
                                             : mutation.error.message}
                                     </p>
                                 )}
-                                <div className="flex max-[430px]:flex-col justify-between my-10">
-                                    <button
-                                        type="submit"
-                                        disabled={mutation.isLoading}
-                                        className="bg-blue px-5 py-3 rounded-full text-white font-medium text-xl min-[414px]:text-2xl max-[430px]:mb-5 hover:underline animate-fade-right animate-once animate-delay-500 animate-ease-in-out"
-                                    >
-                                        <FontAwesomeIcon
-                                            icon={faRightToBracket}
-                                            className="mr-3"
-                                        />
-                                        {mutation.isLoading
-                                            ? "Entering..."
-                                            : "Enter"}
-                                    </button>
-                                    <Link
-                                        to={"/forgot-password"}
-                                        className="bg-brown px-5 py-3 rounded-full text-white font-medium text-xl min-[414px]:text-2xl hover:underline animate-fade-right animate-once animate-delay-[600ms] animate-ease-in-out"
-                                    >
-                                        <FontAwesomeIcon
-                                            icon={faLock}
-                                            className="mr-3"
-                                        />
-                                        Forgot Password?
-                                    </Link>
-                                </div>
-                            </form>
-                            <h2 className="text-xl min-[414px]:text-2xl min-[590px]:text-3xl animate-fade-right animate-once animate-delay-700 animate-ease-in-out">
-                                Don't have an account?{" "}
                                 <Link
-                                    to={"/register"}
-                                    className="font-bold hover:underline"
+                                    to={"/forgot-password"}
+                                    className="ml-5 bg-brown px-5 py-3 rounded-full text-white font-medium text-xl min-[414px]:text-2xl hover:underline animate-fade-right animate-once animate-delay-[600ms] animate-ease-in-out"
                                 >
-                                    Sign Up
+                                    <FontAwesomeIcon
+                                        icon={faLock}
+                                        className="mr-3"
+                                    />
+                                    Send Verification Mail
                                 </Link>
-                            </h2>
+                            </form>
                         </div>
                         <img
                             src={roofTopImage}

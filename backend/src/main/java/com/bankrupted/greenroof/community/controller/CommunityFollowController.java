@@ -52,4 +52,10 @@ public class CommunityFollowController {
     public ResponseEntity<?> getFollowingsNumber(@RequestParam String username) {
         return new ResponseEntity<>(communityFollowService.getTotalFollowingsNumber(username), HttpStatus.OK);
     }
+
+    @GetMapping("whotofollow")
+    public ResponseEntity<?> whoToFollow() {
+        String username = GetUsername.get();
+        return new ResponseEntity<>(communityFollowService.whoToFollow(username), HttpStatus.OK);
+    }
 }

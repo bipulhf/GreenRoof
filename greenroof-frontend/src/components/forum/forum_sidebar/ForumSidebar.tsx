@@ -50,7 +50,6 @@ export default function ForumSidebar({ menuOn }: Props) {
                                 <FontAwesomeIcon
                                     icon={faRightFromBracket}
                                     fontSize={17}
-                                    rotation={180}
                                     className="font-medium mr-2"
                                 />
                                 Login

@@ -12,7 +12,7 @@ import useAuth from "../../../hooks/useAuth";
 export default function CommunityMobileMenu() {
     const { auth } = useAuth();
     return (
-        <div className="md:hidden bg-white fixed w-[100%] bottom-0 pb-4 divide-y divide-graybg">
+        <div className="md:hidden bg-white fixed w-[100%] bottom-0 z-10 pb-4 divide-y divide-graybg">
             <div></div>
             <div className="pt-3 flex justify-between px-10">
                 <Link to={"/community"}>

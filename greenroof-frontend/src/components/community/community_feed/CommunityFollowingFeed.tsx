@@ -1,56 +1,36 @@
-import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import CommunityCreatePost from "../CommunityCreatePost";
 import CommunityHeading from "../CommunityHeading";
-import CommunityFeedPost from "../community_feed/CommunityFeedPost";
-import CommunityUserProfileCard from "./CommunityUserProfileCard";
-import { useGetUserPost } from "../../../hooks/usePost";
-import { useParams } from "react-router-dom";
-import {
-    useTotalFollowers,
-    useTotalFollowings,
-} from "../../../hooks/useFollowersFollowings";
-import useAuth from "../../../hooks/useAuth";
+import CommunityFeedPost from "./CommunityFeedPost";
+import React from "react";
 import PostLoader from "../../PostLoader";
-import { useProfile } from "../../../hooks/useProfile";
-import ProfileLoader from "../../ProfileLoader";
+import { Link } from "react-router-dom";
+import { useFollowingPost } from "../../../hooks/usePost";
 
-export default function CommunityUserProfile() {
-    const { auth } = useAuth();
-    const { username } = useParams();
+export default function CommunityFollowingFeed() {
     const { data, isLoading, isError, error, hasNextPage, fetchNextPage } =
-        useGetUserPost(username || "");
+        useFollowingPost();
     const fetchedPostCount =
         data?.pages.reduce(
             (total, page) => total + page.contentList.length,
             0
         ) || 0;
-    const {
-        data: users,
-        isLoading: userLoading,
-        isError: userErrors,
-        error: userError,
-    } = useProfile(username || "");
-    const user = users != null ? users[0] : null;
-    const { data: totalFollowers } = useTotalFollowers(username || "");
-    const { data: totalFollowings } = useTotalFollowings(username || "");
     return (
         <div className="pb-[10%] min-h-screen md:w-[68%] min-[1000px]:w-[53%] md:ml-[30%] min-[1000px]:ml-[22%] divide-y divide-graybg">
-            <CommunityHeading heading="Profile" />
-            {userErrors && <p>{userError.message}</p>}
-            {userLoading ? (
-                <ProfileLoader />
-            ) : (
-                <CommunityUserProfileCard
-                    firstname={user?.firstName || ""}
-                    lastname={user?.lastName || ""}
-                    username={user?.username || ""}
-                    city={user?.city || ""}
-                    followers={totalFollowers?.total || 0}
-                    followings={totalFollowings?.total || 0}
-                />
-            )}
-            {auth.username === user?.username && <CommunityCreatePost />}
+            <CommunityHeading heading="Home" />
+            <CommunityCreatePost />
+            <div className="flex justify-evenly py-3">
+                <Link to={"/community"}>
+                    <h2 className="font-medium text-[16px] text-gray">
+                        Most Recent
+                    </h2>
+                </Link>
+                <Link to={"/community/following"}>
+                    <h2 className="font-bold text-[16px] text-brown">
+                        Following
+                    </h2>
+                </Link>
+            </div>
             {isError && <p>{error.message}</p>}
             <InfiniteScroll
                 dataLength={fetchedPostCount}
@@ -66,6 +46,7 @@ export default function CommunityUserProfile() {
                                 key={post.id}
                                 postId={post.id}
                                 postText={post.postText}
+                                postAttatchments={post.postAttatchments}
                                 createdAt={post.createdAt}
                                 user={post.user}
                                 fullPost={false}

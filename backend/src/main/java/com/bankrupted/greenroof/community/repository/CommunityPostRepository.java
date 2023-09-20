@@ -12,7 +12,8 @@ import java.util.List;
 @Repository
 public interface CommunityPostRepository extends JpaRepository<CommunityPost, Long> {
     Page<CommunityPost> findByUserIdOrderByCreatedAtDesc(Long userId, Pageable pageable);
-
+    @Query(value = "SELECT * FROM community_posts WHERE user_id IN (:userId) ORDER BY created_at DESC", nativeQuery = true)
+    Page<CommunityPost> findByUserIdOrderByCreatedAtDesc(List<Long> userId, Pageable pageable);
     Page<CommunityPost> findAllByOrderByCreatedAtDesc(Pageable pageable);
 
     @Query(value = "SELECT *\n" +

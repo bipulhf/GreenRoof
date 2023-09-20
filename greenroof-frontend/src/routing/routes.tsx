@@ -20,6 +20,8 @@ import Registration from "../components/home/Registration";
 import Home from "../components/home/Home";
 import RequireAuth from "../components/RequireAuth";
 import Logout from "../components/home/Logout";
+import CommunityFollowingFeed from "../components/community/community_feed/CommunityFollowingFeed";
+import ForgotPassword from "../components/home/ForgotPassword";
 
 const router = createBrowserRouter([
     {
@@ -29,6 +31,7 @@ const router = createBrowserRouter([
             { index: true, element: <Home /> },
             { path: "login", element: <Login /> },
             { path: "register", element: <Registration /> },
+            { path: "forgot-password", element: <ForgotPassword /> },
             {
                 path: "logout",
                 element: (
@@ -82,6 +85,7 @@ const router = createBrowserRouter([
         ),
         children: [
             { index: true, element: <CommunityMainPage /> },
+            { path: "following", element: <CommunityFollowingFeed /> },
             { path: "post/:postId", element: <CommunitySinglePostPage /> },
             { path: "post/create", element: <ForumCreatePost /> },
             { path: "post/edit/:postId", element: <CommunityEditPost /> },

@@ -16,13 +16,13 @@ interface PostText {
 const contentApiClient = new APIClient<Content<Post>, Post>("/community");
 const postApiClient = new APIClient<Post, PostText>("/community");
 
-const useTopPost = () => {
+const useFollowingPost = () => {
     const { auth } = useAuth();
     const headers = { Authorization: `Bearer ${auth.accessToken}` };
     return useInfiniteQuery<Content<Post>, Error>({
-        queryKey: ["community-top"],
+        queryKey: ["community-following"],
         queryFn: ({ pageParam = 0 }) =>
-            contentApiClient.getWithAuth("/feed", {
+            contentApiClient.getWithAuth("/feed/following", {
                 headers: headers,
                 params: { pageNo: pageParam },
             }),
@@ -143,7 +143,7 @@ const useDeletePost = () => {
 
 export {
     useLatestPost,
-    useTopPost,
+    useFollowingPost,
     useGetPost,
     useDeletePost,
     useCreatePost,

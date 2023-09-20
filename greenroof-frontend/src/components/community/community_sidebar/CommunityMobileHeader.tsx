@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 export default function CommunityMobileHeader() {
     return (
-        <div className="fixed md:hidden right-5 top-5">
+        <div className="absolute md:hidden right-5 top-5">
             <Link to={"/logout"}>
                 <FontAwesomeIcon
                     icon={faRightFromBracket}

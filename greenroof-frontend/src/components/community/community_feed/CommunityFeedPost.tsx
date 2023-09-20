@@ -1,13 +1,18 @@
 import user_profile_photo from "/assets/forum/forum_top_user_photo_40x40.png";
 import ReadMore from "./ReadMore";
-import { User } from "../../../services/types";
+import { Attatchments, User } from "../../../services/types";
 import CommunityPostLikeCmnt from "../community_post/CommunityPostLikeCmnt";
 import { Link, useNavigate } from "react-router-dom";
 import { useDeletePost, useEditPost } from "../../../hooks/usePost";
 import useAuth from "../../../hooks/useAuth";
+import Swiper from "swiper";
+import { Navigation } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
 interface Props {
     postId: number;
     postText: string;
+    postAttatchments: Attatchments[];
     user: User;
     createdAt: Date;
     fullPost: boolean;
@@ -17,6 +22,7 @@ export default function CommunityFeedPost({
     postId,
     fullPost,
     postText,
+    postAttatchments,
     user,
     createdAt,
 }: Props) {
@@ -24,6 +30,9 @@ export default function CommunityFeedPost({
     const editMutation = useEditPost(postId);
     const deleteMutation = useDeletePost();
     const navigate = useNavigate();
+    const swiper = new Swiper(".swiper", {
+        modules: [Navigation],
+    });
 
     const onEdit = () => {
         navigate("/community/post/edit/" + postId);
@@ -32,6 +41,7 @@ export default function CommunityFeedPost({
         if (window.confirm("Do you really want to delete this post?"))
             deleteMutation.mutate(postId);
     };
+    console.log(postAttatchments);
     return (
         <>
             <div className="py-5 px-3 grid grid-cols-10">
@@ -78,6 +88,22 @@ export default function CommunityFeedPost({
                                 <ReadMore>{postText}</ReadMore>
                             )}
                         </h3>
+                        <div className="swiper">
+                            <div className="swiper-wrapper">
+                                {postAttatchments
+                                    .sort()
+                                    .map((postAttatchment) => (
+                                        <img
+                                            key={`img-${postAttatchment.id}`}
+                                            id={postAttatchment.id.toString()}
+                                            src={postAttatchment.link || ""}
+                                            alt="Photo"
+                                        />
+                                    ))}
+                            </div>
+                            <div className="swipper-button-prev"></div>
+                            <div className="swipper-button-next"></div>
+                        </div>
                     </div>
                     <div>
                         <h3 className="text-gray text-[13px]">

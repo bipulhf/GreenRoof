@@ -8,7 +8,7 @@ export default function MainLayout() {
         <div className="bg-gradient-to-b from-bluebg to-greenbg min-h-screen relative">
             <div className="flex min-w-[100%]">
                 <Link to={"/"}>
-                    <img src={forum_logo} />
+                    <img src={forum_logo} className="relative z-10" />
                 </Link>
                 <span className="max-[950px]:hidden self-center w-[85%]">
                     <Header />
