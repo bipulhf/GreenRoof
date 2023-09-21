@@ -1,11 +1,35 @@
 import { useState, useEffect } from "react";
 import { fetchEventSource } from "@microsoft/fetch-event-source";
 import useAuth from "../../hooks/useAuth";
+import { useDispatch, useSelector } from "react-redux";
+import { add } from "../../context/deliveredNotifs";
+
+interface Notif {
+  value: string;
+}
+
+interface NotifState {
+  notifs: Notif[];
+  notifToastList: Notif[];
+}
+interface RootState {
+  deliveredNotifs: NotifState;
+}
 
 const PushNotifications = () => {
   const { auth } = useAuth();
   const username = auth.username;
   const jwtToken = auth.accessToken;
+
+  const allDeliveredNotifs = useSelector(
+    (state: RootState) => state.deliveredNotifs.notifs
+  );
+
+  const notifToastList = useSelector(
+    (state: RootState) => state.deliveredNotifs.notifToastList
+  );
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (username.length === 0 || jwtToken.length === 0) return;
@@ -23,6 +47,7 @@ const PushNotifications = () => {
           const parsedData = JSON.parse(event.data);
           if (parsedData.length != 0) {
             console.log(parsedData);
+            dispatch(add({ newNotifs: parsedData }));
           }
         },
       });
@@ -30,11 +55,7 @@ const PushNotifications = () => {
     fetchData();
   }, [auth]);
 
-  return (
-    <>
-      <div></div>
-    </>
-  );
+  return <>{allDeliveredNotifs.length}</>;
 };
 
 export default PushNotifications;
