@@ -60,6 +60,11 @@ export interface Attatchments {
     link: string;
 }
 
+export interface PostAttatchments {
+    id?: number;
+    link: string;
+}
+
 export interface Post {
     id: number;
     postText: string;

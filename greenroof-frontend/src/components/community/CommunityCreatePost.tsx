@@ -5,6 +5,7 @@ import { useCreatePost } from "../../hooks/usePost";
 import { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import axios from "axios";
+import { PostAttatchments } from "../../services/types";
 
 interface Inputs {
     postText: string;
@@ -20,9 +21,10 @@ export default function CommunityCreatePost() {
         formState: { isSubmitSuccessful },
     } = useForm<Inputs>();
 
-    const onSubmit: SubmitHandler<Inputs> = (data) => {
-        mutation.mutate(data);
-        images.map((image) => {
+    const [clicked, setClicked] = useState(false);
+
+    const uploadImages = (image: File) => {
+        return new Promise<string>((resolve) => {
             const imgData = new FormData();
             imgData.append("file", image);
             imgData.append("upload_preset", "jqtskhrp");
@@ -33,8 +35,26 @@ export default function CommunityCreatePost() {
                     imgData
                 )
                 .then((response) => {
-                    console.log(response);
+                    resolve(response.data.url);
                 });
+        });
+    };
+
+    const onSubmit: SubmitHandler<Inputs> = (data) => {
+        setClicked(true);
+        const postAttatchments: PostAttatchments[] = [];
+        const imagesPromises = images.map(
+            async (image) => await uploadImages(image)
+        );
+        Promise.allSettled(imagesPromises).then((promisesArr) => {
+            promisesArr.map((link) => {
+                postAttatchments.push({ link: link.value });
+            });
+            mutation.mutate({
+                postText: data.postText,
+                postAttatchments: postAttatchments,
+            });
+            setClicked(false);
         });
     };
 
@@ -93,10 +113,14 @@ export default function CommunityCreatePost() {
                     </label>
                     <button
                         type="submit"
-                        disabled={mutation.isLoading}
+                        disabled={clicked}
                         className="relative self-center h-fit border rounded-full bg-greenbtn text-white text-[16px] px-5 py-1"
                     >
-                        {mutation.isLoading ? "Posting..." : "Post"}
+                        {clicked
+                            ? mutation.isSuccess
+                                ? "Post"
+                                : "Posting..."
+                            : "Post"}
                     </button>
                 </div>
                 {mutation.isError && (

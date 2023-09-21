@@ -6,7 +6,6 @@ import lombok.Data;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Data
@@ -19,7 +18,7 @@ public class CommunityPost {
     private String  postText;
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "community_post_attatchments", joinColumns = @JoinColumn(name = "post_id"), inverseJoinColumns = @JoinColumn(name = "attatchment_id"))
-    private Set<Attatchments> postAttatchments;
+    private List<Attatchments> postAttatchments;
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;

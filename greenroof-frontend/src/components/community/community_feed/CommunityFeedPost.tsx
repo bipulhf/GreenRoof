@@ -5,7 +5,7 @@ import CommunityPostLikeCmnt from "../community_post/CommunityPostLikeCmnt";
 import { Link, useNavigate } from "react-router-dom";
 import { useDeletePost, useEditPost } from "../../../hooks/usePost";
 import useAuth from "../../../hooks/useAuth";
-import Swiper from "swiper";
+import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -30,9 +30,6 @@ export default function CommunityFeedPost({
     const editMutation = useEditPost(postId);
     const deleteMutation = useDeletePost();
     const navigate = useNavigate();
-    const swiper = new Swiper(".swiper", {
-        modules: [Navigation],
-    });
 
     const onEdit = () => {
         navigate("/community/post/edit/" + postId);
@@ -41,7 +38,6 @@ export default function CommunityFeedPost({
         if (window.confirm("Do you really want to delete this post?"))
             deleteMutation.mutate(postId);
     };
-    console.log(postAttatchments);
     return (
         <>
             <div className="py-5 px-3 grid grid-cols-10">
@@ -88,22 +84,33 @@ export default function CommunityFeedPost({
                                 <ReadMore>{postText}</ReadMore>
                             )}
                         </h3>
-                        <div className="swiper">
-                            <div className="swiper-wrapper">
-                                {postAttatchments
-                                    .sort()
-                                    .map((postAttatchment) => (
-                                        <img
-                                            key={`img-${postAttatchment.id}`}
-                                            id={postAttatchment.id.toString()}
-                                            src={postAttatchment.link || ""}
-                                            alt="Photo"
-                                        />
-                                    ))}
+                        {postAttatchments.length > 0 && (
+                            <div className="slider-wrapper mt-3 mb-2">
+                                <Swiper
+                                    navigation={true}
+                                    modules={[Navigation]}
+                                    className="slider"
+                                >
+                                    {postAttatchments
+                                        .sort()
+                                        .map((postAttatchment) => (
+                                            <SwiperSlide
+                                                key={postAttatchment.id}
+                                            >
+                                                <img
+                                                    id={postAttatchment.id.toString()}
+                                                    src={
+                                                        postAttatchment.link ||
+                                                        ""
+                                                    }
+                                                    alt="Photo"
+                                                    loading="lazy"
+                                                />
+                                            </SwiperSlide>
+                                        ))}
+                                </Swiper>
                             </div>
-                            <div className="swipper-button-prev"></div>
-                            <div className="swipper-button-next"></div>
-                        </div>
+                        )}
                     </div>
                     <div>
                         <h3 className="text-gray text-[13px]">

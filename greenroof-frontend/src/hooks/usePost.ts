@@ -5,16 +5,22 @@ import {
     useQueryClient,
 } from "@tanstack/react-query";
 import APIClient from "../services/apiClient";
-import { Content, Post, ValidationError } from "../services/types";
+import {
+    Content,
+    Post,
+    PostAttatchments,
+    ValidationError,
+} from "../services/types";
 import { useNavigate } from "react-router-dom";
 import useAuth from "./useAuth";
 
-interface PostText {
+interface PostPayload {
     postText: string;
+    postAttatchments: PostAttatchments[];
 }
 
 const contentApiClient = new APIClient<Content<Post>, Post>("/community");
-const postApiClient = new APIClient<Post, PostText>("/community");
+const postApiClient = new APIClient<Post, PostPayload>("/community");
 
 const useFollowingPost = () => {
     const { auth } = useAuth();
@@ -93,8 +99,10 @@ const useCreatePost = () => {
     const { auth } = useAuth();
     const headers = { Authorization: `Bearer ${auth.accessToken}` };
     return useMutation({
-        mutationFn: (post: PostText) =>
-            postApiClient.post("/post/create", headers, post),
+        mutationFn: (post: PostPayload) => {
+            console.log(JSON.stringify(post));
+            return postApiClient.post("/post/create", headers, post);
+        },
         onSuccess: () => {
             navigate("/community");
             query.invalidateQueries({
@@ -111,7 +119,7 @@ const useEditPost = (postId: number) => {
     const { auth } = useAuth();
     const headers = { Authorization: `Bearer ${auth.accessToken}` };
     return useMutation({
-        mutationFn: (post: PostText) =>
+        mutationFn: (post: PostPayload) =>
             postApiClient.update("/post/update", headers, postId, post),
         onSuccess: () => {
             navigate("/community/post/" + postId);

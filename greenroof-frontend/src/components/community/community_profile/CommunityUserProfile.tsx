@@ -66,6 +66,7 @@ export default function CommunityUserProfile() {
                                 key={post.id}
                                 postId={post.id}
                                 postText={post.postText}
+                                postAttatchments={post.postAttatchments}
                                 createdAt={post.createdAt}
                                 user={post.user}
                                 fullPost={false}
