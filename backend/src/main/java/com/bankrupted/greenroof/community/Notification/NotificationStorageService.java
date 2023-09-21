@@ -15,12 +15,13 @@ public class NotificationStorageService {
 
     private final NotificationStorageRepository notifRepository;
 
-    public Notification createNotificationStorage(User postUser, User commentUser, NotificationType notificationType) {
+    public Notification createNotificationStorage(User postUser, User reactUser, NotificationType notificationType) {
+
         Notification notification = Notification.builder()
                 .delivered(false)
-                .content("You got a " + notificationType + " from " + commentUser.getUsername())
+                .content("You got a " + notificationType + " from " + reactUser.getUsername())
                 .notificationType(notificationType)
-                .userFrom(commentUser)
+                .userFrom(reactUser)
                 .userTo(postUser).build();
         return notifRepository.save(notification);
     }

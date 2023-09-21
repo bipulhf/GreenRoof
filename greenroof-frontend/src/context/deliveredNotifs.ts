@@ -1,8 +1,6 @@
 import { configureStore, createSlice, PayloadAction } from "@reduxjs/toolkit";
-
- interface Notif {
-  value: string;
-}
+import { Notif } from "../services/types";
+ 
 
 interface NotifState {
   notifs: Notif[];
@@ -28,9 +26,9 @@ export const deliveredNotifsSlice = createSlice({
     clear: (state) => {
       state.notifs = [];
     },
-    removeFromToastList: (state, action: PayloadAction<{ notif: Notif }>) => {
+    removeFromToastList: (state, action: PayloadAction<{ notifID: number }>) => {
       state.notifToastList = state.notifToastList.filter(
-        (x) => x.value !== action.payload.notif.value
+        (x) => x.id !== action.payload.notifID
       );
     },
   },

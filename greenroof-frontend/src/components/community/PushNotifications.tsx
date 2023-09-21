@@ -3,10 +3,8 @@ import { fetchEventSource } from "@microsoft/fetch-event-source";
 import useAuth from "../../hooks/useAuth";
 import { useDispatch, useSelector } from "react-redux";
 import { add } from "../../context/deliveredNotifs";
-
-interface Notif {
-  value: string;
-}
+import { Notif } from "../../services/types";
+import ToastNotification from "./ToastNotification";
 
 interface NotifState {
   notifs: Notif[];
@@ -55,7 +53,15 @@ const PushNotifications = () => {
     fetchData();
   }, [auth]);
 
-  return <>{allDeliveredNotifs.length}</>;
+  return (
+    <>
+      {allDeliveredNotifs.length}
+      <br />
+      {notifToastList.map((notif) => (
+        <ToastNotification notif={notif} />
+      ))}
+    </>
+  );
 };
 
 export default PushNotifications;
