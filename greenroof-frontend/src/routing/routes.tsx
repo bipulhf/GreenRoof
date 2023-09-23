@@ -20,10 +20,66 @@ import Registration from "../components/home/Registration";
 import Home from "../components/home/Home";
 import RequireAuth from "../components/RequireAuth";
 import Logout from "../components/home/Logout";
+import Notifications from "../components/community/Notifications";
+import PushNotifications from "../components/community/PushNotifications";
 import CommunityFollowingFeed from "../components/community/community_feed/CommunityFollowingFeed";
 import ForgotPassword from "../components/home/ForgotPassword";
 
 const router = createBrowserRouter([
+    {
+        path: "/",
+        element: <MainLayout />,
+        children: [
+            { index: true, element: <Home /> },
+            { path: "login", element: <Login /> },
+            { path: "register", element: <Registration /> },
+            {
+                path: "logout",
+                element: (
+                    <RequireAuth>
+                        <Logout />
+                    </RequireAuth>
+                ),
+            },
+        ],
+    },
+    {
+        path: "push-notifications",
+        element: <PushNotifications />,
+    },
+    {
+        path: "forum",
+        element: <ForumLayout />,
+        children: [
+            { index: true, element: <ForumMainPage /> },
+            { path: "post/:postId", element: <ForumSinglePostPage /> },
+            {
+                path: "post/create",
+                element: (
+                    <RequireAuth>
+                        <ForumCreatePost />
+                    </RequireAuth>
+                ),
+            },
+            {
+                path: "post/edit/:postId",
+                element: (
+                    <RequireAuth>
+                        <ForumEditPost />
+                    </RequireAuth>
+                ),
+            },
+            {
+                path: "answer/edit/:postId/:answerId",
+                element: (
+                    <RequireAuth>
+                        <ForumEditAnswer />
+                    </RequireAuth>
+                ),
+            },
+            { path: "user/:username", element: <ForumUserProfilePage /> },
+        ],
+    },
     {
         path: "/",
         element: <MainLayout />,
@@ -103,6 +159,38 @@ const router = createBrowserRouter([
                 element: <CommunityFollowersFollowings />,
             },
             { path: "search", element: <CommunitySearchPage /> },
+        ],
+    },
+    {
+        path: "community",
+        element: (
+            <RequireAuth>
+                <CommunityLayout />
+            </RequireAuth>
+        ),
+        children: [
+            { index: true, element: <CommunityMainPage /> },
+            { path: "post/:postId", element: <CommunitySinglePostPage /> },
+            { path: "post/create", element: <ForumCreatePost /> },
+            { path: "post/edit/:postId", element: <CommunityEditPost /> },
+            {
+                path: "comment/edit/:postId/:commentId",
+                element: <CommunityEditComment />,
+            },
+            { path: "user/:username", element: <CommunityUserProfilePage /> },
+            {
+                path: "user/:username/followers",
+                element: <CommunityFollowersFollowings />,
+            },
+            {
+                path: "user/:username/followings",
+                element: <CommunityFollowersFollowings />,
+            },
+            { path: "search", element: <CommunitySearchPage /> },
+            {
+                path: "notifications",
+                element: <Notifications />,
+            },
         ],
     },
 ]);

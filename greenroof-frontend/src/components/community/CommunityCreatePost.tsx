@@ -12,6 +12,28 @@ interface Inputs {
 }
 
 export default function CommunityCreatePost() {
+  const mutation = useCreatePost();
+  const [images, setImages] = useState<File[]>([]);
+
+  const [prevImages, setPrevImages] = useState<(string | ArrayBuffer)[]>([]);
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { isSubmitSuccessful },
+  } = useForm<Inputs>();
+
+  const ImgDataUrl = (image: File) => {
+    if (image) {
+      const reader = new FileReader();
+      reader.onload = (r) => {
+        return r.target?.result;
+      };
+      reader.readAsDataURL(image);
+    }
+    return "";
+  };
     const mutation = useCreatePost();
     const [images, setImages] = useState<File[]>([]);
     const {
@@ -49,11 +71,26 @@ export default function CommunityCreatePost() {
         }
     }, [isSubmitSuccessful, reset]);
 
+    const convertImgToDataURL = (file: File) => {
+        return new Promise<string | ArrayBuffer>((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = (event) => resolve(event.target!.result!);
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
+    };
+
     const handleImages = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.files) {
-            const TempImages = Array.from(event.target.files);
-            setImages(TempImages);
-        }
+        const files = Array.from(event.target.files!);
+        setImages(files);
+
+        const readers = files.map((file) => {
+            return convertImgToDataURL(file);
+        });
+
+        Promise.all(readers).then((values) => {
+            setPrevImages(values);
+        });
     };
 
     return (
@@ -76,6 +113,47 @@ export default function CommunityCreatePost() {
                     autoComplete="off"
                 />
 
+        <div className="flex flex-col justify-evenly">
+          <label>
+            <FontAwesomeIcon
+              icon={faImage}
+              fontSize={16}
+              color="#B97246"
+              className="hover:cursor-pointer"
+            />{" "}
+            <input
+              type="file"
+              name="img"
+              id="img"
+              onChange={handleImages}
+              multiple
+              style={{ display: "none" }}
+              accept="image/*"
+            />
+          </label>
+          <button
+            type="submit"
+            disabled={mutation.isLoading}
+            className="relative self-center h-fit border rounded-full bg-greenbtn text-white text-[16px] px-5 py-1"
+          >
+            {mutation.isLoading ? "Posting..." : "Post"}
+          </button>
+        </div>
+
+        {prevImages.map((image, index) => (
+          <img key={index} src={image.toString()} alt={`preview ${index}`} />
+        ))}
+
+        {mutation.isError && (
+          <p className="text-red">
+            {mutation.error.response.data.message
+              ? mutation.error.response.data.message
+              : mutation.error.message}
+          </p>
+        )}
+      </form>
+    </div>
+  );
                 <div className="flex flex-col justify-evenly">
                     <label>
                         <FontAwesomeIcon

@@ -37,19 +37,21 @@ public class CommunityCommentService {
     private final NotificationStorageService notificationStorageService;
 
     public ResponseEntity<?> addComment(String username, Long postId, CommunityComment communityComment) {
-        User commentUser = userRepository.findByUsername(username)
+        User reactUser = userRepository.findByUsername(username)
                 .orElseThrow(() -> new NoSuchElementException("No user found with this username " + username + "."));
 
         CommunityPost post = communityPostRepository.findById(postId)
                 .orElseThrow(() -> new NoSuchElementException("Post with id " + postId + " does not exists."));
         User postUser = post.getUser();
 
-        communityComment.setCommenter(commentUser);
+        communityComment.setCommenter(reactUser);
         communityComment.setCreatedAt(new Date());
         communityComment.setPost(post);
         communityCommentRepository.save(communityComment);
 
-        notificationStorageService.createNotificationStorage(postUser, commentUser, NotificationType.Comment);
+        if (postUser.getId() != reactUser.getId()) {
+            notificationStorageService.createNotificationStorage(postUser, reactUser, NotificationType.Comment);
+        }
         return new ResponseEntity<>("Comment Successful", HttpStatus.CREATED);
     }
 

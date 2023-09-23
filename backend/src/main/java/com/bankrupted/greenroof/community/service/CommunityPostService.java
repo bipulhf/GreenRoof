@@ -98,8 +98,12 @@ public class CommunityPostService {
             communityPostLikeRepository.deleteById(postLike.getId());
             return new ResponseEntity<>("Post Disliked Successful", HttpStatus.OK);
         }
+
+        if (liker.getId() != postOwner.getId()) {
+            notificationStorageService.createNotificationStorage(postOwner, liker, NotificationType.Like);
+        }
+
         communityPostLikeRepository.save(communityPostLike);
-        notificationStorageService.createNotificationStorage(postOwner, liker, NotificationType.Like);
         return new ResponseEntity<>("Post Liked Successful", HttpStatus.OK);
     }
 

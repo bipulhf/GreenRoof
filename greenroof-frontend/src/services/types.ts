@@ -9,6 +9,16 @@ export interface User {
     createdAt: Date;
 }
 
+
+export interface Notif {
+    id: number;
+    content: string;
+    notificationType: string;
+    delivered: boolean;
+    read: false;
+  }
+
+
 export interface UserProfile {
     id: number;
     firstName: string;
