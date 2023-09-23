@@ -31,4 +31,7 @@
         left: 50%;
         transform: translate(-50%);
     }
+    .preview {
+        margin: 0 auto;
+    }
 }

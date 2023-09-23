@@ -12,36 +12,28 @@ interface Inputs {
 }
 
 export default function CommunityCreatePost() {
-  const mutation = useCreatePost();
-  const [images, setImages] = useState<File[]>([]);
-
-  const [prevImages, setPrevImages] = useState<(string | ArrayBuffer)[]>([]);
-
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { isSubmitSuccessful },
-  } = useForm<Inputs>();
-
-  const ImgDataUrl = (image: File) => {
-    if (image) {
-      const reader = new FileReader();
-      reader.onload = (r) => {
-        return r.target?.result;
-      };
-      reader.readAsDataURL(image);
-    }
-    return "";
-  };
     const mutation = useCreatePost();
     const [images, setImages] = useState<File[]>([]);
+
+    const [prevImages, setPrevImages] = useState<(string | ArrayBuffer)[]>([]);
+
     const {
         register,
         handleSubmit,
         reset,
         formState: { isSubmitSuccessful },
     } = useForm<Inputs>();
+
+    const ImgDataUrl = (image: File) => {
+        if (image) {
+            const reader = new FileReader();
+            reader.onload = (r) => {
+                return r.target?.result;
+            };
+            reader.readAsDataURL(image);
+        }
+        return "";
+    };
 
     const [clicked, setClicked] = useState(false);
 
@@ -68,6 +60,7 @@ export default function CommunityCreatePost() {
             reset({
                 postText: "",
             });
+            setPrevImages([]);
         }
     }, [isSubmitSuccessful, reset]);
 
@@ -113,47 +106,6 @@ export default function CommunityCreatePost() {
                     autoComplete="off"
                 />
 
-        <div className="flex flex-col justify-evenly">
-          <label>
-            <FontAwesomeIcon
-              icon={faImage}
-              fontSize={16}
-              color="#B97246"
-              className="hover:cursor-pointer"
-            />{" "}
-            <input
-              type="file"
-              name="img"
-              id="img"
-              onChange={handleImages}
-              multiple
-              style={{ display: "none" }}
-              accept="image/*"
-            />
-          </label>
-          <button
-            type="submit"
-            disabled={mutation.isLoading}
-            className="relative self-center h-fit border rounded-full bg-greenbtn text-white text-[16px] px-5 py-1"
-          >
-            {mutation.isLoading ? "Posting..." : "Post"}
-          </button>
-        </div>
-
-        {prevImages.map((image, index) => (
-          <img key={index} src={image.toString()} alt={`preview ${index}`} />
-        ))}
-
-        {mutation.isError && (
-          <p className="text-red">
-            {mutation.error.response.data.message
-              ? mutation.error.response.data.message
-              : mutation.error.message}
-          </p>
-        )}
-      </form>
-    </div>
-  );
                 <div className="flex flex-col justify-evenly">
                     <label>
                         <FontAwesomeIcon
@@ -174,16 +126,13 @@ export default function CommunityCreatePost() {
                     </label>
                     <button
                         type="submit"
-                        disabled={clicked}
+                        disabled={mutation.isLoading}
                         className="relative self-center h-fit border rounded-full bg-greenbtn text-white text-[16px] px-5 py-1"
                     >
-                        {clicked
-                            ? mutation.isSuccess
-                                ? "Post"
-                                : "Posting..."
-                            : "Post"}
+                        {clicked ? "Posting..." : "Post"}
                     </button>
                 </div>
+
                 {mutation.isError && (
                     <p className="text-red">
                         {mutation.error.response.data.message
@@ -192,6 +141,14 @@ export default function CommunityCreatePost() {
                     </p>
                 )}
             </form>
+            {prevImages.map((image, index) => (
+                <img
+                    key={index}
+                    src={image.toString()}
+                    alt={`preview ${index}`}
+                    className="h-[60px] p-1 preview"
+                />
+            ))}
         </div>
     );
 }
