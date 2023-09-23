@@ -37,14 +37,19 @@ export const AuthProvider = ({ children }: Props) => {
     });
 
     useEffect(() => {
-        mutation.mutate({
-            username: localStorage.getItem("name") || "",
-            accessToken: localStorage.getItem("accessToken") || "",
-        });
+        if (localStorage.getItem("name") && localStorage.getItem("accessToken"))
+            mutation.mutate({
+                username: localStorage.getItem("name") || "",
+                accessToken: localStorage.getItem("accessToken") || "",
+            });
     }, []);
 
     useEffect(() => {
-        if (mutation.data?.isTokenValid) {
+        if (
+            mutation.data?.isTokenValid &&
+            localStorage.getItem("name") &&
+            localStorage.getItem("accessToken")
+        ) {
             setAuth({
                 username: localStorage.getItem("name") || "",
                 accessToken: localStorage.getItem("accessToken") || "",

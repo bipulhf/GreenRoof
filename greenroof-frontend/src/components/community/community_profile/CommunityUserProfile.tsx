@@ -35,53 +35,52 @@ export default function CommunityUserProfile() {
     const { data: totalFollowers } = useTotalFollowers(username || "");
     const { data: totalFollowings } = useTotalFollowings(username || "");
     return (
-        <div className="pb-[10%] min-h-screen md:w-[68%] min-[1000px]:w-[53%] md:ml-[30%] min-[1000px]:ml-[22%] divide-y divide-graybg">
-            <CommunityHeading heading="Profile" />
-            {userErrors && <p>{userError.message}</p>}
-            {userLoading ? (
-                <ProfileLoader />
-            ) : (
-                <CommunityUserProfileCard
-                    firstname={user?.firstName || ""}
-                    lastname={user?.lastName || ""}
-                    username={user?.username || ""}
-                    city={user?.city || ""}
-                    followers={totalFollowers?.total || 0}
-                    followings={totalFollowings?.total || 0}
-                />
-            )}
-            {auth.username === user?.username && <CommunityCreatePost />}
-            {isError && <p>{error.message}</p>}
-            <InfiniteScroll
-                dataLength={fetchedPostCount}
-                hasMore={!!hasNextPage}
-                next={() => fetchNextPage()}
-                loader={<PostLoader />}
-                className="divide-y divide-graybg"
-            >
-                {data?.pages.map((posts, index) => (
-                    <React.Fragment key={index}>
-                        {posts.contentList.map((post) => (
-                            <CommunityFeedPost
-                                key={post.id}
-                                postId={post.id}
-                                postText={post.postText}
-                                postAttatchments={post.postAttatchments}
-                                createdAt={post.createdAt}
-                                user={post.user}
-                                fullPost={false}
-                            />
-                        ))}
-                    </React.Fragment>
-                ))}
-            </InfiniteScroll>
-            {isLoading && (
-                <>
-                    <PostLoader />
-                    <PostLoader />
-                    <PostLoader />
-                </>
-            )}
-        </div>
+        user && (
+            <div className="pb-[10%] min-h-screen md:w-[68%] min-[1000px]:w-[53%] md:ml-[30%] min-[1000px]:ml-[22%] divide-y divide-graybg">
+                <CommunityHeading heading="Profile" />
+                {userErrors && <p>{userError.message}</p>}
+                {userLoading ? (
+                    <ProfileLoader />
+                ) : (
+                    <CommunityUserProfileCard
+                        user={user}
+                        followers={totalFollowers?.total || 0}
+                        followings={totalFollowings?.total || 0}
+                    />
+                )}
+                {auth.username === user?.username && <CommunityCreatePost />}
+                {isError && <p>{error.message}</p>}
+                <InfiniteScroll
+                    dataLength={fetchedPostCount}
+                    hasMore={!!hasNextPage}
+                    next={() => fetchNextPage()}
+                    loader={<PostLoader />}
+                    className="divide-y divide-graybg"
+                >
+                    {data?.pages.map((posts, index) => (
+                        <React.Fragment key={index}>
+                            {posts.contentList.map((post) => (
+                                <CommunityFeedPost
+                                    key={post.id}
+                                    postId={post.id}
+                                    postText={post.postText}
+                                    postAttatchments={post.postAttatchments}
+                                    createdAt={post.createdAt}
+                                    user={post.user}
+                                    fullPost={false}
+                                />
+                            ))}
+                        </React.Fragment>
+                    ))}
+                </InfiniteScroll>
+                {isLoading && (
+                    <>
+                        <PostLoader />
+                        <PostLoader />
+                        <PostLoader />
+                    </>
+                )}
+            </div>
+        )
     );
 }

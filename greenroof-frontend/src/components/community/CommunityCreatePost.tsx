@@ -4,8 +4,8 @@ import { faImage } from "@fortawesome/free-solid-svg-icons";
 import { useCreatePost } from "../../hooks/usePost";
 import { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import axios from "axios";
 import { PostAttatchments } from "../../services/types";
+import uploadImages from "../../services/ImageUpload";
 
 interface Inputs {
     postText: string;
@@ -22,23 +22,6 @@ export default function CommunityCreatePost() {
     } = useForm<Inputs>();
 
     const [clicked, setClicked] = useState(false);
-
-    const uploadImages = (image: File) => {
-        return new Promise<string>((resolve) => {
-            const imgData = new FormData();
-            imgData.append("file", image);
-            imgData.append("upload_preset", "jqtskhrp");
-            imgData.append("cloud_name", "du7dquv4j");
-            axios
-                .post(
-                    "https://api.cloudinary.com/v1_1/du7dquv4j/image/upload",
-                    imgData
-                )
-                .then((response) => {
-                    resolve(response.data.url);
-                });
-        });
-    };
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         setClicked(true);

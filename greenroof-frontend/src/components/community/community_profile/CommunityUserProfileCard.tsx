@@ -1,5 +1,4 @@
 import { Link, useParams } from "react-router-dom";
-import user_photo from "/assets/forum/user_profile_photo_104x104.png";
 import { useEffect, useState } from "react";
 import {
     useFollows,
@@ -7,21 +6,20 @@ import {
     useUnfollow,
 } from "../../../hooks/useFollowersFollowings";
 import useAuth from "../../../hooks/useAuth";
+import { faCameraRetro } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import uploadImages from "../../../services/ImageUpload";
+import { useProfilePhoto } from "../../../hooks/useProfile";
+import { User } from "../../../services/types";
 
 interface Props {
-    firstname: string;
-    lastname: string;
-    username: string;
-    city: string;
+    user: User;
     followers: number;
     followings: number;
 }
 
 export default function CommunityUserProfileCard({
-    firstname,
-    lastname,
-    username,
-    city,
+    user,
     followers,
     followings,
 }: Props) {
@@ -29,38 +27,80 @@ export default function CommunityUserProfileCard({
     const { username: uname } = useParams();
     const [follow, setFollow] = useState(false);
     const { data: isFollow } = useIsFollow(uname || "");
+    const mutation = useProfilePhoto();
     const followMutation = useFollows(uname || "");
     const unfollowMutation = useUnfollow(uname || "");
+    const [image, setImage] = useState<File>();
+    const [profilePhotoLink, setProfilePhotoLink] = useState(user.profilePhoto);
 
     const onFollow = () => {
         if (follow) unfollowMutation.mutate();
         else followMutation.mutate();
     };
+
     useEffect(() => {
         setFollow(isFollow?.isFollow || false);
     }, [isFollow]);
+
     useEffect(() => {
         if (followMutation.isSuccess || unfollowMutation.isSuccess)
             setFollow(!follow);
     }, [followMutation.isSuccess, unfollowMutation.isSuccess]);
+
+    const imageOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files) {
+            setImage(event.target.files[0]);
+        }
+    };
+
+    useEffect(() => {
+        if (image) {
+            const imagePromise = async () => await uploadImages(image);
+            imagePromise().then((d) => {
+                mutation.mutate(d);
+                setProfilePhotoLink(d);
+            });
+        }
+    }, [image, mutation]);
+
     return (
         <>
-            <div className="sm:flex justify-evenly py-7">
-                <div className="flex ml-5">
-                    <img
-                        src={user_photo}
-                        alt="User Photo"
-                        className="max-[490px]:w-[80px] max-[490px]:h-[80px] w-[104px] h-[104px]"
-                    />
+            <div className="justify-evenly py-7">
+                <div className="flex flex-col text-center">
+                    <div className="relative first-letter:ml-5 profile-img max-[490px]:w-[100px] max-[490px]:h-[100px] w-[150px] h-[150px] self-center">
+                        <img
+                            src={profilePhotoLink}
+                            alt="User Photo"
+                            className="max-[490px]:w-[100px] max-[490px]:h-[100px] w-[150px] h-[150px] rounded-full"
+                        />
+                        <form>
+                            <label>
+                                <FontAwesomeIcon
+                                    icon={faCameraRetro}
+                                    fontSize={22}
+                                    className="text-white bg-black p-3 rounded-full absolute opacity-40 hover:opacity-100 right-5 bottom-2 hover:cursor-pointer"
+                                    type="submit"
+                                />
+                                <input
+                                    type="file"
+                                    name="img"
+                                    id="img"
+                                    onChange={imageOnChange}
+                                    className="hidden"
+                                    accept="image/*"
+                                />
+                            </label>
+                        </form>
+                    </div>
                     <div className="ml-5 self-center">
                         <h2 className="font-semibold text-[22px] max-[490px]:text-[18px] ">
-                            {firstname + " " + lastname}
+                            {user.firstName + " " + user.lastName}
                         </h2>
                         <h3 className="text-gray font-medium max-[490px]:text-[15px] text-[18px]">
-                            @{username}
+                            @{user.username}
                         </h3>
                         <h3 className="text-[16px] max-[490px]:text-[14px] ">
-                            From {city}
+                            From {user.city}
                         </h3>
                     </div>
                     {auth.username != uname && (

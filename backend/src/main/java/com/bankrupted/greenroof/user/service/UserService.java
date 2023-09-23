@@ -6,6 +6,7 @@ import com.bankrupted.greenroof.registration.RegistrationRequest;
 import com.bankrupted.greenroof.registration.password.PasswordResetTokenService;
 import com.bankrupted.greenroof.security.token.VerificationToken;
 import com.bankrupted.greenroof.security.token.repository.VerificationTokenRepository;
+import com.bankrupted.greenroof.user.dto.ProfilePictureDto;
 import com.bankrupted.greenroof.user.dto.UserProfileDto;
 import com.bankrupted.greenroof.user.entity.User;
 import com.bankrupted.greenroof.user.repository.UserRepository;
@@ -115,5 +116,14 @@ public class UserService {
 
     public boolean oldPasswordIsValid(User user, String oldPassword) {
         return passwordEncoder.matches(oldPassword, user.getPassword());
+    }
+
+    public String uploadProfilePicture(String username, ProfilePictureDto photoLink) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new NoSuchElementException("Username not found."));
+        user.setId(user.getId());
+        user.setProfilePhoto(photoLink.getLink());
+        userRepository.save(user);
+        return "Uploaded";
     }
 }

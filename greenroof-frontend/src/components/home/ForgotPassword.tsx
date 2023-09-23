@@ -2,24 +2,23 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import loginIcon from "/assets/community/login.svg";
 import roofTopImage from "/assets/community/roof-desktop.svg";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
-import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Link, Navigate, useLocation } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useCreateLogin } from "../../hooks/useLogin";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import Popup from "reactjs-popup";
 import PopupLoading from "../PopupLoading";
+import ForgotPasswordPopUp from "./ForgotPasswordPopUp";
 
 interface Inputs {
     email: string;
 }
 
 export default function ForgotPassword() {
-    const navigate = useNavigate();
-    const location = useLocation();
     const { auth } = useAuth();
     const mutation = useCreateLogin();
-    const from = location.state?.from?.pathname || "/community";
+    const [open, setOpen] = useState(false);
 
     const {
         register,
@@ -28,12 +27,12 @@ export default function ForgotPassword() {
     } = useForm<Inputs>();
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
-        mutation.mutate(data);
+        //mutation.mutate(data);
     };
 
     useEffect(() => {
         if (isSubmitSuccessful && mutation.data) {
-            navigate(from, { replace: true });
+            setOpen(!open);
         }
     }, [isSubmitSuccessful, mutation.data]);
 
@@ -47,6 +46,14 @@ export default function ForgotPassword() {
                 />
             ) : (
                 <>
+                    <Popup
+                        modal
+                        open={!open}
+                        closeOnDocumentClick
+                        onClose={() => setOpen(!open)}
+                    >
+                        <ForgotPasswordPopUp />
+                    </Popup>
                     {mutation.isLoading && (
                         <Popup
                             modal

@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import { User, UserProfile } from "../services/types";
 import APIClient from "../services/apiClient";
 import useAuth from "./useAuth";
@@ -32,4 +32,26 @@ const useFollowingRecommendation = () => {
     });
 };
 
-export { useGetUser, useProfile, useFollowingRecommendation };
+const useProfilePhoto = () => {
+    const query = new QueryClient();
+    const { auth } = useAuth();
+    const headers = { Authorization: `Bearer ${auth.accessToken}` };
+    return useMutation({
+        mutationFn: (link: string) => {
+            return userApiClient.uploadProfilePhoto(
+                "/user/profile_picture",
+                headers,
+                {
+                    link: link,
+                }
+            );
+        },
+        onSuccess: () => {
+            query.invalidateQueries({
+                queryKey: ["user", auth.username],
+            });
+        },
+    });
+};
+
+export { useGetUser, useProfile, useFollowingRecommendation, useProfilePhoto };

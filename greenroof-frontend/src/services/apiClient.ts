@@ -49,6 +49,8 @@ class APIClient<T, V> {
         axiosInstance(this.subbase).delete(endpoint + "/" + id, { headers });
     unfollow = (endpoint: string, headers: object) =>
         axiosInstance(this.subbase).delete(endpoint, { headers });
+    uploadProfilePhoto = (endpoint: string, headers: object, data = {}) =>
+        axiosInstance(this.subbase).put(endpoint, data, { headers });
 }
 
 export default APIClient;
