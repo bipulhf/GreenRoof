@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -22,6 +23,8 @@ public class ForumQuestion {
     @NotBlank(message = "Question body is mandatory and can't be blank.")
     @Column(nullable = false, columnDefinition = "TEXT")
     private String questionText;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<ForumAttatchment> forumAttatchments;
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;

@@ -9,6 +9,7 @@ import com.bankrupted.greenroof.user.repository.UserRepository;
 import com.bankrupted.greenroof.forum.repository.ForumAnswerRepository;
 import com.bankrupted.greenroof.forum.repository.ForumQuestionRepository;
 import com.bankrupted.greenroof.forum.repository.ForumVoteRepository;
+import com.bankrupted.greenroof.utils.IsAdmin;
 import com.bankrupted.greenroof.utils.ModelMapperUtility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,7 @@ public class ForumAnswerService {
     private final UserRepository userRepository;
     private final ForumVoteRepository forumVoteRepository;
     private final ModelMapperUtility<ForumAnswer, ForumAnswerDto> modelMapper;
+    private final IsAdmin isAdmin;
 
     public ForumAnswerDto getSingleForumAnswer(Long answerId) {
         ForumAnswer answer = forumAnswerRepository.findById(answerId)
@@ -87,7 +89,7 @@ public class ForumAnswerService {
         ForumAnswer forumAnswer = forumAnswerRepository.findById(answerId)
                         .orElseThrow(() -> new NoSuchElementException("Answer with id " + answerId + " does not exists."));
 
-        if(!Objects.equals(forumAnswer.getAnswerer().getUsername(), username))
+        if(!Objects.equals(forumAnswer.getAnswerer().getUsername(), username) && !isAdmin.check())
             throw new GenericException("You are not allowed to delete this answer.");
 
         User user = userRepository.findByUsername(username).get();

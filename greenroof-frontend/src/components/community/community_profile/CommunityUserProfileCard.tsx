@@ -9,13 +9,24 @@ import useAuth from "../../../hooks/useAuth";
 import { faCameraRetro } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import uploadImages from "../../../services/ImageUpload";
-import { useProfilePhoto } from "../../../hooks/useProfile";
+import {
+    useBanUser,
+    useGetUser,
+    useProfileName,
+    useProfilePhoto,
+} from "../../../hooks/useProfile";
 import { User } from "../../../services/types";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 interface Props {
     user: User;
     followers: number;
     followings: number;
+}
+
+interface Inputs {
+    firstName: string;
+    lastName: string;
 }
 
 export default function CommunityUserProfileCard({
@@ -24,6 +35,7 @@ export default function CommunityUserProfileCard({
     followings,
 }: Props) {
     const { auth } = useAuth();
+    const { data: loggedInUser } = useGetUser(auth.username);
     const { username: uname } = useParams();
     const [follow, setFollow] = useState(false);
     const { data: isFollow } = useIsFollow(uname || "");
@@ -32,6 +44,22 @@ export default function CommunityUserProfileCard({
     const unfollowMutation = useUnfollow(uname || "");
     const [image, setImage] = useState<File>();
     const [profilePhotoLink, setProfilePhotoLink] = useState(user.profilePhoto);
+    const userProfileMutation = useProfileName();
+    const [fullName, setFullName] = useState(
+        user.firstName + " " + user.lastName
+    );
+    const banMutation = useBanUser();
+
+    const {
+        register,
+        handleSubmit,
+        formState: { isSubmitSuccessful },
+    } = useForm<Inputs>({
+        defaultValues: {
+            firstName: user.firstName,
+            lastName: user.lastName,
+        },
+    });
 
     const onFollow = () => {
         if (follow) unfollowMutation.mutate();
@@ -52,7 +80,6 @@ export default function CommunityUserProfileCard({
             setImage(event.target.files[0]);
         }
     };
-
     useEffect(() => {
         if (image) {
             const imagePromise = async () => await uploadImages(image);
@@ -63,39 +90,108 @@ export default function CommunityUserProfileCard({
         }
     }, [image, mutation]);
 
+    const [cngName, setCngName] = useState(false);
+    const [isBanned, setIsBanned] = useState(user.isBanned);
+
+    const changeName: SubmitHandler<Inputs> = (data) => {
+        if (isSubmitSuccessful) {
+            setCngName(!cngName);
+            setFullName(data.firstName + " " + data.lastName);
+        }
+        userProfileMutation.mutate(data);
+    };
+
+    useEffect(() => {
+        setIsBanned(user.isBanned);
+    }, [user]);
+
+    const banUser = () => {
+        setIsBanned(!isBanned);
+        banMutation.mutate(user.username);
+    };
+
     return (
         <>
-            <div className="justify-center py-7 dark:text-white">
+            <div className="relative justify-center py-7 dark:text-white">
                 <div className="flex flex-col text-center">
+                    <div className="flex justify-end">
+                        {auth.username === uname && (
+                            <button
+                                onClick={() => setCngName(!cngName)}
+                                className="text-right rounded-lg dark:text-white text-darkbg p-1 hover:underline mr-5"
+                            >
+                                Edit
+                            </button>
+                        )}
+                        {loggedInUser?.role === "ADMIN" && (
+                            <button
+                                onClick={banUser}
+                                className="text-right rounded-lg dark:text-white text-darkbg p-1"
+                            >
+                                {isBanned ? "Unban User" : "Ban User"}
+                            </button>
+                        )}
+                    </div>
                     <div className="relative first-letter:ml-5 profile-img max-[490px]:w-[100px] max-[490px]:h-[100px] w-[150px] h-[150px] self-center">
                         <img
                             src={profilePhotoLink}
                             alt="User Photo"
                             className="max-[490px]:w-[100px] max-[490px]:h-[100px] w-[150px] h-[150px] rounded-full"
                         />
-                        <form>
-                            <label>
-                                <FontAwesomeIcon
-                                    icon={faCameraRetro}
-                                    fontSize={22}
-                                    className="text-white bg-black p-3 rounded-full absolute opacity-40 hover:opacity-100 right-5 bottom-2 hover:cursor-pointer"
-                                    type="submit"
-                                />
-                                <input
-                                    type="file"
-                                    name="img"
-                                    id="img"
-                                    onChange={imageOnChange}
-                                    className="hidden"
-                                    accept="image/*"
-                                />
-                            </label>
-                        </form>
+                        {auth.username === uname && (
+                            <form>
+                                <label>
+                                    <FontAwesomeIcon
+                                        icon={faCameraRetro}
+                                        fontSize={22}
+                                        className="text-white bg-black p-3 rounded-full absolute opacity-40 hover:opacity-100 right-5 bottom-2 hover:cursor-pointer"
+                                        type="submit"
+                                    />
+                                    <input
+                                        type="file"
+                                        name="img"
+                                        id="img"
+                                        onChange={imageOnChange}
+                                        className="hidden"
+                                        accept="image/*"
+                                    />
+                                </label>
+                            </form>
+                        )}
                     </div>
                     <div className="ml-5 self-center">
-                        <h2 className="font-semibold text-[22px] max-[490px]:text-[18px] ">
-                            {user.firstName + " " + user.lastName}
-                        </h2>
+                        {cngName ? (
+                            <form
+                                onSubmit={handleSubmit(changeName)}
+                                className="mt-3 font-semibold text-[22px] max-[490px]:text-[18px]"
+                            >
+                                <input
+                                    {...register("firstName", {
+                                        required: true,
+                                    })}
+                                    type="text"
+                                    name="firstName"
+                                    id="firstName"
+                                    placeholder="First Name"
+                                    className="border mr-3 w-[20%]"
+                                />
+                                <input
+                                    {...register("lastName", {
+                                        required: true,
+                                    })}
+                                    type="text"
+                                    name="lastName"
+                                    id="lastName"
+                                    placeholder="Last Name"
+                                    className="border mr-3 w-[20%]"
+                                />
+                                <button type="submit">Save</button>
+                            </form>
+                        ) : (
+                            <h2 className="font-semibold text-[22px] max-[490px]:text-[18px]">
+                                {fullName}
+                            </h2>
+                        )}
                         <h3 className="text-gray font-medium max-[490px]:text-[15px] text-[18px] dark:text-darksecondary">
                             @{user.username}
                         </h3>
@@ -103,13 +199,18 @@ export default function CommunityUserProfileCard({
                             From {user.city}
                         </h3>
                     </div>
-                    {auth.username != uname && (
+                    {auth.username != uname && !user.isBanned && (
                         <button
                             onClick={onFollow}
                             className="self-center h-fit rounded-full bg-greenbtn text-white text-[13px] md:text-[16px] px-3 py-1 md:py-2 my-2"
                         >
                             {follow ? "Unfollow" : "Follow"}
                         </button>
+                    )}
+                    {user.isBanned && (
+                        <h2 className="self-center my-3 dark:text-white text-[13px] md:text-[16px]">
+                            User has been banned from the site.
+                        </h2>
                     )}
                 </div>
                 <div className="flex flex-col max-sm:mt-5 justify-center">

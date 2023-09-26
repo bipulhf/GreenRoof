@@ -27,16 +27,16 @@ export default function CommunityCreatePost({ profilePhoto }: Props) {
         formState: { isSubmitSuccessful },
     } = useForm<Inputs>();
 
-    const ImgDataUrl = (image: File) => {
-        if (image) {
-            const reader = new FileReader();
-            reader.onload = (r) => {
-                return r.target?.result;
-            };
-            reader.readAsDataURL(image);
-        }
-        return "";
-    };
+    // const ImgDataUrl = (image: File) => {
+    //     if (image) {
+    //         const reader = new FileReader();
+    //         reader.onload = (r) => {
+    //             return r.target?.result;
+    //         };
+    //         reader.readAsDataURL(image);
+    //     }
+    //     return "";
+    // };
 
     const [clicked, setClicked] = useState(false);
 

@@ -1,6 +1,7 @@
 package com.bankrupted.greenroof.security.auth;
 
 import com.bankrupted.greenroof.config.JwtService;
+import com.bankrupted.greenroof.exception.GenericException;
 import com.bankrupted.greenroof.security.token.IsTokenValid;
 import com.bankrupted.greenroof.security.token.Token;
 import com.bankrupted.greenroof.security.token.repository.TokenRepository;
@@ -37,6 +38,10 @@ public class AuthenticationService {
 
       var user = userRepository.findByUsername(request.getUsername())
           .orElseThrow();
+
+      if(user.isBanned())
+          throw new GenericException("You are banned from the site.");
+
       var jwtToken = jwtService.generateToken(user);
       var refreshToken = jwtService.generateRefreshToken(user);
       revokeAllUserTokens(user);

@@ -16,7 +16,7 @@ import useAuth from "./useAuth";
 
 interface PostPayload {
     postText: string;
-    postAttatchments: PostAttatchments[];
+    postAttatchments?: PostAttatchments[];
 }
 
 const contentApiClient = new APIClient<Content<Post>, Post>("/community");

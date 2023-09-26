@@ -21,9 +21,9 @@ export default function ForumSidebar({ menuOn }: Props) {
     return (
         <>
             <div
-                className={`ml-[40px] mt-[40px] ${
+                className={`ml-[40px] mt-[40px] animate-once animate-duration-200 animate-ease-linear ${
                     menuOn
-                        ? `pl-[620px] bg-white min-h-screen py-5 w-[900px] bg-opacity-80`
+                        ? `pl-10 bg-white dark:bg-darkbg min-h-screen py-5 animate-fade-left`
                         : `max-lg:hidden`
                 } `}
             >

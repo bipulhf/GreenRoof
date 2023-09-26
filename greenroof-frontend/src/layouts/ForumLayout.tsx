@@ -1,7 +1,6 @@
 import { Outlet } from "react-router-dom";
 import ForumHeader from "../components/forum/ForumHeader";
 import ForumSidebar from "../components/forum/forum_sidebar/ForumSidebar";
-import "../components/forum/forum.css";
 import ForumMobileMenu from "../components/forum/forum_sidebar/ForumMobileMenu";
 
 export default function ForumLayout() {

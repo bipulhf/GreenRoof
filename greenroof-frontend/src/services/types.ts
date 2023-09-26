@@ -6,6 +6,8 @@ export interface User {
     score: number;
     profilePhoto: string;
     city: string;
+    role: string;
+    isBanned: boolean;
     createdAt: Date;
 }
 
@@ -27,6 +29,8 @@ export interface UserProfile {
     email?: string;
     profilePhoto: string;
     city: string;
+    role: string;
+    isBanned: boolean;
     createdAt: Date;
 }
 
@@ -51,6 +55,7 @@ export interface Question {
     id: number;
     questionTitle: string;
     questionText: string;
+    questionAttatchments: PostAttatchments[];
     questioner: User;
     createdAt: Date;
 }

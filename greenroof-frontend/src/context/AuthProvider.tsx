@@ -9,6 +9,7 @@ import {
 } from "react";
 import { AuthObject } from "../services/types";
 import { useTokenValidity } from "../hooks/useLogin";
+import { useGetUser } from "../hooks/useProfile";
 
 interface Props {
     children?: ReactNode;

@@ -15,7 +15,7 @@ export default {
         md: '724px'
       },
       colors: {
-        darkbg: '#3d3d3d',
+        darkbg: '#0F0F0F',
         darkprimary:'#363636',
         darktext: '#ffffff',
         darksecondary: '#aaaaaa',

@@ -14,6 +14,7 @@ import com.bankrupted.greenroof.user.repository.UserRepository;
 import com.bankrupted.greenroof.user.service.UserService;
 import com.bankrupted.greenroof.community.repository.CommunityCommentRepository;
 import com.bankrupted.greenroof.community.repository.CommunityPostRepository;
+import com.bankrupted.greenroof.utils.IsAdmin;
 import com.bankrupted.greenroof.utils.ModelMapperUtility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -33,6 +34,7 @@ public class CommunityCommentService {
     private final UserRepository userRepository;
     private final CommunityPostRepository communityPostRepository;
     private final ModelMapperUtility<CommunityComment, CommunityCommentDto> modelMapper;
+    private final IsAdmin isAdmin;
     private int pageSize = 7;
     private final NotificationStorageService notificationStorageService;
 
@@ -75,7 +77,7 @@ public class CommunityCommentService {
         CommunityComment prevComment = communityCommentRepository.findById(commentId)
                 .orElseThrow(() -> new NoSuchElementException("Comment with id " + commentId + " does not exists."));
 
-        if (!Objects.equals(prevComment.getCommenter().getUsername(), username))
+        if (!Objects.equals(prevComment.getCommenter().getUsername(), username) && !isAdmin.check())
             throw new GenericException("You are not allowed to delete this comment.");
 
         communityCommentRepository.deleteById(commentId);

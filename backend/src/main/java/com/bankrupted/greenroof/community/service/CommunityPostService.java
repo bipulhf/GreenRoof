@@ -10,11 +10,14 @@ import com.bankrupted.greenroof.community.Notification.NotificationType;
 import com.bankrupted.greenroof.community.entity.CommunityPost;
 import com.bankrupted.greenroof.user.repository.UserRepository;
 import com.bankrupted.greenroof.community.repository.CommunityPostRepository;
+import com.bankrupted.greenroof.utils.IsAdmin;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +32,7 @@ public class CommunityPostService {
     private final NotificationStorageService notificationStorageService;
     private final CommunityCommentService communityCommentService;
     private final CommunityPostLikeRepository communityPostLikeRepository;
+    private final IsAdmin isAdmin;
 
     public ResponseEntity<?> createNewCommunityPost(String username, CommunityPost communityPost) {
         User user = userRepository.findByUsername(username)
@@ -59,9 +63,9 @@ public class CommunityPostService {
     public ResponseEntity<?> deleteCommmunityPost(String username, Long postId) {
         CommunityPost prevPost = communityPostRepository.findById(postId)
                 .orElseThrow(() -> new NoSuchElementException("Post with id " + postId + " does not exists."));
-        ;
 
-        if (!Objects.equals(prevPost.getUser().getUsername(), username))
+
+        if (!Objects.equals(prevPost.getUser().getUsername(), username) && !isAdmin.check())
             throw new GenericException("You are not allowed to delete this post.");
         if (communityPostLikeRepository.totalNumberOfLikes(postId) > 0)
             communityPostLikeRepository.deleteByPostId(prevPost);

@@ -17,8 +17,7 @@ public class CommunityPost {
     @Column(columnDefinition = "TEXT")
     private String  postText;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "community_post_attatchments", joinColumns = @JoinColumn(name = "post_id"), inverseJoinColumns = @JoinColumn(name = "attatchment_id"))
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Attatchments> postAttatchments;
 
     @Column(nullable = false)

@@ -1,12 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import APIClient from "../services/apiClient";
-import { Question, ValidationError } from "../services/types";
+import { PostAttatchments, Question, ValidationError } from "../services/types";
 import { useNavigate } from "react-router-dom";
 import useAuth from "./useAuth";
 
 interface QuestionText {
     questionTitle: string;
     questionText: string;
+    forumAttatchments?: PostAttatchments[];
 }
 
 const questionApiClient = new APIClient<Question, QuestionText>("/forum");

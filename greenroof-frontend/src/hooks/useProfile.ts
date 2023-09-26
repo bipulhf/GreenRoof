@@ -3,6 +3,11 @@ import { User, UserProfile } from "../services/types";
 import APIClient from "../services/apiClient";
 import useAuth from "./useAuth";
 
+interface Name {
+    firstName: string;
+    lastName: string;
+}
+
 const userApiClient = new APIClient<User, UserProfile>("");
 
 const useProfile = (username: string) => {
@@ -39,7 +44,7 @@ const useProfilePhoto = () => {
     const headers = { Authorization: `Bearer ${auth.accessToken}` };
     return useMutation({
         mutationFn: (link: string) => {
-            return userApiClient.uploadProfilePhoto(
+            return userApiClient.changeUserInfo(
                 "/user/profile_picture",
                 headers,
                 {
@@ -55,4 +60,41 @@ const useProfilePhoto = () => {
     });
 };
 
-export { useGetUser, useProfile, useFollowingRecommendation, useProfilePhoto };
+const useProfileName = () => {
+    const query = new QueryClient();
+    const { auth } = useAuth();
+    const headers = { Authorization: `Bearer ${auth.accessToken}` };
+    return useMutation({
+        mutationFn: (UserBasicInfo: Name) => {
+            return userApiClient.changeUserInfo(
+                "/user/info",
+                headers,
+                UserBasicInfo
+            );
+        },
+        onSuccess: () => {
+            query.invalidateQueries({
+                queryKey: ["user", auth.username],
+            });
+        },
+    });
+};
+
+const useBanUser = () => {
+    const { auth } = useAuth();
+    const headers = { Authorization: `Bearer ${auth.accessToken}` };
+    return useMutation({
+        mutationFn: (username: string) => {
+            return userApiClient.follow("/user/ban/" + username, headers);
+        },
+    });
+};
+
+export {
+    useGetUser,
+    useProfile,
+    useFollowingRecommendation,
+    useProfilePhoto,
+    useProfileName,
+    useBanUser,
+};

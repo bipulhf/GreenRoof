@@ -12,8 +12,8 @@ import {
 import { Link } from "react-router-dom";
 import forum_logo from "/assets/forum/forum_logo.svg";
 import useAuth from "../../../hooks/useAuth";
-import forum from "/assets/community/forum.svg";
 import { themeMode } from "../../../services/themeMode";
+import { faCircleQuestion } from "@fortawesome/free-regular-svg-icons";
 
 export default function CommunityLeftSidebar() {
     const { auth } = useAuth();
@@ -56,12 +56,11 @@ export default function CommunityLeftSidebar() {
                     </li>
                     <li>
                         <Link to={"/forum"} className="hover:underline">
-                            <img
-                                src={forum}
-                                alt="Forum Icon"
-                                className="inline pr-3"
+                            <FontAwesomeIcon
+                                icon={faCircleQuestion}
+                                fontSize={20}
                             />
-                            Forum
+                            <span className="ml-5">Forum</span>
                         </Link>
                     </li>
                     <li>
@@ -100,14 +99,14 @@ export default function CommunityLeftSidebar() {
                         </li>
                     )}
                     <li>
-                        <button>
+                        <Link to={"/logout"}>
                             <FontAwesomeIcon
                                 icon={faRightFromBracket}
                                 fontSize={20}
                                 rotation={180}
                             />
                             <span className="ml-5">Logout</span>
-                        </button>
+                        </Link>
                     </li>
                 </ul>
             </nav>

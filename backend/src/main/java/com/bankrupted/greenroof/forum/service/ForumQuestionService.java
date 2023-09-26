@@ -5,6 +5,7 @@ import com.bankrupted.greenroof.user.entity.User;
 import com.bankrupted.greenroof.forum.entity.ForumQuestion;
 import com.bankrupted.greenroof.user.repository.UserRepository;
 import com.bankrupted.greenroof.forum.repository.ForumQuestionRepository;
+import com.bankrupted.greenroof.utils.IsAdmin;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ public class ForumQuestionService {
     private final ForumQuestionRepository forumQuestionRepository;
     private final UserRepository userRepository;
     private final ForumAnswerService forumAnswerService;
+    private final IsAdmin isAdmin;
 
     public ResponseEntity<?> craeteNewForumQuestion(String username, ForumQuestion forumQuestion) {
         User user = userRepository.findByUsername(username)
@@ -44,7 +46,7 @@ public class ForumQuestionService {
 
     public ResponseEntity<?> deleteForumQuestion(String username, Long questionId) {
         boolean FORBIDDEN = getQuestionEditPermission(questionId, username);
-        if (FORBIDDEN)
+        if (FORBIDDEN && !isAdmin.check())
             throw new GenericException("You are not allowed to delete this question.");
         forumAnswerService.deleteAnswerOfQuestion(questionId, username);
         forumQuestionRepository.deleteById(questionId);

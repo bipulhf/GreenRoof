@@ -36,6 +36,7 @@ public class RegistrationController {
     public ResponseEntity<?> registerUser(@RequestBody RegistrationRequest registrationRequest,
             final HttpServletRequest request) {
         registrationRequest.setRole(RoleType.USER);
+        registrationRequest.setProfilePhoto("https://res.cloudinary.com/du7dquv4j/image/upload/v1695749251/dnt0mj8ahslxiksglnxv.png");
         User user = userService.registerUser(registrationRequest);
 
         publisher.publishEvent(new RegistrationCompleteEvent(user,

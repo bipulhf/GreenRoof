@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useDeleteAnswer } from "../../../hooks/useAnswer";
 import useAuth from "../../../hooks/useAuth";
+import { useGetUser } from "../../../hooks/useProfile";
 
 interface Props {
     postId: number;
@@ -20,6 +21,7 @@ export default function ForumAnswererInfo({
     profilePhoto,
 }: Props) {
     const { auth } = useAuth();
+    const { data: loggedInUser } = useGetUser(auth.username);
     const mutation = useDeleteAnswer();
     const deleteAnswer = (id: number) => {
         if (window.confirm("Do you really want to delete the answer?"))
@@ -43,23 +45,25 @@ export default function ForumAnswererInfo({
                         </h4>
                     </Link>
                 </div>
-                {auth.username === username && (
-                    <div className="flex justify-evenly">
+                <div className="flex justify-evenly">
+                    {auth.username === username && (
                         <Link
                             to={"/forum/answer/edit/" + postId + "/" + answerId}
                             className="text-gray font-medium text-[12px] dark:text-darksecondary"
                         >
                             Edit
                         </Link>
-
-                        <button
-                            className="text-gray font-medium text-[12px] dark:text-darksecondary"
-                            onClick={() => deleteAnswer(answerId)}
-                        >
-                            Delete
-                        </button>
-                    </div>
-                )}
+                    )}
+                    {auth.username === username ||
+                        (loggedInUser?.role === "ADMIN" && (
+                            <button
+                                className="text-gray font-medium text-[12px] dark:text-darksecondary"
+                                onClick={() => deleteAnswer(answerId)}
+                            >
+                                Delete
+                            </button>
+                        ))}
+                </div>
                 {mutation.isError && (
                     <p className="text-red">
                         {mutation.error.response.data.message

@@ -1,8 +1,10 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useCreateQuestion } from "../../../hooks/useQuestion";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Popup from "reactjs-popup";
 import PopupLoading from "../../PopupLoading";
+import { PostAttatchments } from "../../../services/types";
+import uploadImages from "../../../services/ImageUpload";
 
 interface Inputs {
     questionTitle: string;
@@ -11,6 +13,9 @@ interface Inputs {
 
 export default function ForumCreatePost() {
     const mutation = useCreateQuestion();
+    const [images, setImages] = useState<File[]>([]);
+
+    const [prevImages, setPrevImages] = useState<(string | ArrayBuffer)[]>([]);
 
     const {
         register,
@@ -18,15 +23,59 @@ export default function ForumCreatePost() {
         reset,
         formState: { errors, isSubmitSuccessful },
     } = useForm<Inputs>();
-    const onSubmit: SubmitHandler<Inputs> = (data) => mutation.mutate(data);
+    const onSubmit: SubmitHandler<Inputs> = (data) => {
+        const forumAttatchments: PostAttatchments[] = [];
+        const imagesPromises = images.map(
+            async (image) => await uploadImages(image)
+        );
+        Promise.allSettled(imagesPromises)
+            .then((promisesArr) => {
+                promisesArr.map((link) => {
+                    forumAttatchments.push({ link: link.value });
+                });
+                mutation.mutate({
+                    questionTitle: data.questionTitle,
+                    questionText: data.questionText,
+                    forumAttatchments: forumAttatchments,
+                });
+            })
+            .catch((e) => console.log(e));
+    };
+
     useEffect(() => {
         if (isSubmitSuccessful) {
             reset({
                 questionText: "",
                 questionTitle: "",
             });
+            setPrevImages([]);
         }
     }, [isSubmitSuccessful, reset]);
+
+    const convertImgToDataURL = (file: File) => {
+        return new Promise<string | ArrayBuffer>((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = (event) => resolve(event.target!.result!);
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
+    };
+
+    const handleImages = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const files = Array.from(event.target.files!);
+        setImages(files);
+
+        const readers = files.map((file) => {
+            return convertImgToDataURL(file);
+        });
+
+        Promise.all(readers)
+            .then((values) => {
+                setPrevImages(values);
+            })
+            .catch((e) => console.log(e));
+    };
+
     return (
         <div className={`${mutation.isLoading ? `bg-grabg opacity-10` : ``}`}>
             <h2 className="font-bold text-[14px] sm:text-[16px] md:text-[22px] dark:text-white">
@@ -71,7 +120,7 @@ export default function ForumCreatePost() {
                         required: true,
                         minLength: 10,
                     })}
-                    className="text-[12px] sm:text-[14px] md:text-[16px] w-full border-2 border-gray rounded-lg p-1 sm:p-3 h-[150px] bg-darkbg dark:text-white outline-none"
+                    className="text-[12px] sm:text-[14px] md:text-[16px] w-full border-2 border-gray rounded-lg p-1 sm:p-3 h-[150px] dark:bg-darkbg dark:text-white outline-none"
                     name="questionText"
                     placeholder="Type your question descriptively..."
                     aria-invalid={errors.questionText ? "true" : "false"}
@@ -90,6 +139,25 @@ export default function ForumCreatePost() {
                             : mutation.error.message}
                     </p>
                 )}
+                <input
+                    type="file"
+                    name="img"
+                    id="img"
+                    onChange={handleImages}
+                    multiple
+                    accept="image/*"
+                    className="mt-5"
+                />
+                <div className="flex">
+                    {prevImages.map((image, index) => (
+                        <img
+                            key={index}
+                            src={image.toString()}
+                            alt={`preview ${index}`}
+                            className="h-[60px] px-1 mt-5"
+                        />
+                    ))}
+                </div>
                 <button
                     type="submit"
                     className="p-1 w-[120px] sm:w-[200px] my-[15px] rounded-full bg-greenbtn text-white text-[12px] hover:bg-greenttl sm:text-[15px] md:text-[18px] md:px-3 font-medium"

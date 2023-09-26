@@ -4,7 +4,6 @@ import {
     useFollowings,
 } from "../../../hooks/useFollowersFollowings";
 import CommunityHeading from "../CommunityHeading";
-import user_profile_photo from "/assets/forum/forum_top_user_photo_40x40.png";
 
 export default function CommunityFollowersFollowings() {
     const { username } = useParams();
@@ -18,9 +17,9 @@ export default function CommunityFollowersFollowings() {
             {followers?.map((follower) => (
                 <div className="flex px-[5%] min-[1200px]:px-[10%] py-[3%] self-center">
                     <img
-                        src={user_profile_photo}
+                        src={follower.follower.profilePhoto}
                         alt="User Photo"
-                        className="h-[40px] w-[40px] mr-5"
+                        className="h-[40px] w-[40px] mr-5 rounded-full"
                     />
                     <Link
                         to={"/community/user/" + follower.follower.username}
@@ -43,9 +42,9 @@ export default function CommunityFollowersFollowings() {
             {followings?.map((following) => (
                 <div className="flex px-[5%] min-[1200px]:px-[10%] py-[3%] self-center">
                     <img
-                        src={user_profile_photo}
+                        src={following.following.profilePhoto}
                         alt="User Photo"
-                        className="h-[40px] w-[40px] mr-5"
+                        className="h-[40px] w-[40px] mr-5 rounded-full"
                     />
                     <Link
                         to={"/community/user/" + following.following.username}

@@ -28,20 +28,22 @@ export default function CommunityWhoToFollow({
             setFollow(!follow);
     }, [followMutation.isSuccess, unfollowMutation.isSuccess]);
     return (
-        <div className="flex px-[5%] min-[1200px]:px-[10%] pb-[5%]">
-            <img
-                src={profilePhoto}
-                alt="User Photo"
-                className="h-[40px] w-[40px] mr-5 rounded-full"
-            />
-            <Link to={"/community/user/" + username} className="mr-7">
-                <h2 className="font-semibold text-[16px]">
-                    {firstName + " " + lastName}
-                </h2>
-                <h3 className="text-gray text-[14px] dark:text-darksecondary">
-                    @{username}
-                </h3>
-            </Link>
+        <div className="flex px-[5%] min-[1200px]:px-[10%] pb-[5%] justify-between">
+            <div className="flex">
+                <img
+                    src={profilePhoto}
+                    alt="User Photo"
+                    className="h-[40px] w-[40px] mr-5 rounded-full"
+                />
+                <Link to={"/community/user/" + username} className="mr-7">
+                    <h2 className="font-semibold text-[16px]">
+                        {firstName + " " + lastName}
+                    </h2>
+                    <h3 className="text-gray text-[14px] dark:text-darksecondary">
+                        @{username}
+                    </h3>
+                </Link>
+            </div>
             <button
                 onClick={onFollow}
                 className="self-center h-fit rounded-full bg-greenbtn text-white text-[14px] px-3 py-1"

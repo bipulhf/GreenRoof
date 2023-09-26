@@ -46,17 +46,25 @@ export default function CommunityFollowingFeed() {
             >
                 {data?.pages.map((posts, index) => (
                     <React.Fragment key={index}>
-                        {posts.contentList.map((post) => (
-                            <CommunityFeedPost
-                                key={post.id}
-                                postId={post.id}
-                                postText={post.postText}
-                                postAttatchments={post.postAttatchments}
-                                createdAt={post.createdAt}
-                                user={post.user}
-                                fullPost={false}
-                            />
-                        ))}
+                        {posts.contentList.length > 0 ? (
+                            posts.contentList.map((post) => (
+                                <CommunityFeedPost
+                                    key={post.id}
+                                    postId={post.id}
+                                    postText={post.postText}
+                                    postAttatchments={post.postAttatchments}
+                                    createdAt={post.createdAt}
+                                    user={post.user}
+                                    fullPost={false}
+                                />
+                            ))
+                        ) : (
+                            <>
+                                <p className="text-gray font-medium text-center text-xl mt-5">
+                                    Nothing to show.
+                                </p>
+                            </>
+                        )}
                     </React.Fragment>
                 ))}
             </InfiniteScroll>

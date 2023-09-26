@@ -56,6 +56,7 @@ public class UserService {
         newUser.setCity(request.getCity());
         newUser.setScore(0);
         newUser.setCreatedAt(LocalDate.now());
+        newUser.setProfilePhoto(request.getProfilePhoto());
         newUser.setPassword(passwordEncoder.encode(request.getPassword()));
         var savedUser = userRepository.save(newUser);
         return savedUser;
@@ -119,6 +120,23 @@ public class UserService {
         return passwordEncoder.matches(oldPassword, user.getPassword());
     }
 
+    public UserProfileDto getUser(String username) {
+        User user = findByUsername(username).get();
+        UserProfileDto userProfileDto = UserProfileDto.builder()
+                .id(user.getId())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .username(user.getUsername())
+                .city(user.getCity())
+                .score(user.getScore())
+                .profilePhoto(user.getProfilePhoto())
+                .isBanned(user.isBanned())
+                .role(user.getRole())
+                .createdAt(user.getCreatedAt())
+                .build();
+        return userProfileDto;
+    }
+
     public String uploadProfilePicture(String username, ProfilePictureDto photoLink) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new NoSuchElementException("Username not found."));
@@ -136,5 +154,14 @@ public class UserService {
         user.setLastName(userInfo.getLastName());
         userRepository.save(user);
         return "Updated";
+    }
+
+    public String banUser(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new NoSuchElementException("Username not found."));
+        user.setId(user.getId());
+        user.setBanned(!user.isBanned());
+        userRepository.save(user);
+        return "Successful";
     }
 }

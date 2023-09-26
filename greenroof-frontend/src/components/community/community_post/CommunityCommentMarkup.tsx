@@ -3,6 +3,7 @@ import { useDeleteComment } from "../../../hooks/useComment";
 import { User } from "../../../services/types";
 import user_profile_photo from "/assets/forum/forum_top_user_photo_40x40.png";
 import useAuth from "../../../hooks/useAuth";
+import { useGetUser } from "../../../hooks/useProfile";
 
 interface Props {
     id: number;
@@ -20,6 +21,7 @@ export default function CommunityCommentmMarkup({
     createdAt,
 }: Props) {
     const { auth } = useAuth();
+    const { data: loggedInUser } = useGetUser(auth.username);
     const deleteMutation = useDeleteComment();
     const navigate = useNavigate();
     const onEdit = () => {
@@ -47,22 +49,25 @@ export default function CommunityCommentmMarkup({
                             @{commenter.username}
                         </h2>
                     </div>
-                    {auth.username === commenter.username && (
-                        <div className="flex text-gray dark:text-darksecondary">
+                    <div className="flex text-gray dark:text-darksecondary">
+                        {auth.username === commenter.username && (
                             <h3
                                 className="mx-5 hover:cursor-pointer"
                                 onClick={onEdit}
                             >
                                 Edit
                             </h3>
-                            <h3
-                                className="hover:cursor-pointer"
-                                onClick={onDelete}
-                            >
-                                Delete
-                            </h3>
-                        </div>
-                    )}
+                        )}
+                        {auth.username === commenter.username ||
+                            (loggedInUser?.role === "ADMIN" && (
+                                <h3
+                                    className="hover:cursor-pointer"
+                                    onClick={onDelete}
+                                >
+                                    Delete
+                                </h3>
+                            ))}
+                    </div>
                 </div>
                 <div className="pb-2">
                     <h3 className="text-[14px] text-justify dark:text-white">

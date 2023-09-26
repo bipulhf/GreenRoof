@@ -2,6 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import useNumberOfAnswer from "../../../hooks/useNumberOfAnswer";
 import { useDeleteQuestion } from "../../../hooks/useQuestion";
 import useAuth from "../../../hooks/useAuth";
+import { useGetUser } from "../../../hooks/useProfile";
 
 interface Props {
     firstName: string;
@@ -19,6 +20,7 @@ export default function ForumQuestionerInfo({
     id,
 }: Props) {
     const { auth } = useAuth();
+    const { data: loggedInUser } = useGetUser(auth.username);
     const mutation = useDeleteQuestion();
     const deletePost = (id: number) => {
         if (window.confirm("Do you really want to delete the post?"))
@@ -62,23 +64,26 @@ export default function ForumQuestionerInfo({
                     <h3 className="font-semibold text-gray text-[10px] sm:text-[12px] dark:text-darksecondary">
                         {noOfAns?.noa} Answers
                     </h3>
-                    {postId != null && auth.username === username && (
-                        <div className="flex justify-evenly">
+                    <div className="flex justify-evenly">
+                        {postId != null && auth.username === username && (
                             <Link
                                 to={"/forum/post/edit/" + id}
                                 className="text-gray font-medium text-[12px] dark:text-darksecondary"
                             >
                                 Edit
                             </Link>
-
-                            <button
-                                className="text-gray font-medium text-[12px] dark:text-darksecondary"
-                                onClick={() => deletePost(parseInt(postId))}
-                            >
-                                Delete
-                            </button>
-                        </div>
-                    )}
+                        )}
+                        {postId != null &&
+                            (auth.username === username ||
+                                loggedInUser?.role === "ADMIN") && (
+                                <button
+                                    className="text-gray font-medium text-[12px] dark:text-darksecondary"
+                                    onClick={() => deletePost(parseInt(postId))}
+                                >
+                                    Delete
+                                </button>
+                            )}
+                    </div>
                     {mutation.isError && (
                         <p className="text-red">
                             {mutation.error.response.data.message

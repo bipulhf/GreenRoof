@@ -40,6 +40,9 @@ export default function ForumPost() {
                         id={questions?.id || 0}
                         questionTitle={questions?.questionTitle || ""}
                         questionText={questions?.questionText || ""}
+                        forumAttatchments={
+                            questions?.questionAttatchments || []
+                        }
                         createdAt={questions?.createdAt || new Date()}
                     />
                 </div>
@@ -47,9 +50,11 @@ export default function ForumPost() {
                     <ForumAddAnswer id={questions?.id || 0} />
                 </div>
                 <div className="mt-[10px]">
-                    <span className="text-gray font-semibold text-[11px] sm:text-[13px] md:text-[16px]">
-                        Answers
-                    </span>
+                    {answers?.length > 0 && (
+                        <span className="text-gray font-semibold text-[11px] sm:text-[13px] md:text-[16px]">
+                            Answers
+                        </span>
+                    )}
                     {answerLoading && <QuestionLoader />}
                     <ul className="divide-y divide-graybg dark:divide-opacity-25">
                         {answers?.map((answer) => (

@@ -26,7 +26,6 @@ public class CommunityFollowService {
     private final UserRepository userRepository;
     private final ModelMapperUtility<UserFollower, UserFollowerDto> modelMapperFollower;
     private final ModelMapperUtility<UserFollowing, UserFollowingDto> modelMapperFollowing;
-    private final ModelMapperUtility<User, UserProfileDto> modelMapperUser;
 
     public ResponseEntity<?> followUser(String user1, String user2) {
         User person1 = userRepository.findByUsername(user1)
@@ -124,6 +123,25 @@ public class CommunityFollowService {
         List<Long> userId = new ArrayList<>();
         userId.add(userRepository.findByUsername(username).get().getId());
         getFollowingsList(username).forEach(userFollowingDto -> userId.add(userFollowingDto.getFollowing().getId()));
-        return modelMapperUser.modelMap(userRepository.getRecommendation(userId), UserProfileDto.class);
+        List<User> userList = userRepository.getRecommendation(userId);
+        List<UserProfileDto> userProfileDtos = new ArrayList<>();
+        userList.forEach(user -> {
+            if(!user.isBanned()){
+                UserProfileDto userProfileDto = UserProfileDto.builder()
+                        .id(user.getId())
+                        .firstName(user.getFirstName())
+                        .lastName(user.getLastName())
+                        .username(user.getUsername())
+                        .city(user.getCity())
+                        .score(user.getScore())
+                        .profilePhoto(user.getProfilePhoto())
+                        .isBanned(user.isBanned())
+                        .role(user.getRole())
+                        .createdAt(user.getCreatedAt())
+                        .build();
+                userProfileDtos.add(userProfileDto);
+            }
+        });
+        return userProfileDtos;
     }
 }
