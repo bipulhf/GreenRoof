@@ -35,6 +35,8 @@ public class SecurityConfiguration {
                   .requestMatchers("api/v1/forum/feed/**").permitAll()
                   .requestMatchers("api/v1/forum/answer").permitAll()
                   .requestMatchers("api/v1/forum/search/**").permitAll()
+                  .requestMatchers("api/v1/user").permitAll()
+                  .requestMatchers("api/v1/ai/**").permitAll()
                   .anyRequest().authenticated();
         })
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

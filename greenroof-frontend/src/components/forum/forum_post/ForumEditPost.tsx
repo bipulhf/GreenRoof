@@ -33,12 +33,12 @@ export default function ForumEditPost() {
     };
     return preData != undefined ? (
         <>
-            <h2 className="font-bold text-[14px] sm:text-[16px] md:text-[22px]">
+            <h2 className="font-bold text-[14px] sm:text-[16px] md:text-[22px] dark:text-white">
                 Edit your question
             </h2>
             <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="flex flex-col mr-[10px] m-[15px] sm:m-[25px] md:m-[30px]"
+                className="flex flex-col mr-[10px] m-[15px] sm:m-[25px] md:m-[30px] dark:text-white"
             >
                 <input
                     {...register("questionTitle", {
@@ -47,7 +47,7 @@ export default function ForumEditPost() {
                     })}
                     type="text"
                     name="questionTitle"
-                    className="text-[14px] sm:text-[17px] md:text-[22px] border-2 border-greenbtn rounded-lg p-1 sm:p-3"
+                    className="text-[14px] sm:text-[17px] md:text-[22px] border-2 border-gray rounded-lg p-1 sm:p-3 dark:bg-darkbg outline-none"
                     placeholder="Enter your Question Title"
                     aria-invalid={errors.questionTitle ? "true" : "false"}
                     required
@@ -63,7 +63,7 @@ export default function ForumEditPost() {
                         required: true,
                         minLength: 10,
                     })}
-                    className="text-[12px] sm:text-[14px] md:text-[16px] w-full border-2 border-gray rounded-lg p-1 sm:p-3 h-[150px] mt-[15px]"
+                    className="text-[12px] sm:text-[14px] md:text-[16px] w-full border-2 border-gray rounded-lg p-1 sm:p-3 h-[150px] mt-[15px] dark:bg-darkbg outline-none"
                     name="questionText"
                     placeholder="Type your question descriptively..."
                     aria-invalid={errors.questionText ? "true" : "false"}

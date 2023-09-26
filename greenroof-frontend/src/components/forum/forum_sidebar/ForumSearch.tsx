@@ -17,7 +17,7 @@ export default function ForumSearch() {
     };
     return (
         <>
-            <div className="search-title w-[269px] bg-graybg rounded-[27px] px-[18px] py-[12px] mb-[15px]">
+            <div className="search-title w-[269px] bg-graybg rounded-[27px] px-[18px] py-[12px] mb-[15px] dark:bg-darkprimary dark:text-white">
                 <div className="mb-[12px]">
                     <span className="mr-[21px]">
                         <FontAwesomeIcon
@@ -30,7 +30,7 @@ export default function ForumSearch() {
                 <form method="get" onSubmit={handleSubmit(onSubmit)}>
                     <input
                         {...register("search")}
-                        className="search-box w-[240px] h-[35px] border-2 border-black rounded-[27px] p-[18px] text-[16px]"
+                        className="search-box w-[240px] h-[35px] border-2 border-black rounded-[27px] p-[18px] text-[16px] dark:bg-darkprimary dark:text-white dark:border-white outline-none"
                         type="text"
                         name="search"
                         id="search"

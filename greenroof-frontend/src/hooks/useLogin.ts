@@ -23,6 +23,11 @@ interface TokenPayload {
     accessToken: string;
 }
 
+interface PasswordResetRequest {
+    email?: string;
+    newPassword?: string;
+}
+
 interface IsTokenValid {
     isTokenValid: boolean;
 }
@@ -31,6 +36,10 @@ const loginApiClient = new APIClient<LoginInfo, LoginInfo>("/auth");
 const registrationApiClient = new APIClient<RegistrationInfo, RegistrationInfo>(
     "/registration"
 );
+const passwordResetApiClient = new APIClient<
+    PasswordResetRequest,
+    PasswordResetRequest
+>("/registration");
 const validTokenApiClient = new APIClient<TokenPayload, TokenPayload>("/auth");
 
 const useCreateLogin = () => {
@@ -75,4 +84,33 @@ const useRegistration = () => {
         onError: (err: ValidationError) => err,
     });
 };
-export { useCreateLogin, useTokenValidity, useLogout, useRegistration };
+
+const usePasswordReset = () => {
+    return useMutation({
+        mutationFn: (email: PasswordResetRequest) =>
+            passwordResetApiClient.login("/password-reset-request", email),
+        onError: (err: ValidationError) => err,
+    });
+};
+
+const useNewPassword = (token: string) => {
+    return useMutation({
+        mutationFn: (newPassword: PasswordResetRequest) => {
+            console.log(newPassword, token);
+            return passwordResetApiClient.login(
+                "/reset-password?token=" + token,
+                newPassword
+            );
+        },
+        onError: (err: ValidationError) => err,
+    });
+};
+
+export {
+    useCreateLogin,
+    useTokenValidity,
+    useLogout,
+    useRegistration,
+    usePasswordReset,
+    useNewPassword,
+};

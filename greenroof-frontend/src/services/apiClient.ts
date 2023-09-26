@@ -37,7 +37,7 @@ class APIClient<T, V> {
             .then((res) => res.data);
     login = (endpoint: string, data = {}) =>
         axiosInstance(this.subbase)
-            .post<V>(endpoint, data, { withCredentials: true })
+            .post<V>(endpoint, data)
             .then((res) => res.data);
     follow = (endpoint: string, headers: object, data = {}) =>
         axiosInstance(this.subbase)

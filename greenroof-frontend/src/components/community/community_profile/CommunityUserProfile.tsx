@@ -12,7 +12,7 @@ import {
 } from "../../../hooks/useFollowersFollowings";
 import useAuth from "../../../hooks/useAuth";
 import PostLoader from "../../PostLoader";
-import { useProfile } from "../../../hooks/useProfile";
+import { useGetUser } from "../../../hooks/useProfile";
 import ProfileLoader from "../../ProfileLoader";
 
 export default function CommunityUserProfile() {
@@ -26,61 +26,61 @@ export default function CommunityUserProfile() {
             0
         ) || 0;
     const {
-        data: users,
+        data: user,
         isLoading: userLoading,
         isError: userErrors,
         error: userError,
-    } = useProfile(username || "");
-    const user = users != null ? users[0] : null;
+    } = useGetUser(username!);
+
     const { data: totalFollowers } = useTotalFollowers(username || "");
     const { data: totalFollowings } = useTotalFollowings(username || "");
     return (
-        user && (
-            <div className="pb-[10%] min-h-screen md:w-[68%] min-[1000px]:w-[53%] md:ml-[30%] min-[1000px]:ml-[22%] divide-y divide-graybg">
-                <CommunityHeading heading="Profile" />
-                {userErrors && <p>{userError.message}</p>}
-                {userLoading ? (
-                    <ProfileLoader />
-                ) : (
-                    <CommunityUserProfileCard
-                        user={user}
-                        followers={totalFollowers?.total || 0}
-                        followings={totalFollowings?.total || 0}
-                    />
-                )}
-                {auth.username === user?.username && <CommunityCreatePost />}
-                {isError && <p>{error.message}</p>}
-                <InfiniteScroll
-                    dataLength={fetchedPostCount}
-                    hasMore={!!hasNextPage}
-                    next={() => fetchNextPage()}
-                    loader={<PostLoader />}
-                    className="divide-y divide-graybg"
-                >
-                    {data?.pages.map((posts, index) => (
-                        <React.Fragment key={index}>
-                            {posts.contentList.map((post) => (
-                                <CommunityFeedPost
-                                    key={post.id}
-                                    postId={post.id}
-                                    postText={post.postText}
-                                    postAttatchments={post.postAttatchments}
-                                    createdAt={post.createdAt}
-                                    user={post.user}
-                                    fullPost={false}
-                                />
-                            ))}
-                        </React.Fragment>
-                    ))}
-                </InfiniteScroll>
-                {isLoading && (
-                    <>
-                        <PostLoader />
-                        <PostLoader />
-                        <PostLoader />
-                    </>
-                )}
-            </div>
-        )
+        <div className="pb-[10%] min-h-screen md:w-[68%] min-[1000px]:w-[53%] md:ml-[30%] min-[1000px]:ml-[22%] divide-y divide-graybg dark:divide-opacity-25">
+            <CommunityHeading heading="Profile" />
+            {userErrors && <p>{userError.message}</p>}
+            {userLoading ? (
+                <ProfileLoader />
+            ) : (
+                <CommunityUserProfileCard
+                    user={user!}
+                    followers={totalFollowers?.total || 0}
+                    followings={totalFollowings?.total || 0}
+                />
+            )}
+            {auth.username === user?.username && (
+                <CommunityCreatePost profilePhoto={user.profilePhoto} />
+            )}
+            {isError && <p>{error.message}</p>}
+            <InfiniteScroll
+                dataLength={fetchedPostCount}
+                hasMore={!!hasNextPage}
+                next={() => fetchNextPage()}
+                loader={<PostLoader />}
+                className="divide-y divide-graybg dark:divide-opacity-25"
+            >
+                {data?.pages.map((posts, index) => (
+                    <React.Fragment key={index}>
+                        {posts.contentList.map((post) => (
+                            <CommunityFeedPost
+                                key={post.id}
+                                postId={post.id}
+                                postText={post.postText}
+                                postAttatchments={post.postAttatchments}
+                                createdAt={post.createdAt}
+                                user={post.user}
+                                fullPost={false}
+                            />
+                        ))}
+                    </React.Fragment>
+                ))}
+            </InfiniteScroll>
+            {isLoading && (
+                <>
+                    <PostLoader />
+                    <PostLoader />
+                    <PostLoader />
+                </>
+            )}
+        </div>
     );
 }

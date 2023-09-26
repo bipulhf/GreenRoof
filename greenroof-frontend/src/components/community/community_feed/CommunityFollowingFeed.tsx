@@ -6,8 +6,11 @@ import React from "react";
 import PostLoader from "../../PostLoader";
 import { Link } from "react-router-dom";
 import { useFollowingPost } from "../../../hooks/usePost";
+import { useGetUser } from "../../../hooks/useProfile";
+import useAuth from "../../../hooks/useAuth";
 
 export default function CommunityFollowingFeed() {
+    const { auth } = useAuth();
     const { data, isLoading, isError, error, hasNextPage, fetchNextPage } =
         useFollowingPost();
     const fetchedPostCount =
@@ -15,18 +18,20 @@ export default function CommunityFollowingFeed() {
             (total, page) => total + page.contentList.length,
             0
         ) || 0;
+    const { data: user } = useGetUser(auth.username);
+
     return (
-        <div className="pb-[10%] min-h-screen md:w-[68%] min-[1000px]:w-[53%] md:ml-[30%] min-[1000px]:ml-[22%] divide-y divide-graybg">
+        <div className="dark:bg-darkbg pb-[10%] min-h-screen md:w-[68%] min-[1000px]:w-[53%] md:ml-[30%] min-[1000px]:ml-[22%] divide-y divide-graybg dark:divide-opacity-25">
             <CommunityHeading heading="Home" />
-            <CommunityCreatePost />
+            <CommunityCreatePost profilePhoto={user?.profilePhoto || ""} />
             <div className="flex justify-evenly py-3">
                 <Link to={"/community"}>
-                    <h2 className="font-medium text-[16px] text-gray">
+                    <h2 className="font-medium text-[16px] text-gray dark:text-darksecondary">
                         Most Recent
                     </h2>
                 </Link>
                 <Link to={"/community/following"}>
-                    <h2 className="font-bold text-[16px] text-brown">
+                    <h2 className="dark:text-darktext font-bold text-[16px] text-brown">
                         Following
                     </h2>
                 </Link>
@@ -37,7 +42,7 @@ export default function CommunityFollowingFeed() {
                 hasMore={!!hasNextPage}
                 next={() => fetchNextPage()}
                 loader={<PostLoader />}
-                className="divide-y divide-graybg"
+                className="divide-y divide-graybg dark:divide-opacity-25"
             >
                 {data?.pages.map((posts, index) => (
                     <React.Fragment key={index}>

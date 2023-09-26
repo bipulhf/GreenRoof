@@ -8,7 +8,7 @@ export default function CommunityLayout() {
     return (
         <>
             <CommunityMobileHeader />
-            <div className="divide-x divide-graybg">
+            <div className="dark:bg-darkbg dark:divide-opacity-25 divide-x divide-graybg">
                 <CommunityLeftSidebar />
                 <CommunityMobileMenu />
                 <CommunityRightSidebar />

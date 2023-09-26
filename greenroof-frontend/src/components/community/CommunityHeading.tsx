@@ -14,7 +14,7 @@ export default function CommunityHeading({ heading }: Props) {
                 </Link>
             </div>
             <div className="pt-10 pb-5">
-                <h1 className="font-bold text-[22px] text-brown text-center">
+                <h1 className="dark:text-darktext font-bold text-[22px] text-brown text-center">
                     {heading}
                 </h1>
             </div>

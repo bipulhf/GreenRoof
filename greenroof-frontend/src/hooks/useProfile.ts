@@ -16,7 +16,8 @@ const useProfile = (username: string) => {
 const useGetUser = (username: string) => {
     return useQuery<User, Error>({
         queryKey: ["user", username],
-        queryFn: () => userApiClient.get("/user", { params: username }),
+        queryFn: () =>
+            userApiClient.get("/user", { params: { username: username } }),
     });
 };
 

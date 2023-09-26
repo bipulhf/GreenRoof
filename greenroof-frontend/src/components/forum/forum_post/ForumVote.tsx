@@ -32,12 +32,16 @@ export default function ForumVote({ answerId, score }: Props) {
     return (
         data && (
             <>
-                <div className="flex flex-col items-center">
+                <div className="flex flex-col items-center dark:text-darksecondary">
                     <button onClick={upVote} disabled={isUpvote == 1}>
                         <FontAwesomeIcon
                             icon={faCaretUp}
                             fontSize={25}
-                            color={isUpvote == 1 ? "green" : "black"}
+                            className={
+                                isUpvote == 1
+                                    ? "green"
+                                    : "black dark:text-darksecondary"
+                            }
                         />
                     </button>
                     <p className="ml-1 font-medium text-[14px]">{score}</p>
@@ -45,7 +49,11 @@ export default function ForumVote({ answerId, score }: Props) {
                         <FontAwesomeIcon
                             icon={faCaretDown}
                             fontSize={25}
-                            color={isDownvote == -1 ? "green" : "black"}
+                            className={
+                                isDownvote == -1
+                                    ? "green"
+                                    : "black dark:text-darksecondary"
+                            }
                         />
                     </button>
                 </div>

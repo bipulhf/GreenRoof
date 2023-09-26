@@ -19,13 +19,13 @@ export default function Home() {
                 <div className="relative z-10 mt-[7%] animate-fade-up animate-once animate-delay-[1100ms] animate-ease-in-out">
                     <Link
                         to={"/register"}
-                        className="bg-brown rounded-full px-5 py-3 text-2xl md:text-3xl font-medium text-white mt-[5%] mr-[10%] hover:underline"
+                        className="bg-brown rounded-full px-5 py-3 text-2xl md:text-3xl font-semibold text-white mt-[5%] mr-[10%] hover:underline"
                     >
                         Join Now
                     </Link>
                     <Link
                         to={"/login"}
-                        className="bg-greenbtn rounded-full px-5 py-3 text-2xl md:text-3xl font-medium text-white hover:underline"
+                        className="bg-greenbtn rounded-full px-5 py-3 text-2xl md:text-3xl font-semibold text-white hover:underline"
                     >
                         Login
                     </Link>

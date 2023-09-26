@@ -33,12 +33,12 @@ export default function ForumEditAnswer() {
     };
     return preData != undefined ? (
         <>
-            <h2 className="font-bold text-[14px] sm:text-[16px] md:text-[22px]">
+            <h2 className="font-bold text-[14px] sm:text-[16px] md:text-[22px] dark:text-white">
                 Edit your answer
             </h2>
             <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="flex flex-col mr-[10px] m-[15px] sm:m-[25px] md:m-[30px]"
+                className="flex flex-col mr-[10px] m-[15px] sm:m-[25px] md:m-[30px] dark:text-white"
             >
                 <textarea
                     {...register("answerText", {
@@ -46,7 +46,7 @@ export default function ForumEditAnswer() {
                         minLength: 10,
                     })}
                     name="answerText"
-                    className="text-[13px] border-2 border-gray rounded-lg p-1 sm:p-3 h-[1px]"
+                    className="text-[13px] border-2 border-gray rounded-lg p-1 sm:p-3 dark:bg-darkbg outline-none"
                     placeholder="Enter your answer here..."
                     aria-invalid={errors.answerText ? "true" : "false"}
                     required

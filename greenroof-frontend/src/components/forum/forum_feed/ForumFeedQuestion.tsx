@@ -19,13 +19,13 @@ export default function ForumFeedQuestion({
         <>
             <div className="col-span-6 sm:col-span-7 md:col-span-8">
                 <Link to={"/forum/post/" + id}>
-                    <h2 className="font-semibold text-[12px] md:text-[16px]">
+                    <h2 className="font-semibold text-[12px] md:text-[16px] dark:text-white">
                         <span className="hidden">{id}</span>
                         {questionTitle}
                     </h2>
                 </Link>
                 {params.postId == null ? (
-                    <ReadMore id={id} fullText={false}>
+                    <ReadMore id={id} fullText={questionText.length < 200}>
                         {questionText}
                     </ReadMore>
                 ) : (

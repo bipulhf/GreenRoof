@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 export default function ForumCategories() {
     return (
         <>
-            <div className="search-title w-[269px] bg-graybg rounded-[27px] px-[18px] py-[12px] mb-[15px]">
+            <div className="search-title w-[269px] bg-graybg rounded-[27px] px-[18px] py-[12px] mb-[15px] dark:bg-darkprimary dark:text-white">
                 <div className="mb-[12px]">
                     <span className="mr-[21px]">
                         <FontAwesomeIcon icon={faFolderTree} fontSize={20} />

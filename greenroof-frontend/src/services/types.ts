@@ -9,15 +9,14 @@ export interface User {
     createdAt: Date;
 }
 
-
 export interface Notif {
     id: number;
     content: string;
     notificationType: string;
     delivered: boolean;
     read: false;
-  }
-
+    userFrom: User;
+}
 
 export interface UserProfile {
     id: number;

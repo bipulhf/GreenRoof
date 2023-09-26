@@ -14,6 +14,7 @@ export default function CommunitySearchResult({ search }: Props) {
                     key={post.id}
                     postId={post.id}
                     postText={post.postText}
+                    postAttatchments={post.postAttatchments}
                     user={post.user}
                     createdAt={post.createdAt}
                     fullPost={false}

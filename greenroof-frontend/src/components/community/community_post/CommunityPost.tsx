@@ -16,7 +16,7 @@ export default function CommunityPost() {
     } = useGetPost(parseInt(postId || "0"));
     return (
         <>
-            <div className="min-h-screen md:w-[68%] min-[1000px]:w-[53%] md:ml-[30%] min-[1000px]:ml-[22%] divide-y divide-graybg">
+            <div className="dark:bg-darkbg pb-[10%] min-h-screen md:w-[68%] min-[1000px]:w-[53%] md:ml-[30%] min-[1000px]:ml-[22%] divide-y divide-graybg dark:divide-opacity-25">
                 <CommunityHeading heading="Post" />
                 {isLoading && <PostLoader />}
                 {post && (
@@ -26,6 +26,7 @@ export default function CommunityPost() {
                             key={post.id}
                             postId={post.id}
                             postText={post.postText}
+                            postAttatchments={post.postAttatchments}
                             user={post.user}
                             createdAt={post.createdAt}
                             fullPost={true}

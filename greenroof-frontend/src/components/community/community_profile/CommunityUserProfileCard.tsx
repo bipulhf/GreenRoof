@@ -65,7 +65,7 @@ export default function CommunityUserProfileCard({
 
     return (
         <>
-            <div className="justify-evenly py-7">
+            <div className="justify-center py-7 dark:text-white">
                 <div className="flex flex-col text-center">
                     <div className="relative first-letter:ml-5 profile-img max-[490px]:w-[100px] max-[490px]:h-[100px] w-[150px] h-[150px] self-center">
                         <img
@@ -96,7 +96,7 @@ export default function CommunityUserProfileCard({
                         <h2 className="font-semibold text-[22px] max-[490px]:text-[18px] ">
                             {user.firstName + " " + user.lastName}
                         </h2>
-                        <h3 className="text-gray font-medium max-[490px]:text-[15px] text-[18px]">
+                        <h3 className="text-gray font-medium max-[490px]:text-[15px] text-[18px] dark:text-darksecondary">
                             @{user.username}
                         </h3>
                         <h3 className="text-[16px] max-[490px]:text-[14px] ">
@@ -106,29 +106,13 @@ export default function CommunityUserProfileCard({
                     {auth.username != uname && (
                         <button
                             onClick={onFollow}
-                            className="min-[415px]:hidden self-center h-fit border rounded-full bg-greenbtn text-white text-[13px] md:text-[16px] px-3 md:px-5 py-1 md:py-2 ml-[20%]"
+                            className="self-center h-fit rounded-full bg-greenbtn text-white text-[13px] md:text-[16px] px-3 py-1 md:py-2 my-2"
                         >
                             {follow ? "Unfollow" : "Follow"}
                         </button>
                     )}
                 </div>
-                {auth.username != uname && (
-                    <button
-                        onClick={onFollow}
-                        className="max-[1110px]:hidden self-center h-fit border rounded-full bg-greenbtn text-white text-[13px] lg:text-[16px] px-3 lg:px-5 py-1 lg:py-2"
-                    >
-                        {follow ? "Unfollow" : "Follow"}
-                    </button>
-                )}
-                <div className="flex flex-col max-sm:mt-5 justify-evenly">
-                    {auth.username != uname && (
-                        <button
-                            onClick={onFollow}
-                            className="min-[1110px]:hidden max-[414px]:hidden self-center h-fit border rounded-full bg-greenbtn text-white text-[13px] md:text-[16px] px-3 md:px-5 py-1 md:py-2"
-                        >
-                            {follow ? "Unfollow" : "Follow"}
-                        </button>
-                    )}
+                <div className="flex flex-col max-sm:mt-5 justify-center">
                     <div className="flex mt-5 self-center">
                         <Link
                             to={"followers"}
@@ -137,7 +121,7 @@ export default function CommunityUserProfileCard({
                             <h2 className="font-semibold text-[22px] max-[490px]:text-[16px]">
                                 {followers}
                             </h2>
-                            <h3 className="text-gray font-medium max-[490px]:text-[14px] text-[18px]">
+                            <h3 className="text-gray font-medium max-[490px]:text-[14px] text-[18px] dark:text-darksecondary">
                                 Followers
                             </h3>
                         </Link>
@@ -148,7 +132,7 @@ export default function CommunityUserProfileCard({
                             <h2 className="font-semibold text-[22px] max-[490px]:text-[16px]">
                                 {followings}
                             </h2>
-                            <h3 className="text-gray font-medium max-[490px]:text-[14px] text-[18px]">
+                            <h3 className="text-gray font-medium max-[490px]:text-[14px] text-[18px] dark:text-darksecondary">
                                 Followings
                             </h3>
                         </Link>

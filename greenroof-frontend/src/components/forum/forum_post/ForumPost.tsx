@@ -22,8 +22,8 @@ export default function ForumPost() {
 
     return (
         <>
-            {error && <p>Network Error...</p>}
-            <div className="divide-y divide-graybg">
+            {error && <p className="text-red">Network Error...</p>}
+            <div className="divide-y divide-graybg dark:divide-opacity-25">
                 <div className="font-semibold text-gray text-[11px] sm:text-[13px] md:text-[16px]">
                     Question
                 </div>
@@ -32,6 +32,7 @@ export default function ForumPost() {
                     <ForumQuestionerInfo
                         firstName={questions?.questioner.firstName || ""}
                         lastName={questions?.questioner.lastName || ""}
+                        profilePhoto={questions?.questioner.profilePhoto || ""}
                         username={questions?.questioner.username || ""}
                         id={questions?.id || 0}
                     />
@@ -43,9 +44,6 @@ export default function ForumPost() {
                     />
                 </div>
                 <div className="mt-[10px]">
-                    <p className="font-semibold text-gray text-[13px]">
-                        Answer this question
-                    </p>
                     <ForumAddAnswer id={questions?.id || 0} />
                 </div>
                 <div className="mt-[10px]">
@@ -53,7 +51,7 @@ export default function ForumPost() {
                         Answers
                     </span>
                     {answerLoading && <QuestionLoader />}
-                    <ul className="divide-y divide-graybg">
+                    <ul className="divide-y divide-graybg dark:divide-opacity-25">
                         {answers?.map((answer) => (
                             <li
                                 key={answer.id}
@@ -65,6 +63,9 @@ export default function ForumPost() {
                                     firstName={answer?.answerer.firstName || ""}
                                     lastName={answer?.answerer.lastName || ""}
                                     username={answer?.answerer.username || ""}
+                                    profilePhoto={
+                                        answer.answerer.profilePhoto || ""
+                                    }
                                 />
                                 <ForumAnswer
                                     id={answer?.id || 0}

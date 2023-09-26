@@ -3,6 +3,7 @@ import { useSearch } from "../../../hooks/useContent";
 import React from "react";
 import ForumFeedQuestion from "../forum_feed/ForumFeedQuestion";
 import ForumQuestionerInfo from "../forum_feed/ForumQuestionerInfo";
+import PostLoader from "../../PostLoader";
 
 interface Props {
     search: string;
@@ -27,16 +28,16 @@ export default function ForumSearchResult({ search }: Props) {
             {isLoading && <p>Loading...</p>}
             {error && <p>Network Error...</p>}
             {console.log(questions)}
-            <h2 className="font-bold text-[14px] sm:text-[16px] md:text-[22px]">
+            <h2 className="font-bold text-[14px] sm:text-[16px] md:text-[22px] dark:text-darksecondary">
                 Showing Results for '{search}'
             </h2>
             <InfiniteScroll
                 dataLength={fetchedQuestionCount}
                 hasMore={!!hasNextPage}
                 next={() => fetchNextPage()}
-                loader="<p>Loading</p>"
+                loader={<PostLoader />}
             >
-                <ul className="divide-y divide-graybg">
+                <ul className="divide-y divide-graybg dark:divide-opacity-25">
                     {questions?.pages.map((page, index) => (
                         <React.Fragment key={index}>
                             {page.contentList.map((question) => (
@@ -51,6 +52,9 @@ export default function ForumSearchResult({ search }: Props) {
                                         }
                                         lastName={question.questioner.lastName}
                                         username={question.questioner.username}
+                                        profilePhoto={
+                                            question.questioner.profilePhoto
+                                        }
                                     />
                                     <ForumFeedQuestion
                                         id={question.id}

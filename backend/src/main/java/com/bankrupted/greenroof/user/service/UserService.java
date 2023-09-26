@@ -7,6 +7,7 @@ import com.bankrupted.greenroof.registration.password.PasswordResetTokenService;
 import com.bankrupted.greenroof.security.token.VerificationToken;
 import com.bankrupted.greenroof.security.token.repository.VerificationTokenRepository;
 import com.bankrupted.greenroof.user.dto.ProfilePictureDto;
+import com.bankrupted.greenroof.user.dto.UserBasicInfoDto;
 import com.bankrupted.greenroof.user.dto.UserProfileDto;
 import com.bankrupted.greenroof.user.entity.User;
 import com.bankrupted.greenroof.user.repository.UserRepository;
@@ -125,5 +126,15 @@ public class UserService {
         user.setProfilePhoto(photoLink.getLink());
         userRepository.save(user);
         return "Uploaded";
+    }
+
+    public String updateUserInfo(String username, UserBasicInfoDto userInfo) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new NoSuchElementException("Username not found."));
+        user.setId(user.getId());
+        user.setFirstName(userInfo.getFirstName());
+        user.setLastName(userInfo.getLastName());
+        userRepository.save(user);
+        return "Updated";
     }
 }

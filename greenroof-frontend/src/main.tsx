@@ -10,13 +10,13 @@ import { Provider } from "react-redux";
 const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <Provider store={store}>
-          <App />
-        </Provider>
-      </AuthProvider>
-    </QueryClientProvider>
-  </React.StrictMode>
+    <React.StrictMode>
+        <QueryClientProvider client={queryClient}>
+            <AuthProvider>
+                <Provider store={store}>
+                    <App />
+                </Provider>
+            </AuthProvider>
+        </QueryClientProvider>
+    </React.StrictMode>
 );

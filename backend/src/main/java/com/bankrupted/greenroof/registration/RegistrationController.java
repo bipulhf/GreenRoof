@@ -97,7 +97,7 @@ public class RegistrationController {
 
     private String passwordResetEmailLink(User user, String applicationUrl,
             String passwordToken) throws MessagingException, UnsupportedEncodingException {
-        String url = applicationUrl + "/api/v1/registration/reset-password?token=" + passwordToken;
+        String url = applicationUrl + "/reset-password?token=" + passwordToken;
         eventListener.sendPasswordResetVerificationEmail(user, url);
 
         return url;
@@ -129,7 +129,6 @@ public class RegistrationController {
     }
 
     public String applicationUrl(HttpServletRequest request) {
-        return "http://" + request.getServerName() + ":"
-                + request.getServerPort() + request.getContextPath();
+        return "http://localhost:5173" + request.getContextPath();
     }
 }

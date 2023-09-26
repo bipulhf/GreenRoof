@@ -124,6 +124,18 @@
 		 	<artifactId>javaee-api</artifactId>
 		 	<version>8.0.1</version>
 	   </dependency>
+
+		<dependency>
+			<groupId>dev.langchain4j</groupId>
+			<artifactId>langchain4j</artifactId>
+			<version>0.22.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>dev.langchain4j</groupId>
+			<artifactId>langchain4j-pinecone</artifactId>
+			<version>0.22.0</version>
+		</dependency>
  </dependencies>
 
 	<build>

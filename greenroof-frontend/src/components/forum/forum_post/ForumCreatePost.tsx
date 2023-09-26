@@ -29,7 +29,7 @@ export default function ForumCreatePost() {
     }, [isSubmitSuccessful, reset]);
     return (
         <div className={`${mutation.isLoading ? `bg-grabg opacity-10` : ``}`}>
-            <h2 className="font-bold text-[14px] sm:text-[16px] md:text-[22px]">
+            <h2 className="font-bold text-[14px] sm:text-[16px] md:text-[22px] dark:text-white">
                 Ask Question
             </h2>
             {mutation.isLoading && (
@@ -41,7 +41,9 @@ export default function ForumCreatePost() {
                 onSubmit={handleSubmit(onSubmit)}
                 className="flex flex-col mr-[10px] m-[15px] sm:m-[25px] md:m-[30px]"
             >
-                <label className="font-medium sm:text-xl">Post Title: </label>
+                <label className="font-medium sm:text-xl dark:text-white">
+                    Post Title:{" "}
+                </label>
                 <input
                     {...register("questionTitle", {
                         required: true,
@@ -49,7 +51,7 @@ export default function ForumCreatePost() {
                     })}
                     type="text"
                     name="questionTitle"
-                    className="text-[14px] sm:text-[17px] md:text-[22px] border-2 border-greenbtn rounded-lg p-1 sm:p-3"
+                    className="text-[14px] sm:text-[17px] md:text-[22px] border-2 border-gray rounded-lg p-1 sm:p-3 dark:bg-darkbg dark:text-white outline-none"
                     placeholder="Enter your Question Title"
                     aria-invalid={errors.questionTitle ? "true" : "false"}
                     required
@@ -61,7 +63,7 @@ export default function ForumCreatePost() {
                         Question Title must be greater than 10 characters.
                     </p>
                 )}
-                <label className="mt-[15px] font-medium sm:text-xl">
+                <label className="mt-[15px] font-medium sm:text-xl dark:text-white">
                     Description of your question:{" "}
                 </label>
                 <textarea
@@ -69,7 +71,7 @@ export default function ForumCreatePost() {
                         required: true,
                         minLength: 10,
                     })}
-                    className="text-[12px] sm:text-[14px] md:text-[16px] w-full border-2 border-gray rounded-lg p-1 sm:p-3 h-[150px]"
+                    className="text-[12px] sm:text-[14px] md:text-[16px] w-full border-2 border-gray rounded-lg p-1 sm:p-3 h-[150px] bg-darkbg dark:text-white outline-none"
                     name="questionText"
                     placeholder="Type your question descriptively..."
                     aria-invalid={errors.questionText ? "true" : "false"}

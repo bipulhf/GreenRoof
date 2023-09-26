@@ -25,13 +25,12 @@ public class Notification {
     @JoinColumn(name = "user_to_id")
     private User userTo;
 
-    @ManyToOne
-    @JsonIgnore
+    private NotificationType notificationType;
+    private boolean delivered;
+    private boolean read;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_from_id")
     private User userFrom;
 
-    private NotificationType notificationType;
-
-    private boolean delivered;
-    private boolean read;
 }

@@ -28,7 +28,7 @@ export default function CommunityCreateComment({ postId }: Props) {
     }, [isSubmitSuccessful, reset]);
     return (
         <>
-            <div className="py-5 px-2 grid grid-cols-10">
+            <div className="py-5 px-2 grid grid-cols-10 dark:bg-darkbg">
                 <img
                     src={user_profile_photo}
                     alt="Profile Photo"
@@ -43,7 +43,7 @@ export default function CommunityCreateComment({ postId }: Props) {
                             required: true,
                             minLength: 1,
                         })}
-                        className="text-[14px] h-[60px] w-[90%] resize-none focus:outline-none"
+                        className="text-[14px] h-[60px] w-[90%] resize-none focus:outline-none dark:bg-darkbg dark:text-white"
                         name="commentText"
                         id="commentText"
                         placeholder="Type your thoughts about the post ..."
@@ -51,7 +51,7 @@ export default function CommunityCreateComment({ postId }: Props) {
                     />
                     <button
                         type="submit"
-                        className="self-end h-fit border rounded-full bg-greenbtn text-white text-[14px] px-3 py-1"
+                        className="self-end h-fit rounded-full bg-greenbtn text-white text-[14px] px-3 py-1"
                     >
                         {mutation.isLoading ? "Commenting..." : "Comment"}
                     </button>

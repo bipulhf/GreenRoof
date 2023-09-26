@@ -1,4 +1,3 @@
-import user_profile_photo from "/assets/forum/forum_top_user_photo_40x40.png";
 import ReadMore from "./ReadMore";
 import { Attatchments, User } from "../../../services/types";
 import CommunityPostLikeCmnt from "../community_post/CommunityPostLikeCmnt";
@@ -42,11 +41,11 @@ export default function CommunityFeedPost({
         <>
             <div className="py-5 px-3 grid grid-cols-10">
                 <img
-                    src={user_profile_photo}
+                    src={user.profilePhoto}
                     alt="Profile Photo"
-                    className="col-span-1 max-[350px]:col-span-2 ml-2 min-w-[40px] min-h-[40px]"
+                    className="col-span-1 max-[350px]:col-span-2 ml-2 min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] rounded-full"
                 />
-                <div className="ml-5 max-[350px]:col-span-8 col-span-9">
+                <div className="dark:text-white ml-5 max-[350px]:col-span-8 col-span-9">
                     <div className="flex justify-between pb-1">
                         <Link
                             to={"/community/user/" + user.username}
@@ -55,12 +54,12 @@ export default function CommunityFeedPost({
                             <h2 className="font-semibold text-[15px] sm:mr-2">
                                 {user.firstName + " " + user.lastName}
                             </h2>
-                            <h2 className="font-medium text-[13px] text-gray sm:self-center">
+                            <h2 className="font-medium text-[13px] text-gray dark:text-darksecondary sm:self-center">
                                 @{user.username}
                             </h2>
                         </Link>
                         {auth.username === user.username && (
-                            <div className="flex text-gray">
+                            <div className="flex text-gray dark:text-darksecondary ">
                                 <h3
                                     className="mx-5 hover:cursor-pointer"
                                     onClick={onEdit}
@@ -113,7 +112,7 @@ export default function CommunityFeedPost({
                         )}
                     </div>
                     <div>
-                        <h3 className="text-gray text-[13px]">
+                        <h3 className="text-gray text-[13px] dark:text-darksecondary">
                             {new Date(createdAt).toLocaleString()}
                         </h3>
                     </div>

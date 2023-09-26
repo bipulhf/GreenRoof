@@ -21,7 +21,7 @@ public class NotificationStorageController {
     private final UserRepository userRepository;
 
     @GetMapping("/{username}")
-    public ResponseEntity<List<Notification>> getNotificationsByUserID(@PathVariable String username) {
+    public ResponseEntity<?> getNotificationsByUserID(@PathVariable String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new NoSuchElementException("No user found with this username " + username + "."));
         Long userID = user.getId();

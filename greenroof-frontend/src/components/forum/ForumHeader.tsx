@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import AIAssistant from "../AIAssistant";
+import AIAssistantButton from "../AIAssistantButton";
 import forum_logo from "/assets/forum/forum_logo.svg";
 
 export default function ForumHeader() {
@@ -19,17 +19,17 @@ export default function ForumHeader() {
                             to={"/forum"}
                             className="title-slogan my-[16px] md:my-[33px]"
                         >
-                            <h1 className="text-greenttl font-bold text-2xl md:text-4xl lg:text-5xl">
+                            <h1 className="text-greenttl font-bold text-2xl md:text-4xl lg:text-5xl dark:text-white">
                                 Green Roof Forum
                             </h1>
-                            <h3 className="text-brown font-bold text-sm md:text-xl lg:text-2xl">
+                            <h3 className="text-brown font-bold text-sm md:text-xl lg:text-2xl dark:text-darksecondary">
                                 Roof to Root : A Unified Connection
                             </h3>
                         </Link>
                     </div>
                 </div>
                 <div className="col-span-2 justify-self-end max-[1200px]:hidden my-[60px] w-[174px] h-[36px] rounded-[100px] border-2 border-solid border-greenbtn">
-                    <AIAssistant />
+                    <AIAssistantButton />
                 </div>
             </header>
         </>

@@ -19,7 +19,6 @@ public class CommunityPostController {
     @PostMapping("create")
     public ResponseEntity<?> createNewCommunityPost(@RequestBody CommunityPost communityPost) {
         String username = GetUsername.get();
-        System.out.println(communityPost);
         return communityPostService.createNewCommunityPost(username, communityPost);
     }
 

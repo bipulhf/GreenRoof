@@ -2,9 +2,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import loginIcon from "/assets/community/login.svg";
 import roofTopImage from "/assets/community/roof-desktop.svg";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
-import { Link, Navigate, useLocation } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useCreateLogin } from "../../hooks/useLogin";
+import { usePasswordReset } from "../../hooks/useLogin";
 import { useEffect, useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import Popup from "reactjs-popup";
@@ -17,7 +17,7 @@ interface Inputs {
 
 export default function ForgotPassword() {
     const { auth } = useAuth();
-    const mutation = useCreateLogin();
+    const mutation = usePasswordReset();
     const [open, setOpen] = useState(false);
 
     const {
@@ -27,7 +27,7 @@ export default function ForgotPassword() {
     } = useForm<Inputs>();
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
-        //mutation.mutate(data);
+        mutation.mutate(data);
     };
 
     useEffect(() => {
@@ -48,7 +48,7 @@ export default function ForgotPassword() {
                 <>
                     <Popup
                         modal
-                        open={!open}
+                        open={open}
                         closeOnDocumentClick
                         onClose={() => setOpen(!open)}
                     >
@@ -65,7 +65,9 @@ export default function ForgotPassword() {
                     )}
                     <div
                         className={`flex max-lg:flex-col justify-between max-lg:min-h-screen ${
-                            mutation.isLoading ? `bg-grabg opacity-10` : ``
+                            mutation.isLoading || open
+                                ? `bg-grabg opacity-10`
+                                : ``
                         }`}
                     >
                         <div className="m-[10%] relative z-10">
@@ -99,15 +101,15 @@ export default function ForgotPassword() {
                                 />{" "}
                                 <br />
                                 {mutation.isError && (
-                                    <p className="text-red mx-5">
+                                    <p className="text-red mx-5 mb-10">
                                         {mutation.error.response.data.message
                                             ? mutation.error.response.data
                                                   .message
                                             : mutation.error.message}
                                     </p>
                                 )}
-                                <Link
-                                    to={"/forgot-password"}
+                                <button
+                                    type="submit"
                                     className="ml-5 bg-brown px-5 py-3 rounded-full text-white font-medium text-xl min-[414px]:text-2xl hover:underline animate-fade-right animate-once animate-delay-[600ms] animate-ease-in-out"
                                 >
                                     <FontAwesomeIcon
@@ -115,7 +117,7 @@ export default function ForgotPassword() {
                                         className="mr-3"
                                     />
                                     Send Verification Mail
-                                </Link>
+                                </button>
                             </form>
                         </div>
                         <img

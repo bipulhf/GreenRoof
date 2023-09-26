@@ -2,6 +2,8 @@ package com.bankrupted.greenroof.community.Notification;
 
 import java.util.List;
 
+import com.bankrupted.greenroof.community.dto.NotificationDto;
+import com.bankrupted.greenroof.utils.ModelMapperUtility;
 import org.springframework.stereotype.Service;
 
 import com.bankrupted.greenroof.user.entity.User;
@@ -14,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 public class NotificationStorageService {
 
     private final NotificationStorageRepository notifRepository;
+    private final ModelMapperUtility<Notification, NotificationDto> modelMapperUtility;
 
     public Notification createNotificationStorage(User postUser, User reactUser, NotificationType notificationType) {
 
@@ -34,8 +37,8 @@ public class NotificationStorageService {
         return notifRepository.findByUserToIdAndDeliveredFalse(userID);
     }
 
-    public List<Notification> getNotificationsByUserID(Long userID) {
-        return notifRepository.findByUserToId(userID);
+    public List<NotificationDto> getNotificationsByUserID(Long userID) {
+        return modelMapperUtility.modelMap(notifRepository.findByUserToId(userID), NotificationDto.class);
     }
 
     public Notification changeNotifStatusToRead(Long notifID) {

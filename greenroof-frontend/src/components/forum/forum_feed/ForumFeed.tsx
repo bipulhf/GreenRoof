@@ -23,10 +23,10 @@ export default function ForumFeed() {
 
     return (
         <>
-            {error && <p>Network Error...</p>}
+            {error && <p className="text-red">Network Error...</p>}
 
             <div className="flex justify-between mb-5">
-                <h2 className="font-bold text-[14px] sm:text-[16px] md:text-[22px]">
+                <h2 className="font-bold text-[14px] sm:text-[16px] md:text-[22px] dark:text-white">
                     Recent Questions
                 </h2>
                 <AskQuestion />
@@ -37,7 +37,7 @@ export default function ForumFeed() {
                 next={() => fetchNextPage()}
                 loader={<QuestionLoader />}
             >
-                <ul className="divide-y divide-graybg">
+                <ul className="divide-y divide-graybg dark:divide-opacity-25">
                     {questions?.pages.map((page, index) => (
                         <React.Fragment key={index}>
                             {page.contentList.map((question) => (
@@ -49,6 +49,9 @@ export default function ForumFeed() {
                                         id={question.id}
                                         firstName={
                                             question.questioner.firstName
+                                        }
+                                        profilePhoto={
+                                            question.questioner.profilePhoto
                                         }
                                         lastName={question.questioner.lastName}
                                         username={question.questioner.username}

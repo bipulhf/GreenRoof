@@ -40,15 +40,15 @@ export default function CommunityCommentmMarkup({
             <div className="ml-5 max-[350px]:col-span-8 col-span-9">
                 <div className="flex justify-between pb-1">
                     <div className="flex max-sm:flex-col">
-                        <h2 className="font-semibold text-[15px] mr-2">
+                        <h2 className="font-semibold text-[15px] mr-2 dark:text-white">
                             {commenter.firstName + " " + commenter.lastName}
                         </h2>
-                        <h2 className="font-medium text-[13px] text-gray sm:self-center">
+                        <h2 className="font-medium text-[13px] text-gray sm:self-center dark:text-darksecondary">
                             @{commenter.username}
                         </h2>
                     </div>
                     {auth.username === commenter.username && (
-                        <div className="flex text-gray">
+                        <div className="flex text-gray dark:text-darksecondary">
                             <h3
                                 className="mx-5 hover:cursor-pointer"
                                 onClick={onEdit}
@@ -65,10 +65,12 @@ export default function CommunityCommentmMarkup({
                     )}
                 </div>
                 <div className="pb-2">
-                    <h3 className="text-[14px] text-justify">{text}</h3>
+                    <h3 className="text-[14px] text-justify dark:text-white">
+                        {text}
+                    </h3>
                 </div>
                 <div>
-                    <h3 className="text-gray text-[13px]">
+                    <h3 className="text-gray text-[13px] dark:text-darksecondary">
                         {new Date(createdAt).toLocaleString()}
                     </h3>
                 </div>

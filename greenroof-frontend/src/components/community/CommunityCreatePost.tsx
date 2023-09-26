@@ -1,5 +1,4 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import user_profile_photo from "/assets/forum/forum_top_user_photo_40x40.png";
 import { faImage } from "@fortawesome/free-solid-svg-icons";
 import { useCreatePost } from "../../hooks/usePost";
 import { useEffect, useState } from "react";
@@ -11,7 +10,11 @@ interface Inputs {
     postText: string;
 }
 
-export default function CommunityCreatePost() {
+interface Props {
+    profilePhoto: string;
+}
+
+export default function CommunityCreatePost({ profilePhoto }: Props) {
     const mutation = useCreatePost();
     const [images, setImages] = useState<File[]>([]);
 
@@ -43,16 +46,18 @@ export default function CommunityCreatePost() {
         const imagesPromises = images.map(
             async (image) => await uploadImages(image)
         );
-        Promise.allSettled(imagesPromises).then((promisesArr) => {
-            promisesArr.map((link) => {
-                postAttatchments.push({ link: link.value });
-            });
-            mutation.mutate({
-                postText: data.postText,
-                postAttatchments: postAttatchments,
-            });
-            setClicked(false);
-        });
+        Promise.allSettled(imagesPromises)
+            .then((promisesArr) => {
+                promisesArr.map((link) => {
+                    postAttatchments.push({ link: link.value });
+                });
+                mutation.mutate({
+                    postText: data.postText,
+                    postAttatchments: postAttatchments,
+                });
+                setClicked(false);
+            })
+            .catch((e) => console.log(e));
     };
 
     useEffect(() => {
@@ -81,25 +86,27 @@ export default function CommunityCreatePost() {
             return convertImgToDataURL(file);
         });
 
-        Promise.all(readers).then((values) => {
-            setPrevImages(values);
-        });
+        Promise.all(readers)
+            .then((values) => {
+                setPrevImages(values);
+            })
+            .catch((e) => console.log(e));
     };
 
     return (
-        <div className="py-5 px-2 grid grid-cols-8">
+        <div className="py-5 px-2 grid grid-cols-8 dark:bg-darkbg">
             <img
-                src={user_profile_photo}
+                src={profilePhoto}
                 alt="Profile Photo"
-                className="col-span-1 ml-5 min-h-[40px] min-w-[40px]"
+                className="col-span-1 ml-5 min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] rounded-full"
             />
             <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="col-span-7 flex max-[500px]:ml-10"
+                className="col-span-7 flex max-[500px]:ml-10 dark:text-white"
             >
                 <textarea
                     {...register("postText")}
-                    className="text-[16px] h-[80px] md:h-[105px] w-[90%] resize-none focus:outline-none"
+                    className="text-[16px] h-[80px] md:h-[105px] w-[90%] resize-none focus:outline-none dark:bg-darkbg dark:text-white"
                     name="postText"
                     id="postText"
                     placeholder="Share your photos, experiences..."
@@ -107,12 +114,11 @@ export default function CommunityCreatePost() {
                 />
 
                 <div className="flex flex-col justify-evenly">
-                    <label>
+                    <label className="self-center">
                         <FontAwesomeIcon
                             icon={faImage}
                             fontSize={16}
-                            color="#B97246"
-                            className="hover:cursor-pointer"
+                            className="hover:cursor-pointer text-brown dark:text-darksecondary"
                         />{" "}
                         <input
                             type="file"
@@ -127,7 +133,7 @@ export default function CommunityCreatePost() {
                     <button
                         type="submit"
                         disabled={mutation.isLoading}
-                        className="relative self-center h-fit border rounded-full bg-greenbtn text-white text-[16px] px-5 py-1"
+                        className="relative self-center h-fit rounded-full bg-greenbtn text-white text-[16px] px-5 py-1"
                     >
                         {clicked ? "Posting..." : "Post"}
                     </button>

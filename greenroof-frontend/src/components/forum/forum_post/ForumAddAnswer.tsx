@@ -41,7 +41,7 @@ export default function ForumAddAnswer({ id }: Props) {
                         required: true,
                     })}
                     name="answerText"
-                    className="text-[13px] border-2 border-gray rounded-lg p-1 sm:p-3"
+                    className="text-[13px] border-2 outline-none border-gray rounded-lg p-1 sm:p-3 dark:text-white dark:bg-darkbg"
                     placeholder="Enter your answer here..."
                     aria-invalid={errors.answerText ? "true" : "false"}
                     required

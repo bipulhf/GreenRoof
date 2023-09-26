@@ -26,8 +26,9 @@
     .slider img {
         border-radius: 0.5rem;
         position: absolute;
-        object-fit: scale-down;
-        height: 100%;
+        object-fit: scale-down; 
+        padding:0 0.5rem 0;
+        /* height: 100%; */
         left: 50%;
         transform: translate(-50%);
     }

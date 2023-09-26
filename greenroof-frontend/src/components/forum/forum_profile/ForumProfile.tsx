@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useProfile } from "../../../hooks/useProfile";
+import { useGetUser } from "../../../hooks/useProfile";
 import AskQuestion from "../AskQuestion";
 import ForumFeedQuestion from "../forum_feed/ForumFeedQuestion";
 import ForumUserInfo from "./ForumUserInfo";
@@ -14,8 +14,9 @@ export default function ForumProfile() {
         error,
         isLoading,
     } = useUserQuestions(username || "");
-    const { data: users, isLoading: userLoading } = useProfile(username || "");
-    const userProfile = users != null ? users[0] : null;
+    const { data: userProfile, isLoading: userLoading } = useGetUser(
+        username || ""
+    );
     return (
         <>
             {error && <p>Network Error...</p>}
@@ -28,10 +29,10 @@ export default function ForumProfile() {
                 lastName={userProfile?.lastName || ""}
                 username={userProfile?.username || ""}
                 city={userProfile?.city || ""}
-                // profilePhoto={userProfile?.profilePhoto}
+                profilePhoto={userProfile?.profilePhoto || ""}
             />
             {isLoading && <QuestionLoader />}
-            <ul className="divide-y divide-graybg">
+            <ul className="divide-y divide-graybg dark:divide-opacity-25">
                 {questions?.map((question) => (
                     <li key={question.id} className="pt-5 pb-5">
                         <ForumFeedQuestion

@@ -16,9 +16,11 @@ public class CommunityPost {
     private Long id;
     @Column(columnDefinition = "TEXT")
     private String  postText;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "community_post_attatchments", joinColumns = @JoinColumn(name = "post_id"), inverseJoinColumns = @JoinColumn(name = "attatchment_id"))
     private List<Attatchments> postAttatchments;
+
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;

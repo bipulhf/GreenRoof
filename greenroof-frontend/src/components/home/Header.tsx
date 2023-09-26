@@ -4,7 +4,7 @@ import home from "/assets/community/home.svg";
 import community from "/assets/community/community.svg";
 import forum from "/assets/community/forum.svg";
 import faq from "/assets/community/faq.svg";
-import AIAssistant from "../AIAssistant";
+import AIAssistantButton from "../AIAssistantButton";
 
 export default function Header() {
     return (
@@ -45,7 +45,7 @@ export default function Header() {
                 </ul>
                 <ul className="border-2 border-greenttl rounded-full pr-3 py-1">
                     <Link to={"/AI"}>
-                        <AIAssistant />
+                        <AIAssistantButton />
                     </Link>
                 </ul>
             </nav>
