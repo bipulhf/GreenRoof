@@ -2,6 +2,7 @@ package com.bankrupted.greenroof.forum.service;
 
 import com.bankrupted.greenroof.forum.dto.FeedResponseDto;
 import com.bankrupted.greenroof.forum.dto.ForumQuestionDto;
+import com.bankrupted.greenroof.forum.dto.ForumQuestionTagDto;
 import com.bankrupted.greenroof.forum.entity.ForumQuestionTag;
 import com.bankrupted.greenroof.forum.repository.ForumAnswerRepository;
 import com.bankrupted.greenroof.forum.repository.ForumQuestionTagRepository;
@@ -32,6 +33,7 @@ public class ForumFeedService {
     private final ForumQuestionTagRepository forumQuestionTagRepository;
     private final ModelMapperUtility<ForumQuestion, ForumQuestionDto> questionModelMapper;
     private final ModelMapperUtility<User, UserDto> userModelMapper;
+    private final ModelMapperUtility<ForumQuestionTag, ForumQuestionTagDto> tagModelMapper;
     private int pageSize = 7;
 
     public FeedResponseDto<ForumQuestionDto> getAllForumQuestions(Integer pageNo) {
@@ -91,11 +93,13 @@ public class ForumFeedService {
 
     public FeedResponseDto<ForumQuestionDto> getQuestionByTag(Integer pageNo, String tag) {
         Pageable pageable = PageRequest.of(pageNo, pageSize);
-        Page<ForumQuestion> forumQuestionPage = forumQuestionRepository.findByQuestionTagOrderByCreatedAtDesc(pageable, tag);
+        ForumQuestionTag questionTag = forumQuestionTagRepository.findByTag(tag);
+        Page<ForumQuestion> forumQuestionPage = forumQuestionRepository.findByQuestionTagOrderByCreatedAtDesc(pageable, questionTag);
         return getResponseDto(forumQuestionPage);
     }
 
-    public List<ForumQuestionTag> getTags() {
-        return forumQuestionTagRepository.findAll();
+    public List<ForumQuestionTagDto> getTags() {
+        List<ForumQuestionTag> forumQuestionTags = forumQuestionTagRepository.findAll();
+        return tagModelMapper.modelMap(forumQuestionTags, ForumQuestionTagDto.class);
     }
 }

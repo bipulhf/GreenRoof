@@ -25,12 +25,11 @@ export default function ForumSearchResult({ search }: Props) {
         ) || 0;
     return (
         <>
-            {isLoading && <PostLoader />}
-            {error && <p>Network Error...</p>}
-            {console.log(questions)}
             <h2 className="font-bold text-[14px] sm:text-[16px] md:text-[22px] dark:text-darksecondary">
                 Showing Results for '{search}'
             </h2>
+            {isLoading && <PostLoader />}
+            {error && <p>Network Error...</p>}
             <InfiniteScroll
                 dataLength={fetchedQuestionCount}
                 hasMore={!!hasNextPage}
@@ -63,6 +62,7 @@ export default function ForumSearchResult({ search }: Props) {
                                         forumAttatchments={
                                             question.questionAttatchments
                                         }
+                                        questionTag={question.questionTag}
                                         createdAt={question.createdAt}
                                     />
                                 </li>

@@ -63,6 +63,7 @@ export default function ForumFeed() {
                                         forumAttatchments={
                                             question.questionAttatchments
                                         }
+                                        questionTag={question.questionTag}
                                         createdAt={question.createdAt}
                                     />
                                 </li>

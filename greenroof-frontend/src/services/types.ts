@@ -53,6 +53,11 @@ export interface Answer {
     createdAt: Date;
 }
 
+export interface Tag {
+    id?: number;
+    tag: string;
+}
+
 export interface Question {
     id: number;
     questionTitle: string;
@@ -60,6 +65,7 @@ export interface Question {
     questionAttatchments: PostAttatchments[];
     questioner: User;
     createdAt: Date;
+    questionTag: Tag[];
 }
 
 export interface ValidationError {

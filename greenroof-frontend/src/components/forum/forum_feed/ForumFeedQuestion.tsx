@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import ReadMore from "./ReadMore";
-import { PostAttatchments } from "../../../services/types";
+import { PostAttatchments, Tag } from "../../../services/types";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
@@ -11,6 +11,7 @@ interface Props {
     questionTitle: string;
     questionText: string;
     forumAttatchments: PostAttatchments[];
+    questionTag: Tag[];
     createdAt: Date;
 }
 
@@ -19,6 +20,7 @@ export default function ForumFeedQuestion({
     questionTitle,
     questionText,
     forumAttatchments,
+    questionTag,
     createdAt,
 }: Props) {
     const params = useParams();
@@ -67,9 +69,20 @@ export default function ForumFeedQuestion({
                         )}
                     </>
                 )}
-                <p className="mt-2 text-gray text-[12px] md:text-[14px]">
+                <p className="my-2 text-gray text-[12px] md:text-[14px]">
                     {new Date(createdAt).toLocaleString()}
                 </p>
+                <div className="flex">
+                    {questionTag.map((tag) => (
+                        <Link
+                            to={"/forum/tag/" + tag.tag}
+                            key={tag.id}
+                            className="bg-graybg py-1 px-2 mr-3"
+                        >
+                            {tag.tag}
+                        </Link>
+                    ))}
+                </div>
             </div>
         </>
     );

@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 
 export default function ForumTags() {
     const { data: tags, isLoading, error, isError } = useGetTags();
+
     return (
         <>
             <div className="search-title w-[269px] bg-graybg rounded-[27px] px-[18px] py-[12px] mb-[15px] dark:bg-darkprimary dark:text-white">
@@ -20,8 +21,8 @@ export default function ForumTags() {
                     <ul className="tags">
                         {tags?.map((tag) => (
                             <li key={tag.id}>
-                                <Link to={"/forum/tag/" + tag.tags}>
-                                    {tag.tags}
+                                <Link to={"/forum/tag/" + tag.tag}>
+                                    {tag.tag}
                                 </Link>
                             </li>
                         ))}

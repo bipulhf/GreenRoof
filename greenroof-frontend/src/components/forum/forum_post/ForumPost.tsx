@@ -43,6 +43,7 @@ export default function ForumPost() {
                         forumAttatchments={
                             questions?.questionAttatchments || []
                         }
+                        questionTag={questions?.questionTag || []}
                         createdAt={questions?.createdAt || new Date()}
                     />
                 </div>

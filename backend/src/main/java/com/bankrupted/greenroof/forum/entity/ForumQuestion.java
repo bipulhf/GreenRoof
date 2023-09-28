@@ -22,21 +22,22 @@ public class ForumQuestion {
     @NotBlank(message = "Question body is mandatory and can't be blank.")
     @Column(nullable = false, columnDefinition = "TEXT")
     private String questionText;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<ForumAttatchment> forumAttatchments;
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<ForumAttatchment> forumAttatchments;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
     private User questioner;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
-            name = "question_tag",
+            name = "forum_question_forum_tag",
             joinColumns = @JoinColumn(name = "question_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
-    private Set<ForumQuestionTag> questionTag;
+    private List<ForumQuestionTag> questionTag;
 }

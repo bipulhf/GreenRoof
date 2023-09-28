@@ -1,7 +1,11 @@
 package com.bankrupted.greenroof.forum.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -11,5 +15,7 @@ public class ForumQuestionTag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
-    private String questionTag;
+    private String tag;
+    @ManyToMany(mappedBy = "questionTag")
+    private List<ForumQuestion> forumQuestions;
 }

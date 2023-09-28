@@ -19,5 +19,5 @@ public class ForumQuestionDto {
     private List<ForumAttatchmentDto> questionAttatchments;
     private Date createdAt;
     private UserDto questioner;
-    private List<ForumQuestionTag> questionTags;
+    private List<ForumQuestionTagDto> questionTag;
 }

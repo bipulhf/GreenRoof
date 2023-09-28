@@ -4,10 +4,10 @@ import React from "react";
 import ForumFeedQuestion from "../forum_feed/ForumFeedQuestion";
 import ForumQuestionerInfo from "../forum_feed/ForumQuestionerInfo";
 import PostLoader from "../../PostLoader";
-import { useSearchParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 export default function ForumTagResult() {
-    const [searchParams] = useSearchParams();
+    const { tag } = useParams();
 
     const {
         data: questions,
@@ -15,7 +15,7 @@ export default function ForumTagResult() {
         isLoading,
         hasNextPage,
         fetchNextPage,
-    } = useGetQuestionByTag(searchParams.get("tag") || "");
+    } = useGetQuestionByTag(tag || "");
 
     const fetchedQuestionCount =
         questions?.pages.reduce(
@@ -24,12 +24,11 @@ export default function ForumTagResult() {
         ) || 0;
     return (
         <>
+            <h2 className="font-bold text-[14px] sm:text-[16px] md:text-[22px] dark:text-darksecondary">
+                Showing Results for '{tag}'
+            </h2>
             {isLoading && <PostLoader />}
             {error && <p>Network Error...</p>}
-            {console.log(questions)}
-            <h2 className="font-bold text-[14px] sm:text-[16px] md:text-[22px] dark:text-darksecondary">
-                Showing Results for '{searchParams.get("tag")}'
-            </h2>
             <InfiniteScroll
                 dataLength={fetchedQuestionCount}
                 hasMore={!!hasNextPage}
@@ -62,6 +61,7 @@ export default function ForumTagResult() {
                                         forumAttatchments={
                                             question.questionAttatchments
                                         }
+                                        questionTag={question.questionTag}
                                         createdAt={question.createdAt}
                                     />
                                 </li>

@@ -39,7 +39,9 @@ export default function ForumProfile() {
                             id={question.id}
                             questionTitle={question.questionTitle}
                             questionText={question.questionText}
+                            forumAttatchments={question.questionAttatchments}
                             createdAt={question.createdAt}
+                            questionTag={question.questionTag}
                         />
                     </li>
                 ))}

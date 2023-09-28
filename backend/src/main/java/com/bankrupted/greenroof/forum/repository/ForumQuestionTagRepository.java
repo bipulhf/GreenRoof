@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ForumQuestionTagRepository extends JpaRepository<ForumQuestionTag, Long> {
+    ForumQuestionTag findByTag(String tag);
 }

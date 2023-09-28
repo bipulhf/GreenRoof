@@ -1,21 +1,23 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import APIClient from "../services/apiClient";
-import { PostAttatchments, Question, ValidationError } from "../services/types";
+import {
+    PostAttatchments,
+    Question,
+    Tag,
+    ValidationError,
+} from "../services/types";
 import { useNavigate } from "react-router-dom";
 import useAuth from "./useAuth";
 
 interface QuestionText {
     questionTitle: string;
     questionText: string;
+    questionTag: Tag[];
     forumAttatchments?: PostAttatchments[];
-}
-interface Tags {
-    id: number;
-    tags: string;
 }
 
 const questionApiClient = new APIClient<Question, QuestionText>("/forum");
-const tagsApiClient = new APIClient<Tags, QuestionText>("/forum");
+const tagsApiClient = new APIClient<Tag, QuestionText>("/forum");
 
 const useGetQuestion = (questionId: number) => {
     return useQuery<Question, Error>({
@@ -85,7 +87,7 @@ const useDeleteQuestion = () => {
 };
 
 const useGetTags = () => {
-    return useQuery<Tags[], Error>({
+    return useQuery<Tag[], Error>({
         queryKey: ["tags"],
         queryFn: () => tagsApiClient.getAll("/feed/tags"),
     });

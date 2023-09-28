@@ -5,16 +5,21 @@ import Popup from "reactjs-popup";
 import PopupLoading from "../../PopupLoading";
 import { PostAttatchments } from "../../../services/types";
 import uploadImages from "../../../services/ImageUpload";
+import { TagsInput } from "react-tag-input-component";
 
 interface Inputs {
     questionTitle: string;
     questionText: string;
 }
 
+interface Tag {
+    tag: string;
+}
+
 export default function ForumCreatePost() {
     const mutation = useCreateQuestion();
     const [images, setImages] = useState<File[]>([]);
-
+    const [selected, setSelected] = useState([]);
     const [prevImages, setPrevImages] = useState<(string | ArrayBuffer)[]>([]);
 
     const {
@@ -24,6 +29,10 @@ export default function ForumCreatePost() {
         formState: { errors, isSubmitSuccessful },
     } = useForm<Inputs>();
     const onSubmit: SubmitHandler<Inputs> = (data) => {
+        const questionTag: Tag[] = [];
+        selected.map((tag) => {
+            questionTag.push({ tag });
+        });
         const forumAttatchments: PostAttatchments[] = [];
         const imagesPromises = images.map(
             async (image) => await uploadImages(image)
@@ -36,6 +45,7 @@ export default function ForumCreatePost() {
                 mutation.mutate({
                     questionTitle: data.questionTitle,
                     questionText: data.questionText,
+                    questionTag: questionTag,
                     forumAttatchments: forumAttatchments,
                 });
             })
@@ -139,6 +149,14 @@ export default function ForumCreatePost() {
                             : mutation.error.message}
                     </p>
                 )}
+                <div className="mt-5 outline-none">
+                    <TagsInput
+                        value={selected}
+                        onChange={setSelected}
+                        name="tags"
+                        placeHolder="Enter Tags..."
+                    />
+                </div>
                 <input
                     type="file"
                     name="img"

@@ -7,8 +7,6 @@ export default function ForumTopUsers() {
     const { data: users, error, isLoading } = useTopUser();
     return (
         <>
-            {isLoading && <p>Loading...</p>}
-            {error && <p>Network Error...</p>}
             <div className="search-title w-[269px] bg-graybg rounded-[27px] px-[18px] py-[12px] mb-[15px] dark:bg-darkprimary dark:text-white">
                 <div className="mb-[12px]">
                     <span className="mr-[21px]">
@@ -17,6 +15,8 @@ export default function ForumTopUsers() {
                     <span className="text-[20px] font-medium">Top Users</span>
                 </div>
                 <ol>
+                    {isLoading && <p>Loading...</p>}
+                    {error && <p>Network Error...</p>}
                     {users?.map((user) => (
                         <li key={user.id} className="flex mb-[10px]">
                             <img
