@@ -1,10 +1,10 @@
 package com.bankrupted.greenroof.forum.service;
 
 import com.bankrupted.greenroof.forum.dto.FeedResponseDto;
-import com.bankrupted.greenroof.forum.dto.ForumAnswerDto;
 import com.bankrupted.greenroof.forum.dto.ForumQuestionDto;
-import com.bankrupted.greenroof.forum.entity.ForumAnswer;
+import com.bankrupted.greenroof.forum.entity.ForumQuestionTag;
 import com.bankrupted.greenroof.forum.repository.ForumAnswerRepository;
+import com.bankrupted.greenroof.forum.repository.ForumQuestionTagRepository;
 import com.bankrupted.greenroof.user.dto.UserDto;
 import com.bankrupted.greenroof.user.entity.User;
 import com.bankrupted.greenroof.forum.entity.ForumQuestion;
@@ -29,6 +29,7 @@ public class ForumFeedService {
     private final ForumQuestionRepository forumQuestionRepository;
     private final UserRepository userRepository;
     private final ForumAnswerRepository forumAnswerRepository;
+    private final ForumQuestionTagRepository forumQuestionTagRepository;
     private final ModelMapperUtility<ForumQuestion, ForumQuestionDto> questionModelMapper;
     private final ModelMapperUtility<User, UserDto> userModelMapper;
     private int pageSize = 7;
@@ -86,5 +87,15 @@ public class ForumFeedService {
         }
         mp.put("noa", forumAnswerRepository.getTotalNumberOfAnswersOfQuestion(questionId).intValue());
         return mp;
+    }
+
+    public FeedResponseDto<ForumQuestionDto> getQuestionByTag(Integer pageNo, String tag) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Page<ForumQuestion> forumQuestionPage = forumQuestionRepository.findByQuestionTagOrderByCreatedAtDesc(pageable, tag);
+        return getResponseDto(forumQuestionPage);
+    }
+
+    public List<ForumQuestionTag> getTags() {
+        return forumQuestionTagRepository.findAll();
     }
 }

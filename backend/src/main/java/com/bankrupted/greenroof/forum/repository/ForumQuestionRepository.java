@@ -24,4 +24,6 @@ public interface ForumQuestionRepository extends JpaRepository<ForumQuestion, Lo
             "WHERE forum_ts @@ to_tsquery('english', :text)\n" +
             "ORDER BY ts_rank(forum_ts, to_tsquery('english', :text)) DESC;", nativeQuery = true)
     Page<ForumQuestion> searchQuestion(String text, Pageable pageable);
+
+    Page<ForumQuestion> findByQuestionTagOrderByCreatedAtDesc(Pageable pageable, String tag);
 }

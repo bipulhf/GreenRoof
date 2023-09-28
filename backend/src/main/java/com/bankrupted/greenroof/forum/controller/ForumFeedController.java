@@ -42,4 +42,14 @@ public class ForumFeedController {
     public ResponseEntity<?> getNumberOfAnswers(@RequestParam Long questionId) {
         return new ResponseEntity<>(forumFeedService.getNumberOfAnswers(questionId), HttpStatus.OK);
     }
+
+    @GetMapping("questions")
+    public ResponseEntity<?> getQuestionsByTag(@RequestParam Integer pageNo, @RequestParam String tag) {
+        return new ResponseEntity<>(forumFeedService.getQuestionByTag(pageNo, tag), HttpStatus.OK);
+    }
+
+    @GetMapping("tags")
+    public ResponseEntity<?> getQuestionsByTag() {
+        return new ResponseEntity<>(forumFeedService.getTags(), HttpStatus.OK);
+    }
 }

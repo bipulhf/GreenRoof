@@ -2,6 +2,7 @@ package com.bankrupted.greenroof.community.Notification;
 
 import java.util.List;
 
+import com.bankrupted.greenroof.utils.GetUsername;
 import org.springframework.http.codec.ServerSentEvent;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 
 @RestController
-@RequestMapping("/push-notifications")
+@RequestMapping("api/v1/push-notifications")
 
 public class PushNotificationController {
 
@@ -21,8 +22,9 @@ public class PushNotificationController {
         this.service = service;
     }
 
-    @GetMapping("/{username}")
-    public Flux<ServerSentEvent<List<Notification>>> streamLastMessage(@PathVariable String username) {
+    @GetMapping("")
+    public Flux<ServerSentEvent<List<Notification>>> streamLastMessage() {
+        String username = GetUsername.get();
         return service.getNotificationsByUserToID(username);
     }
 

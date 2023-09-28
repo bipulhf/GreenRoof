@@ -18,6 +18,8 @@ export interface Notif {
     delivered: boolean;
     read: false;
     userFrom: User;
+    communityPost: Post;
+    createdAt: Date;
 }
 
 export interface UserProfile {

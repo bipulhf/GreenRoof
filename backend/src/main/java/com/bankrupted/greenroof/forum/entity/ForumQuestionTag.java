@@ -5,12 +5,11 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "forum_question_category")
-public class ForumQuestionCategory {
+@Table(name = "forum_question_tag")
+public class ForumQuestionTag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private QuestionCategoryType questionCategory;
+    private String questionTag;
 }

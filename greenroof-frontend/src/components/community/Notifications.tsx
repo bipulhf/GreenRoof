@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { clear } from "../../context/deliveredNotifs";
 import { Notif } from "../../services/types";
 import CommunityHeading from "./CommunityHeading";
+import { Link } from "react-router-dom";
 
 export default function Notifications() {
     const { auth } = useAuth();
@@ -13,10 +14,10 @@ export default function Notifications() {
 
     const username = auth.username;
     const jwtToken = auth.accessToken;
-    const BASE_URL = "http://localhost:8080/api/v1/notification/";
+    const BASE_URL = "http://localhost:8080/api/v1/notification";
 
-    const getAllNotifs = (username: string) => {
-        return axios.get(BASE_URL + username, {
+    const getAllNotifs = () => {
+        return axios.get(BASE_URL, {
             headers: {
                 Authorization: `Bearer ${jwtToken}`,
             },
@@ -32,7 +33,7 @@ export default function Notifications() {
 
     const fetchData = async () => {
         dispatch(clear());
-        const data = await (await getAllNotifs(username)).data;
+        const data = await (await getAllNotifs()).data;
         setNotifications(data);
     };
 
@@ -51,25 +52,31 @@ export default function Notifications() {
             <div className="pb-[10%] min-h-screen md:w-[68%] min-[1000px]:w-[53%] md:ml-[30%] min-[1000px]:ml-[22%] divide-y divide-graybg">
                 <CommunityHeading heading="Notifications" />
                 {notifications.map((x) => (
-                    <div className="flex justify-between p-2">
+                    <div className="flex justify-between p-2" key={x.id}>
                         <div
                             key={x.id}
                             className={`${
                                 x.read == false ? `bg-graybg font-semibold` : ``
-                            } font-medium text-2xl p-3 flex`}
+                            } font-medium text-2xl p-3 flex justify-between w-full`}
                         >
-                            <img
-                                src={x.userFrom.profilePhoto}
-                                alt={x.userFrom.username + " photo"}
-                                className="col-span-1 ml-5 min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] rounded-full"
-                            />
-                            <span className="ml-5 self-center">
-                                {x.content}
-                            </span>
+                            <div className="flex">
+                                <img
+                                    src={x.userFrom.profilePhoto}
+                                    alt={x.userFrom.username + " photo"}
+                                    className="col-span-1 ml-5 min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] rounded-full"
+                                />
+                                <Link
+                                    to={`/community/post/${x.communityPost.id}`}
+                                    onClick={() => readNotif(x.id)}
+                                    className="ml-5 self-center"
+                                >
+                                    {x.content}
+                                </Link>
+                            </div>
+                            <p className="text-gray text-[12px] self-center">
+                                {new Date(x.createdAt).toLocaleString()}
+                            </p>
                         </div>
-                        <button onClick={() => readNotif(x.id)} className="">
-                            Read
-                        </button>
                     </div>
                 ))}
             </div>

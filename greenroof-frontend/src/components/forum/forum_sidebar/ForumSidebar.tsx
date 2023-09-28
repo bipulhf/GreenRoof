@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import AIAssistantButton from "../../AIAssistantButton";
-import ForumCategories from "./ForumCategories";
+import ForumTags from "./ForumTags";
 import ForumSearch from "./ForumSearch";
 import ForumTopUsers from "./ForumTopUsers";
 import useAuth from "../../../hooks/useAuth";
@@ -93,7 +93,7 @@ export default function ForumSidebar({ menuOn }: Props) {
                     </Link>
                 </div>
                 <ForumSearch />
-                <ForumCategories />
+                <ForumTags />
                 <ForumTopUsers />
             </div>
         </>

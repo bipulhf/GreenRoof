@@ -1,5 +1,6 @@
 package com.bankrupted.greenroof.forum.dto;
 
+import com.bankrupted.greenroof.forum.entity.ForumQuestionTag;
 import com.bankrupted.greenroof.user.dto.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,4 +19,5 @@ public class ForumQuestionDto {
     private List<ForumAttatchmentDto> questionAttatchments;
     private Date createdAt;
     private UserDto questioner;
+    private List<ForumQuestionTag> questionTags;
 }

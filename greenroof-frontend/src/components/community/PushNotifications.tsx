@@ -31,7 +31,7 @@ const PushNotifications = () => {
 
     useEffect(() => {
         if (username.length === 0 || jwtToken.length === 0) return;
-        const URL = "http://localhost:8080/push-notifications/" + username;
+        const URL = "http://localhost:8080/push-notifications";
 
         const fetchData = async () => {
             await fetchEventSource(URL, {

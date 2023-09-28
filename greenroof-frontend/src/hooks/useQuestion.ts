@@ -9,8 +9,13 @@ interface QuestionText {
     questionText: string;
     forumAttatchments?: PostAttatchments[];
 }
+interface Tags {
+    id: number;
+    tags: string;
+}
 
 const questionApiClient = new APIClient<Question, QuestionText>("/forum");
+const tagsApiClient = new APIClient<Tags, QuestionText>("/forum");
 
 const useGetQuestion = (questionId: number) => {
     return useQuery<Question, Error>({
@@ -79,9 +84,17 @@ const useDeleteQuestion = () => {
     });
 };
 
+const useGetTags = () => {
+    return useQuery<Tags[], Error>({
+        queryKey: ["tags"],
+        queryFn: () => tagsApiClient.getAll("/feed/tags"),
+    });
+};
+
 export {
     useGetQuestion,
     useCreateQuestion,
     useEditQuestion,
     useDeleteQuestion,
+    useGetTags,
 };

@@ -39,4 +39,8 @@
     .preview {
         margin: 0 auto;
     }
+    .tags {
+        column-count: 2;
+        column-gap: 50px;
+    }
 }

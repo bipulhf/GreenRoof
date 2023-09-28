@@ -25,7 +25,7 @@ import PushNotifications from "../components/community/PushNotifications";
 import CommunityFollowingFeed from "../components/community/community_feed/CommunityFollowingFeed";
 import ForgotPassword from "../components/home/ForgotPassword";
 import ResetPassword from "../components/home/ResetPassword";
-import AiAssistantChat from "../components/AiAssistant/AiAssistantChat";
+import ForumTagResult from "../components/forum/forum_sidebar/ForumTagResult";
 
 const router = createBrowserRouter([
     {
@@ -37,7 +37,6 @@ const router = createBrowserRouter([
             { path: "register", element: <Registration /> },
             { path: "reset-password", element: <ResetPassword /> },
             { path: "forgot-password", element: <ForgotPassword /> },
-            { path: "AI", element: <AiAssistantChat /> },
             {
                 path: "logout",
                 element: (
@@ -79,6 +78,7 @@ const router = createBrowserRouter([
                 ),
             },
             { path: "user/:username", element: <ForumUserProfilePage /> },
+            { path: "tag/:tag", element: <ForumTagResult /> },
         ],
     },
     {
@@ -92,7 +92,6 @@ const router = createBrowserRouter([
             { index: true, element: <CommunityMainPage /> },
             { path: "following", element: <CommunityFollowingFeed /> },
             { path: "post/:postId", element: <CommunitySinglePostPage /> },
-            { path: "post/create", element: <ForumCreatePost /> },
             { path: "post/edit/:postId", element: <CommunityEditPost /> },
             {
                 path: "comment/edit/:postId/:commentId",

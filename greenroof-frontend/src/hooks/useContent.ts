@@ -28,4 +28,16 @@ const useSearch = (searchText: string) => {
     });
 };
 
-export { useContent, useSearch };
+const useGetQuestionByTag = (tag: string) => {
+    return useInfiniteQuery<Content<Question>, Error>({
+        queryKey: ["question", tag],
+        queryFn: ({ pageParam = 0 }) =>
+            contentApiClient.get("/feed/tag", {
+                params: { tag: tag, pageNo: pageParam },
+            }),
+        getNextPageParam: (lastPage) =>
+            lastPage.last ? undefined : lastPage.pageNo + 1,
+    });
+};
+
+export { useContent, useSearch, useGetQuestionByTag };

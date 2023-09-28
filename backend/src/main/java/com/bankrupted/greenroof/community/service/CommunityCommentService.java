@@ -52,7 +52,7 @@ public class CommunityCommentService {
         communityCommentRepository.save(communityComment);
 
         if (postUser.getId() != reactUser.getId()) {
-            notificationStorageService.createNotificationStorage(postUser, reactUser, NotificationType.Comment);
+            notificationStorageService.createNotificationStorage(postUser, reactUser, post, NotificationType.Comment);
         }
         return new ResponseEntity<>("Comment Successful", HttpStatus.CREATED);
     }

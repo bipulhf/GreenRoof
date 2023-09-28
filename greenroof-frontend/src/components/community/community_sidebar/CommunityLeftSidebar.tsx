@@ -11,12 +11,61 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import forum_logo from "/assets/forum/forum_logo.svg";
-import useAuth from "../../../hooks/useAuth";
 import { themeMode } from "../../../services/themeMode";
 import { faCircleQuestion } from "@fortawesome/free-regular-svg-icons";
+import { useEffect } from "react";
+import { fetchEventSource } from "@microsoft/fetch-event-source";
+import { useDispatch, useSelector } from "react-redux";
+import useAuth from "../../../hooks/useAuth";
+import { Notif } from "../../../services/types";
+import { add } from "../../../context/deliveredNotifs";
+
+interface NotifState {
+    notifs: Notif[];
+    notifToastList: Notif[];
+}
+interface RootState {
+    deliveredNotifs: NotifState;
+}
 
 export default function CommunityLeftSidebar() {
     const { auth } = useAuth();
+    const username = auth.username;
+    const jwtToken = auth.accessToken;
+
+    const allDeliveredNotifs = useSelector(
+        (state: RootState) => state.deliveredNotifs.notifs
+    );
+
+    const notifToastList = useSelector(
+        (state: RootState) => state.deliveredNotifs.notifToastList
+    );
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (username.length === 0 || jwtToken.length === 0) return;
+        const URL = "http://localhost:8080/api/v1/push-notifications";
+
+        const fetchData = async () => {
+            await fetchEventSource(URL, {
+                method: "GET",
+                headers: {
+                    Accept: "*/*",
+                    Authorization: `Bearer ${jwtToken}`,
+                },
+                openWhenHidden: true,
+                onmessage(event) {
+                    const parsedData = JSON.parse(event.data);
+                    if (parsedData.length != 0) {
+                        console.log(parsedData);
+                        dispatch(add({ newNotifs: parsedData }));
+                    }
+                },
+            });
+        };
+        fetchData();
+    }, [auth]);
 
     return (
         <div className="fixed h-screen max-md:hidden md:w-[30%] min-[1000px]:w-[20%]">
@@ -34,13 +83,24 @@ export default function CommunityLeftSidebar() {
                         </Link>
                     </li>
                     <li>
-                        <Link to={"/community/notifications"}>
+                        <Link
+                            to={"/community/notifications"}
+                            className="hover:underline"
+                        >
                             <FontAwesomeIcon icon={faBell} fontSize={20} />
+                            {allDeliveredNotifs.length > 0 && (
+                                <span className="text-white bg-red rounded-full text-[11px] p-1">
+                                    {allDeliveredNotifs.length}
+                                </span>
+                            )}
                             <span className="ml-5">Notifications</span>{" "}
                         </Link>
                     </li>
                     <li>
-                        <Link to={"/community/search"}>
+                        <Link
+                            to={"/community/search"}
+                            className="hover:underline"
+                        >
                             <FontAwesomeIcon
                                 icon={faMagnifyingGlass}
                                 fontSize={20}

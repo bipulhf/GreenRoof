@@ -104,7 +104,7 @@ public class CommunityPostService {
         }
 
         if (liker.getId() != postOwner.getId()) {
-            notificationStorageService.createNotificationStorage(postOwner, liker, NotificationType.Like);
+            notificationStorageService.createNotificationStorage(postOwner, liker, post, NotificationType.Like);
         }
 
         communityPostLikeRepository.save(communityPostLike);

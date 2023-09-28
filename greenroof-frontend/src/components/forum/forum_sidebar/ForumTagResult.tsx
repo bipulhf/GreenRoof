@@ -1,22 +1,21 @@
 import InfiniteScroll from "react-infinite-scroll-component";
-import { useSearch } from "../../../hooks/useContent";
+import { useGetQuestionByTag } from "../../../hooks/useContent";
 import React from "react";
 import ForumFeedQuestion from "../forum_feed/ForumFeedQuestion";
 import ForumQuestionerInfo from "../forum_feed/ForumQuestionerInfo";
 import PostLoader from "../../PostLoader";
+import { useSearchParams } from "react-router-dom";
 
-interface Props {
-    search: string;
-}
+export default function ForumTagResult() {
+    const [searchParams] = useSearchParams();
 
-export default function ForumSearchResult({ search }: Props) {
     const {
         data: questions,
         error,
         isLoading,
         hasNextPage,
         fetchNextPage,
-    } = useSearch(search);
+    } = useGetQuestionByTag(searchParams.get("tag") || "");
 
     const fetchedQuestionCount =
         questions?.pages.reduce(
@@ -29,7 +28,7 @@ export default function ForumSearchResult({ search }: Props) {
             {error && <p>Network Error...</p>}
             {console.log(questions)}
             <h2 className="font-bold text-[14px] sm:text-[16px] md:text-[22px] dark:text-darksecondary">
-                Showing Results for '{search}'
+                Showing Results for '{searchParams.get("tag")}'
             </h2>
             <InfiniteScroll
                 dataLength={fetchedQuestionCount}

@@ -11,7 +11,7 @@ public interface NotificationStorageRepository extends JpaRepository<Notificatio
 
     Optional<Notification> findById(Long id);
 
-    List<Notification> findByUserToId(Long id);
+    List<Notification> findByUserToIdOrderByCreatedAtDesc(Long id);
 
     List<Notification> findByUserToIdAndDeliveredFalse(Long id);
 

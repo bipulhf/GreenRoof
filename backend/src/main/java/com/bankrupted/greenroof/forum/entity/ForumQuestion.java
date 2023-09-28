@@ -1,7 +1,6 @@
 package com.bankrupted.greenroof.forum.entity;
 
 import com.bankrupted.greenroof.user.entity.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -33,12 +32,11 @@ public class ForumQuestion {
     @JoinColumn(name = "user_id", nullable = false)
     private User questioner;
 
-    @JsonIgnore
     @ManyToMany
     @JoinTable(
-            name = "question_category",
+            name = "question_tag",
             joinColumns = @JoinColumn(name = "question_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id")
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
-    private Set<ForumQuestionCategory> questionCategory;
+    private Set<ForumQuestionTag> questionTag;
 }
