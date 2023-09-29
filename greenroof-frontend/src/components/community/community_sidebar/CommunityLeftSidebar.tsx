@@ -30,42 +30,42 @@ interface RootState {
 
 export default function CommunityLeftSidebar() {
     const { auth } = useAuth();
-    const username = auth.username;
-    const jwtToken = auth.accessToken;
+    // const username = auth.username;
+    // const jwtToken = auth.accessToken;
 
-    const allDeliveredNotifs = useSelector(
-        (state: RootState) => state.deliveredNotifs.notifs
-    );
+    // const allDeliveredNotifs = useSelector(
+    //     (state: RootState) => state.deliveredNotifs.notifs
+    // );
 
-    const notifToastList = useSelector(
-        (state: RootState) => state.deliveredNotifs.notifToastList
-    );
+    // const notifToastList = useSelector(
+    //     (state: RootState) => state.deliveredNotifs.notifToastList
+    // );
 
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
 
-    useEffect(() => {
-        if (username.length === 0 || jwtToken.length === 0) return;
-        const URL = "http://localhost:8080/api/v1/push-notifications";
+    // useEffect(() => {
+    //     if (username.length === 0 || jwtToken.length === 0) return;
+    //     const URL = "http://localhost:8080/api/v1/push-notifications";
 
-        const fetchData = async () => {
-            await fetchEventSource(URL, {
-                method: "GET",
-                headers: {
-                    Accept: "*/*",
-                    Authorization: `Bearer ${jwtToken}`,
-                },
-                openWhenHidden: true,
-                onmessage(event) {
-                    const parsedData = JSON.parse(event.data);
-                    if (parsedData.length != 0) {
-                        console.log(parsedData);
-                        dispatch(add({ newNotifs: parsedData }));
-                    }
-                },
-            });
-        };
-        fetchData();
-    }, [auth]);
+    //     const fetchData = async () => {
+    //         await fetchEventSource(URL, {
+    //             method: "GET",
+    //             headers: {
+    //                 Accept: "*/*",
+    //                 Authorization: `Bearer ${jwtToken}`,
+    //             },
+    //             openWhenHidden: true,
+    //             onmessage(event) {
+    //                 const parsedData = JSON.parse(event.data);
+    //                 if (parsedData.length != 0) {
+    //                     console.log(parsedData);
+    //                     dispatch(add({ newNotifs: parsedData }));
+    //                 }
+    //             },
+    //         });
+    //     };
+    //     fetchData();
+    // }, [auth]);
 
     return (
         <div className="fixed h-screen max-md:hidden md:w-[30%] min-[1000px]:w-[20%]">
@@ -77,7 +77,7 @@ export default function CommunityLeftSidebar() {
             <nav className="h-[90%]">
                 <ul className="h-[80%] flex flex-col text-[17px] lg:text-[18px] justify-between font-medium p-[10%] ml-[5%] min-[1250px]:ml-[20%] dark:text-white">
                     <li>
-                        <Link to={"/community"}>
+                        <Link to={"/community"} className="hover:underline">
                             <FontAwesomeIcon icon={faHouse} fontSize={20} />
                             <span className="ml-5">Home</span>
                         </Link>
@@ -88,11 +88,11 @@ export default function CommunityLeftSidebar() {
                             className="hover:underline"
                         >
                             <FontAwesomeIcon icon={faBell} fontSize={20} />
-                            {allDeliveredNotifs.length > 0 && (
+                            {/* {allDeliveredNotifs.length > 0 && (
                                 <span className="text-white bg-red rounded-full text-[11px] p-1">
                                     {allDeliveredNotifs.length}
                                 </span>
-                            )}
+                            )} */}
                             <span className="ml-5">Notifications</span>{" "}
                         </Link>
                     </li>
@@ -109,7 +109,10 @@ export default function CommunityLeftSidebar() {
                         </Link>
                     </li>
                     <li>
-                        <Link to={"/community/user/" + auth.username}>
+                        <Link
+                            to={"/community/user/" + auth.username}
+                            className="hover:underline"
+                        >
                             <FontAwesomeIcon icon={faUser} fontSize={20} />
                             <span className="ml-5">Profile</span>
                         </Link>
@@ -124,7 +127,7 @@ export default function CommunityLeftSidebar() {
                         </Link>
                     </li>
                     <li>
-                        <Link to={"/AI"}>
+                        <Link to={"/AI"} className="hover:underline">
                             <FontAwesomeIcon
                                 icon={faRobot}
                                 fontSize={20}
@@ -137,7 +140,10 @@ export default function CommunityLeftSidebar() {
                     </li>
                     {localStorage.getItem("theme") === "dark" ? (
                         <li>
-                            <button onClick={themeMode}>
+                            <button
+                                onClick={themeMode}
+                                className="hover:underline"
+                            >
                                 <FontAwesomeIcon
                                     icon={faSun}
                                     fontSize={20}
@@ -148,7 +154,10 @@ export default function CommunityLeftSidebar() {
                         </li>
                     ) : (
                         <li>
-                            <button onClick={themeMode}>
+                            <button
+                                onClick={themeMode}
+                                className="hover:underline"
+                            >
                                 <FontAwesomeIcon
                                     icon={faMoon}
                                     fontSize={20}
@@ -159,7 +168,7 @@ export default function CommunityLeftSidebar() {
                         </li>
                     )}
                     <li>
-                        <Link to={"/logout"}>
+                        <Link to={"/logout"} className="hover:underline">
                             <FontAwesomeIcon
                                 icon={faRightFromBracket}
                                 fontSize={20}

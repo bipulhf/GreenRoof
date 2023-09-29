@@ -77,7 +77,7 @@ export default function ForumFeedQuestion({
                         <Link
                             to={"/forum/tag/" + tag.tag}
                             key={tag.id}
-                            className="bg-graybg py-1 px-2 mr-3"
+                            className="bg-graybg dark:bg-darkprimary py-1 px-2 mr-3 dark:text-white"
                         >
                             {tag.tag}
                         </Link>

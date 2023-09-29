@@ -35,23 +35,23 @@ export default function ForumSidebar({ menuOn }: Props) {
                     className="mr-5 text-[20px] flex dark:text-white font-medium w-[150px] mb-5"
                 >
                     {localStorage.getItem("theme") === "dark" ? (
-                        <>
+                        <span className="hover:underline">
                             <FontAwesomeIcon
                                 icon={faSun}
                                 rotation={180}
                                 className="self-center"
                             />
                             <span className="ml-2">Light Mode</span>
-                        </>
+                        </span>
                     ) : (
-                        <>
+                        <span className="hover:underline">
                             <FontAwesomeIcon
                                 icon={faMoon}
                                 rotation={180}
                                 className="self-center"
                             />
                             <span className="ml-2">Dark Mode</span>
-                        </>
+                        </span>
                     )}
                 </button>
                 <div className="flex w-[269px] mb-5 font-semibold">

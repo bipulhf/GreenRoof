@@ -185,7 +185,12 @@ export default function CommunityUserProfileCard({
                                     placeholder="Last Name"
                                     className="border mr-3 w-[20%]"
                                 />
-                                <button type="submit">Save</button>
+                                <button
+                                    type="submit"
+                                    className="hover:underline"
+                                >
+                                    Save
+                                </button>
                             </form>
                         ) : (
                             <h2 className="font-semibold text-[22px] max-[490px]:text-[18px]">

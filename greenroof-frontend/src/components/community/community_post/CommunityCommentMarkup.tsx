@@ -58,15 +58,15 @@ export default function CommunityCommentmMarkup({
                                 Edit
                             </h3>
                         )}
-                        {auth.username === commenter.username ||
-                            (loggedInUser?.role === "ADMIN" && (
-                                <h3
-                                    className="hover:cursor-pointer"
-                                    onClick={onDelete}
-                                >
-                                    Delete
-                                </h3>
-                            ))}
+                        {(auth.username === commenter.username ||
+                            loggedInUser?.role === "ADMIN") && (
+                            <h3
+                                className="hover:cursor-pointer"
+                                onClick={onDelete}
+                            >
+                                Delete
+                            </h3>
+                        )}
                     </div>
                 </div>
                 <div className="pb-2">
