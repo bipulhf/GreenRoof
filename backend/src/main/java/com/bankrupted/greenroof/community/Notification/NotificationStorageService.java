@@ -20,7 +20,8 @@ public class NotificationStorageService {
     private final NotificationStorageRepository notifRepository;
     private final ModelMapperUtility<Notification, NotificationDto> modelMapperUtility;
 
-    public Notification createNotificationStorage(User postUser, User reactUser, CommunityPost communityPost, NotificationType notificationType) {
+    public Notification createNotificationStorage(User postUser, User reactUser, CommunityPost communityPost,
+            NotificationType notificationType) {
 
         Notification notification = Notification.builder()
                 .delivered(false)
@@ -43,7 +44,8 @@ public class NotificationStorageService {
     }
 
     public List<NotificationDto> getNotificationsByUserID(Long userID) {
-        return modelMapperUtility.modelMap(notifRepository.findByUserToIdOrderByCreatedAtDesc(userID), NotificationDto.class);
+        return modelMapperUtility.modelMap(notifRepository.findByUserToIdOrderByCreatedAtDesc(userID),
+                NotificationDto.class);
     }
 
     public Notification changeNotifStatusToRead(Long notifID) {
