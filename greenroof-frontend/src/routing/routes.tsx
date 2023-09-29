@@ -26,97 +26,102 @@ import CommunityFollowingFeed from "../components/community/community_feed/Commu
 import ForgotPassword from "../components/home/ForgotPassword";
 import ResetPassword from "../components/home/ResetPassword";
 import ForumTagResult from "../components/forum/forum_sidebar/ForumTagResult";
+import Messages from "../pages/Community/Messages";
 
 const router = createBrowserRouter([
-    {
-        path: "/",
-        element: <MainLayout />,
-        children: [
-            { index: true, element: <Home /> },
-            { path: "login", element: <Login /> },
-            { path: "register", element: <Registration /> },
-            { path: "reset-password", element: <ResetPassword /> },
-            { path: "forgot-password", element: <ForgotPassword /> },
-            {
-                path: "logout",
-                element: (
-                    <RequireAuth>
-                        <Logout />
-                    </RequireAuth>
-                ),
-            },
-        ],
-    },
-    {
-        path: "forum",
-        element: <ForumLayout />,
-        children: [
-            { index: true, element: <ForumMainPage /> },
-            { path: "post/:postId", element: <ForumSinglePostPage /> },
-            {
-                path: "post/create",
-                element: (
-                    <RequireAuth>
-                        <ForumCreatePost />
-                    </RequireAuth>
-                ),
-            },
-            {
-                path: "post/edit/:postId",
-                element: (
-                    <RequireAuth>
-                        <ForumEditPost />
-                    </RequireAuth>
-                ),
-            },
-            {
-                path: "answer/edit/:postId/:answerId",
-                element: (
-                    <RequireAuth>
-                        <ForumEditAnswer />
-                    </RequireAuth>
-                ),
-            },
-            { path: "user/:username", element: <ForumUserProfilePage /> },
-            { path: "tag/:tag", element: <ForumTagResult /> },
-        ],
-    },
-    {
-        path: "community",
+  {
+    path: "/",
+    element: <MainLayout />,
+    children: [
+      { index: true, element: <Home /> },
+      { path: "login", element: <Login /> },
+      { path: "register", element: <Registration /> },
+      { path: "reset-password", element: <ResetPassword /> },
+      { path: "forgot-password", element: <ForgotPassword /> },
+      {
+        path: "logout",
         element: (
-            <RequireAuth>
-                <CommunityLayout />
-            </RequireAuth>
+          <RequireAuth>
+            <Logout />
+          </RequireAuth>
         ),
-        children: [
-            { index: true, element: <CommunityMainPage /> },
-            { path: "following", element: <CommunityFollowingFeed /> },
-            { path: "post/:postId", element: <CommunitySinglePostPage /> },
-            { path: "post/edit/:postId", element: <CommunityEditPost /> },
-            {
-                path: "comment/edit/:postId/:commentId",
-                element: <CommunityEditComment />,
-            },
-            { path: "user/:username", element: <CommunityUserProfilePage /> },
-            {
-                path: "user/:username/followers",
-                element: <CommunityFollowersFollowings />,
-            },
-            {
-                path: "user/:username/followings",
-                element: <CommunityFollowersFollowings />,
-            },
-            { path: "search", element: <CommunitySearchPage /> },
-            {
-                path: "notifications",
-                element: <Notifications />,
-            },
-            {
-                path: "push-notifications",
-                element: <PushNotifications />,
-            },
-        ],
-    },
+      },
+    ],
+  },
+  {
+    path: "forum",
+    element: <ForumLayout />,
+    children: [
+      { index: true, element: <ForumMainPage /> },
+      { path: "post/:postId", element: <ForumSinglePostPage /> },
+      {
+        path: "post/create",
+        element: (
+          <RequireAuth>
+            <ForumCreatePost />
+          </RequireAuth>
+        ),
+      },
+      {
+        path: "post/edit/:postId",
+        element: (
+          <RequireAuth>
+            <ForumEditPost />
+          </RequireAuth>
+        ),
+      },
+      {
+        path: "answer/edit/:postId/:answerId",
+        element: (
+          <RequireAuth>
+            <ForumEditAnswer />
+          </RequireAuth>
+        ),
+      },
+      { path: "user/:username", element: <ForumUserProfilePage /> },
+      { path: "tag/:tag", element: <ForumTagResult /> },
+    ],
+  },
+  {
+    path: "community",
+    element: (
+      <RequireAuth>
+        <CommunityLayout />
+      </RequireAuth>
+    ),
+    children: [
+      { index: true, element: <CommunityMainPage /> },
+      { path: "following", element: <CommunityFollowingFeed /> },
+      { path: "post/:postId", element: <CommunitySinglePostPage /> },
+      { path: "post/edit/:postId", element: <CommunityEditPost /> },
+      {
+        path: "comment/edit/:postId/:commentId",
+        element: <CommunityEditComment />,
+      },
+      { path: "user/:username", element: <CommunityUserProfilePage /> },
+      {
+        path: "user/:username/followers",
+        element: <CommunityFollowersFollowings />,
+      },
+      {
+        path: "user/:username/followings",
+        element: <CommunityFollowersFollowings />,
+      },
+      { path: "search", element: <CommunitySearchPage /> },
+      {
+        path: "notifications",
+        element: <Notifications />,
+      },
+      {
+        path: "push-notifications",
+        element: <PushNotifications />,
+      },
+    ],
+  },
+  {
+    path: "/community/messages",
+    element: <Messages />,
+  },
 ]);
 
 export default router;
