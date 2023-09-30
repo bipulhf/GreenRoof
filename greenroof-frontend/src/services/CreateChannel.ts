@@ -7,7 +7,7 @@ const apiToken = "ebf287851ccc7acd28616cb625e2c288ce56e9ed";
    
   const data ={
 
-    name: user1 + " chats with " + user2,
+    name: user1 + "-" + user2,
     channel_url: user1+"-"+user2,
     is_distinct: true,
      user_ids: [user1, user2,],
