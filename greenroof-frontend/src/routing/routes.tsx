@@ -21,7 +21,6 @@ import Home from "../components/home/Home";
 import RequireAuth from "../components/RequireAuth";
 import Logout from "../components/home/Logout";
 import Notifications from "../components/community/Notifications";
-import PushNotifications from "../components/community/PushNotifications";
 import CommunityFollowingFeed from "../components/community/community_feed/CommunityFollowingFeed";
 import ForgotPassword from "../components/home/ForgotPassword";
 import ResetPassword from "../components/home/ResetPassword";
@@ -113,10 +112,6 @@ const router = createBrowserRouter([
         path: "notifications",
         element: <Notifications />,
       },
-      {
-        path: "push-notifications",
-        element: <PushNotifications />,
-      },
     ],
   },
   {
@@ -124,7 +119,7 @@ const router = createBrowserRouter([
     element: <Messages />,
   },
   {
-    path: "message/:userId",
+    path: "community/message/:channelName",
     element: <MessageUser />,
   },
 ]);

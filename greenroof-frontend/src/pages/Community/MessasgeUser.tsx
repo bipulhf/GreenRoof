@@ -5,9 +5,11 @@ import SendbirdProvider from "@sendbird/uikit-react/SendbirdProvider";
 import ChannelList from "@sendbird/uikit-react/ChannelList";
 import Channel from "@sendbird/uikit-react/Channel";
 import useAuth from "../../hooks/useAuth";
+import { useParams } from "react-router-dom";
 function MessageUser() {
-  const [currentChannelUrl, setCurrentChannelUrl] =
-    React.useState("shifat71-Nasiat");
+  const { channelName } = useParams<string>();
+
+  const [currentChannelUrl, setCurrentChannelUrl] = React.useState(channelName);
   const { auth } = useAuth();
 
   const APP_ID = "83DED529-E0E7-4BBB-AEB0-E78D67B2E2D0";
