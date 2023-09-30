@@ -1,11 +1,11 @@
 package com.bankrupted.greenroof.community.entity;
 
 import com.bankrupted.greenroof.user.entity.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -16,7 +16,10 @@ public class CommunityPost {
     private Long id;
     @Column(columnDefinition = "TEXT")
     private String  postText;
-    private String postAttatchments;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Attatchments> postAttatchments;
+
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;

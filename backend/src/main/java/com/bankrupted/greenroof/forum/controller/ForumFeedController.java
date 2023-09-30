@@ -19,7 +19,7 @@ public class ForumFeedController {
     }
 
     @GetMapping("recent")
-    public ResponseEntity<?> getAllRecentForumQuestions(@RequestParam(defaultValue = "0", required = false) Integer pageNo) {
+    public ResponseEntity<?> getAllRecentForumQuestions(@RequestParam Integer pageNo) {
         return new ResponseEntity<>(forumFeedService.getAllRecentForumQuestions(pageNo), HttpStatus.OK);
     }
 
@@ -31,5 +31,25 @@ public class ForumFeedController {
     @GetMapping("user")
     public ResponseEntity<?> getUserForumQuestion(@RequestParam String username) {
         return new ResponseEntity<>(forumFeedService.getUserForumQuestion(username), HttpStatus.OK);
+    }
+
+    @GetMapping("top-user")
+    public ResponseEntity<?> getTopUser() {
+        return new ResponseEntity<>(forumFeedService.getTopUser(), HttpStatus.OK);
+    }
+
+    @GetMapping("answer-number")
+    public ResponseEntity<?> getNumberOfAnswers(@RequestParam Long questionId) {
+        return new ResponseEntity<>(forumFeedService.getNumberOfAnswers(questionId), HttpStatus.OK);
+    }
+
+    @GetMapping("questions")
+    public ResponseEntity<?> getQuestionsByTag(@RequestParam Integer pageNo, @RequestParam String tag) {
+        return new ResponseEntity<>(forumFeedService.getQuestionByTag(pageNo, tag), HttpStatus.OK);
+    }
+
+    @GetMapping("tags")
+    public ResponseEntity<?> getQuestionsByTag() {
+        return new ResponseEntity<>(forumFeedService.getTags(), HttpStatus.OK);
     }
 }

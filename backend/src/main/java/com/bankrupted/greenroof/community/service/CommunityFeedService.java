@@ -1,5 +1,6 @@
 package com.bankrupted.greenroof.community.service;
 
+import com.bankrupted.greenroof.community.dto.UserFollowingDto;
 import com.bankrupted.greenroof.forum.dto.FeedResponseDto;
 import com.bankrupted.greenroof.community.dto.CommunityPostDto;
 import com.bankrupted.greenroof.user.entity.User;
@@ -11,10 +12,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -24,12 +24,16 @@ public class CommunityFeedService {
 
     private final CommunityPostRepository communityPostRepository;
     private final UserRepository userRepository;
+    private final CommunityFollowService communityFollowService;
     private final ModelMapperUtility<CommunityPost, CommunityPostDto> modelMapper;
-    private int pageSize = 5;
+    private int pageSize = 7;
 
-    public FeedResponseDto<CommunityPostDto> getAllCommunityPosts(Integer pageNo) {
+    public FeedResponseDto<CommunityPostDto> getFollowingCommunityPosts(Integer pageNo, String username) {
+        List<UserFollowingDto> userFollowingDtos = communityFollowService.getFollowingsList(username);
+        List<Long> userId = new ArrayList<>();
+        userFollowingDtos.forEach(userFollowingDto -> userId.add(userFollowingDto.getFollowing().getId()));
         Pageable pageable = PageRequest.of(pageNo, pageSize);
-        Page<CommunityPost> communityPostPage = communityPostRepository.findAll(pageable);
+        Page<CommunityPost> communityPostPage = communityPostRepository.findByUserIdOrderByCreatedAtDesc(userId, pageable);
         return getResponseDto(communityPostPage);
     }
 
@@ -45,17 +49,17 @@ public class CommunityFeedService {
         return (CommunityPostDto) modelMapper.modelMap(post, CommunityPostDto.class);
     }
 
-    public List<CommunityPostDto> getUserCommunityPost(String username) {
+    public FeedResponseDto<CommunityPostDto> getUserCommunityPost(String username, Integer pageNo) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new NoSuchElementException("No user found with this username " + username + "."));
-        List<CommunityPost> communityPosts = communityPostRepository.findByUserId(user.getId());
-        return modelMapper.modelMap(communityPosts, CommunityPostDto.class);
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Page<CommunityPost> communityPosts = communityPostRepository.findByUserIdOrderByCreatedAtDesc(user.getId(), pageable);
+        return getResponseDto(communityPosts);
     }
 
     private FeedResponseDto<CommunityPostDto> getResponseDto(Page<CommunityPost> communityPostPage) {
         List<CommunityPost> communityPostList = communityPostPage.getContent();
         List<CommunityPostDto> communityPostDtos = modelMapper.modelMap(communityPostList, CommunityPostDto.class);
-
         FeedResponseDto<CommunityPostDto> feedResponseDto = FeedResponseDto.<CommunityPostDto>builder()
                 .contentList(communityPostDtos)
                 .pageNo(communityPostPage.getNumber())

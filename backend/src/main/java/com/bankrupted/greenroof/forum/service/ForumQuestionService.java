@@ -5,6 +5,7 @@ import com.bankrupted.greenroof.user.entity.User;
 import com.bankrupted.greenroof.forum.entity.ForumQuestion;
 import com.bankrupted.greenroof.user.repository.UserRepository;
 import com.bankrupted.greenroof.forum.repository.ForumQuestionRepository;
+import com.bankrupted.greenroof.utils.IsAdmin;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ public class ForumQuestionService {
     private final ForumQuestionRepository forumQuestionRepository;
     private final UserRepository userRepository;
     private final ForumAnswerService forumAnswerService;
+    private final IsAdmin isAdmin;
 
     public ResponseEntity<?> craeteNewForumQuestion(String username, ForumQuestion forumQuestion) {
         User user = userRepository.findByUsername(username)
@@ -27,7 +29,7 @@ public class ForumQuestionService {
         forumQuestion.setQuestioner(user);
         forumQuestion.setCreatedAt(new Date());
         forumQuestionRepository.save(forumQuestion);
-        return new ResponseEntity<>("Question created successfully.", HttpStatus.CREATED);
+        return new ResponseEntity<>("Question Added", HttpStatus.CREATED);
     }
 
     public ResponseEntity<?> updateForumQuestion(String username, Long questionId, ForumQuestion forumQuestion) {
@@ -44,9 +46,9 @@ public class ForumQuestionService {
 
     public ResponseEntity<?> deleteForumQuestion(String username, Long questionId) {
         boolean FORBIDDEN = getQuestionEditPermission(questionId, username);
-        if (FORBIDDEN)
+        if (FORBIDDEN && !isAdmin.check())
             throw new GenericException("You are not allowed to delete this question.");
-        forumAnswerService.deleteAnswerOfQuestion(questionId);
+        forumAnswerService.deleteAnswerOfQuestion(questionId, username);
         forumQuestionRepository.deleteById(questionId);
         return new ResponseEntity<>("Question deleted successfully.", HttpStatus.OK);
     }
@@ -58,4 +60,5 @@ public class ForumQuestionService {
             return true;
         return false;
     }
+
 }

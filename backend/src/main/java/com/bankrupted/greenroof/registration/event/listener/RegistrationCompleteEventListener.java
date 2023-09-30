@@ -32,7 +32,7 @@ public class RegistrationCompleteEventListener implements ApplicationListener<Re
         // 3. Save the verification token for the user
         userService.saveUserVerificationToken(theUser, verificationToken);
         // 4 Build the verification url to be sent to the user
-        String url = event.getApplicationUrl() + "/api/v1/registration/verifyEmail?token=" + verificationToken;
+        String url = event.getApplicationUrl() + "/login?verifyEmail=" + verificationToken;
         // 5. Send the email.
         try {
             sendVerificationEmail(url);
@@ -59,10 +59,11 @@ public class RegistrationCompleteEventListener implements ApplicationListener<Re
         mailSender.send(message);
     }
 
-    public void sendPasswordResetVerificationEmail(String url) throws MessagingException, UnsupportedEncodingException {
+    public void sendPasswordResetVerificationEmail(User user, String url)
+            throws MessagingException, UnsupportedEncodingException {
         String subject = "GreenRoof: Password Reset Request Verification";
         String senderName = "GreenRoof";
-        String mailContent = "<p> Hi, " + theUser.getFirstName() + ", </p>" +
+        String mailContent = "<p> Hi, " + user.getFirstName() + "! </p>" +
                 "<p><b> A Password reset request was sent to us by you.</b>" + "" +
                 "Please, follow the link below to reset your password.</p>" +
                 "<a href=\"" + url + "\">Reset password</a>" +
@@ -70,7 +71,7 @@ public class RegistrationCompleteEventListener implements ApplicationListener<Re
         MimeMessage message = mailSender.createMimeMessage();
         var messageHelper = new MimeMessageHelper(message);
         messageHelper.setFrom("bankrupted.greenroof@gmail.com", senderName);
-        messageHelper.setTo(theUser.getEmail());
+        messageHelper.setTo(user.getEmail());
         messageHelper.setSubject(subject);
         messageHelper.setText(mailContent, true);
         mailSender.send(message);

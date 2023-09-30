@@ -49,11 +49,12 @@ public class User implements UserDetails {
   private String email;
   @Column(nullable = false)
   private String password;
-
   @Column(unique = true, nullable = false)
   private String username;
-
+  @Column(nullable = false)
   private String city;
+  @Column(columnDefinition = "integer default 0")
+  private Integer score;
   private boolean isBanned;
   private String profilePhoto;
   private LocalDate createdAt;
@@ -61,11 +62,6 @@ public class User implements UserDetails {
 
   @Enumerated(EnumType.STRING)
   private RoleType role;
-
-  @JsonIgnore
-  @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-  @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-  private Set<Roles> userRole;
 
   @OneToMany(mappedBy = "user")
   private List<Token> tokens;

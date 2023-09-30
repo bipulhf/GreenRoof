@@ -17,4 +17,9 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
   @Query(value = "SELECT * FROM users WHERE username LIKE :username%", nativeQuery = true)
   List<User> searchByUsername(String username);
+
+  @Query(value = "SELECT * FROM users WHERE id NOT IN (:userId) ORDER BY RANDOM() LIMIT 7", nativeQuery = true)
+  List<User> getRecommendation(List<Long> userId);
+
+  List<User> findTop5ByOrderByScoreDesc();
 }

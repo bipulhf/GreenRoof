@@ -33,13 +33,17 @@ public class RegistrationController {
     private final HttpServletRequest servletRequest;
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody RegistrationRequest registrationRequest, final HttpServletRequest request) {
+    public ResponseEntity<?> registerUser(@RequestBody RegistrationRequest registrationRequest,
+            final HttpServletRequest request) {
         registrationRequest.setRole(RoleType.USER);
+        registrationRequest.setProfilePhoto(
+                "https://res.cloudinary.com/du7dquv4j/image/upload/v1695749251/dnt0mj8ahslxiksglnxv.png");
         User user = userService.registerUser(registrationRequest);
 
         publisher.publishEvent(new RegistrationCompleteEvent(user,
                 applicationUrl(request)));
-        return new ResponseEntity<>("Registration Success!  Please, check your email for to complete your registration", HttpStatus.CREATED);
+        return new ResponseEntity<>("Registration Success!  Please, check your email for to complete your registration",
+                HttpStatus.CREATED);
     }
 
     @GetMapping("/verifyEmail")
@@ -47,16 +51,19 @@ public class RegistrationController {
 
         String url = applicationUrl(servletRequest) + "/api/v1/registration/resend-verification-token?token="
                 + token;
-
+        
         VerificationToken theToken = tokenRepository.findByToken(token);
         if (theToken.getUser().isEnabled()) {
             return new ResponseEntity<>("This account has already been verified, please, login.", HttpStatus.CONFLICT);
         }
         String verificationResult = userService.validateToken(token);
         if (verificationResult.equalsIgnoreCase("valid")) {
-            return new ResponseEntity<>("Email verified successfully. Now you can login to your account", HttpStatus.CREATED);
+            return new ResponseEntity<>("Email verified successfully. Now you can login to your account",
+                    HttpStatus.CREATED);
         }
-        return new ResponseEntity<>("Invalid verification link, <a href=\"" + url + "\"> Get a new verification link. </a>", HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(
+                "Invalid verification link, <a href=\"" + url + "\"> Get a new verification link. </a>",
+                HttpStatus.FORBIDDEN);
     }
 
     @GetMapping("/resend-verification-token")
@@ -71,7 +78,7 @@ public class RegistrationController {
 
     private void resendRegistrationVerificationTokenEmail(User theUser, String applicationUrl,
             VerificationToken verificationToken) throws MessagingException, UnsupportedEncodingException {
-        String url = applicationUrl + "/api/v1/registration/verifyEmail?token=" + verificationToken.getToken();
+        String url = applicationUrl + "/login?verifyEmail=" + verificationToken.getToken();
         eventListener.sendVerificationEmail(url);
     }
 
@@ -92,8 +99,8 @@ public class RegistrationController {
 
     private String passwordResetEmailLink(User user, String applicationUrl,
             String passwordToken) throws MessagingException, UnsupportedEncodingException {
-        String url = applicationUrl + "/api/v1/registration/reset-password?token=" + passwordToken;
-        eventListener.sendPasswordResetVerificationEmail(url);
+        String url = applicationUrl + "/reset-password?token=" + passwordToken;
+        eventListener.sendPasswordResetVerificationEmail(user, url);
 
         return url;
     }
@@ -124,7 +131,6 @@ public class RegistrationController {
     }
 
     public String applicationUrl(HttpServletRequest request) {
-        return "http://" + request.getServerName() + ":"
-                + request.getServerPort() + request.getContextPath();
+        return "http://localhost:5173" + request.getContextPath();
     }
 }

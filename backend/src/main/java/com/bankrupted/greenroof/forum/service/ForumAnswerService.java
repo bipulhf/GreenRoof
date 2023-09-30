@@ -4,10 +4,12 @@ import com.bankrupted.greenroof.exception.GenericException;
 import com.bankrupted.greenroof.forum.dto.ForumAnswerDto;
 import com.bankrupted.greenroof.forum.entity.ForumAnswer;
 import com.bankrupted.greenroof.forum.entity.ForumQuestion;
+import com.bankrupted.greenroof.user.entity.User;
 import com.bankrupted.greenroof.user.repository.UserRepository;
 import com.bankrupted.greenroof.forum.repository.ForumAnswerRepository;
 import com.bankrupted.greenroof.forum.repository.ForumQuestionRepository;
 import com.bankrupted.greenroof.forum.repository.ForumVoteRepository;
+import com.bankrupted.greenroof.utils.IsAdmin;
 import com.bankrupted.greenroof.utils.ModelMapperUtility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,17 +30,25 @@ public class ForumAnswerService {
     private final UserRepository userRepository;
     private final ForumVoteRepository forumVoteRepository;
     private final ModelMapperUtility<ForumAnswer, ForumAnswerDto> modelMapper;
+    private final IsAdmin isAdmin;
 
+    public ForumAnswerDto getSingleForumAnswer(Long answerId) {
+        ForumAnswer answer = forumAnswerRepository.findById(answerId)
+                .orElseThrow(() -> new NoSuchElementException("Answer with id " + answerId + " does not exists."));
+        return (ForumAnswerDto) modelMapper.modelMap(answer, ForumAnswerDto.class);
+    }
 
     public ResponseEntity<?> addAnswerToQuestion(String username, Long questionId, ForumAnswer forumAnswer) {
         ForumQuestion forumQuestion = forumQuestionRepository.findById(questionId)
                 .orElseThrow(() -> new NoSuchElementException("Question with id " + questionId + " does not exists."));
 
-        if(Objects.equals(forumQuestion.getQuestioner().getUsername(), username))
-            throw new GenericException("You can't answer on your own question");
+        User user = userRepository.findByUsername(username).get();
+        user.setId(user.getId());
+        user.setScore(user.getScore() + 1);
+        userRepository.save(user);
 
         forumAnswer.setScore(0);
-        forumAnswer.setAnswerer(userRepository.findByUsername(username).get());
+        forumAnswer.setAnswerer(user);
         forumAnswer.setQuestion(forumQuestion);
         forumAnswer.setCreatedAt(new Date());
         forumAnswerRepository.save(forumAnswer);
@@ -59,14 +69,19 @@ public class ForumAnswerService {
         return new ResponseEntity<>("Updated Answer", HttpStatus.CREATED);
     }
 
-    public void deleteAnswerOfQuestion(Long questionId) {
+    public void deleteAnswerOfQuestion(Long questionId, String username) {
         Boolean doesExist = forumAnswerRepository.existsByQuestionId(questionId);
         if(!doesExist)
             return;
 
-        Long answerId = forumAnswerRepository.findByQuestionIdOrderByScoreDescCreatedAtDesc(questionId).get(0).getId();
-        Integer voteListSize = forumVoteRepository.findByAnswerId(answerId).size();
-        if(voteListSize > 0) forumVoteRepository.deleteByAnswerId(answerId);
+        User user = userRepository.findByUsername(username).get();
+        user.setId(user.getId());
+        user.setScore(user.getScore() - 1);
+        userRepository.save(user);
+
+        List<ForumAnswer> answers = forumAnswerRepository.findByQuestionIdOrderByScoreDescCreatedAtDesc(questionId);
+        for(ForumAnswer answer : answers)
+            if(!forumVoteRepository.findByAnswerId(answer.getId()).isEmpty()) forumVoteRepository.deleteByAnswerId(answer.getId());
         forumAnswerRepository.deleteByQuestionId(questionId);
     }
 
@@ -74,8 +89,13 @@ public class ForumAnswerService {
         ForumAnswer forumAnswer = forumAnswerRepository.findById(answerId)
                         .orElseThrow(() -> new NoSuchElementException("Answer with id " + answerId + " does not exists."));
 
-        if(!Objects.equals(forumAnswer.getAnswerer().getUsername(), username))
+        if(!Objects.equals(forumAnswer.getAnswerer().getUsername(), username) && !isAdmin.check())
             throw new GenericException("You are not allowed to delete this answer.");
+
+        User user = userRepository.findByUsername(username).get();
+        user.setId(user.getId());
+        user.setScore(user.getScore() - 1);
+        userRepository.save(user);
 
         if(!forumVoteRepository.findByAnswerId(answerId).isEmpty()) forumVoteRepository.deleteByAnswerId(answerId);
         forumAnswerRepository.deleteById(answerId);

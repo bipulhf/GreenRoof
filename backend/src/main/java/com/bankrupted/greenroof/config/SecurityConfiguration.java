@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -25,7 +26,7 @@ public class SecurityConfiguration {
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    http.csrf(csrf -> csrf.disable())
+    http.csrf(csrf -> csrf.disable()).cors(Customizer.withDefaults())
         .authorizeHttpRequests(auth -> {
           auth
                   .requestMatchers("api/v1/registration/**").permitAll()
@@ -34,6 +35,9 @@ public class SecurityConfiguration {
                   .requestMatchers("api/v1/forum/feed/**").permitAll()
                   .requestMatchers("api/v1/forum/answer").permitAll()
                   .requestMatchers("api/v1/forum/search/**").permitAll()
+                  .requestMatchers("api/v1/user").permitAll()
+                  .requestMatchers("swagger-ui/**").permitAll()
+                  .requestMatchers("v3/api-docs/**").permitAll()
                   .anyRequest().authenticated();
         })
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

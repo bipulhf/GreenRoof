@@ -1,12 +1,12 @@
 package com.bankrupted.greenroof.forum.entity;
 
 import com.bankrupted.greenroof.user.entity.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -26,16 +26,18 @@ public class ForumQuestion {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<ForumAttatchment> forumAttatchments;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
     private User questioner;
 
-    @JsonIgnore
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
-            name = "question_category",
+            name = "forum_question_forum_tag",
             joinColumns = @JoinColumn(name = "question_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id")
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
-    private Set<ForumQuestionCategory> questionCategory;
+    private List<ForumQuestionTag> questionTag;
 }

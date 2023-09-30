@@ -20,7 +20,7 @@ public class ForumSearchController {
     }
 
     @GetMapping("post")
-    public ResponseEntity<?> searchCommunityPost(@RequestParam String text) {
-        return new ResponseEntity<>(forumSearchService.searchCommunityPost(text), HttpStatus.OK);
+    public ResponseEntity<?> searchCommunityPost(@RequestParam String text, @RequestParam Integer pageNo) {
+        return new ResponseEntity<>(forumSearchService.searchCommunityPost(text, pageNo), HttpStatus.OK);
     }
 }

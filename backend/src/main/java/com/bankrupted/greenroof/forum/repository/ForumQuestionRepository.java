@@ -1,6 +1,7 @@
 package com.bankrupted.greenroof.forum.repository;
 
 import com.bankrupted.greenroof.forum.entity.ForumQuestion;
+import com.bankrupted.greenroof.forum.entity.ForumQuestionTag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -23,5 +24,7 @@ public interface ForumQuestionRepository extends JpaRepository<ForumQuestion, Lo
             "FROM forum_questions\n" +
             "WHERE forum_ts @@ to_tsquery('english', :text)\n" +
             "ORDER BY ts_rank(forum_ts, to_tsquery('english', :text)) DESC;", nativeQuery = true)
-    List<ForumQuestion> searchQuestion(String text);
+    Page<ForumQuestion> searchQuestion(String text, Pageable pageable);
+
+    Page<ForumQuestion> findByQuestionTagOrderByCreatedAtDesc(Pageable pageable, ForumQuestionTag tag);
 }

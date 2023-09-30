@@ -1,3 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    html {
+        font-family: Montserrat;
+        font-size: 12px;
+        color: #222A22;
+    }
+    ::selection {
+        color: #FDFDFD;
+        background-color: #347E32;
+    }
+    .profile-img {
+        aspect-ratio: 1/1;
+    }
+    .profile-img img {
+        object-fit: cover;
+    }
+    .slider-wrapper {
+        position: relative;
+        margin: 0 auto;
+    }
+    .slider {
+        aspect-ratio: 16/9;
+    }
+    .slider img {
+        border-radius: 0.5rem;
+        position: absolute;
+        object-fit: cover; 
+        padding:0 0.5rem 0;
+        height: 100%;
+        left: 50%;
+        transform: translate(-50%);
+    }
+    .preview {
+        margin: 0 auto;
+    }
+    .tags {
+        column-count: 2;
+        column-gap: 50px;
+    }
+}

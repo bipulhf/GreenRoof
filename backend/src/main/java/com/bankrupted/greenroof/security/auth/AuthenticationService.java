@@ -1,6 +1,8 @@
 package com.bankrupted.greenroof.security.auth;
 
 import com.bankrupted.greenroof.config.JwtService;
+import com.bankrupted.greenroof.exception.GenericException;
+import com.bankrupted.greenroof.security.token.IsTokenValid;
 import com.bankrupted.greenroof.security.token.Token;
 import com.bankrupted.greenroof.security.token.repository.TokenRepository;
 import com.bankrupted.greenroof.security.token.TokenType;
@@ -16,11 +18,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
-    private final UserRepository repository;
+    private final UserRepository userRepository;
     private final TokenRepository tokenRepository;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
@@ -31,8 +36,12 @@ public class AuthenticationService {
           new UsernamePasswordAuthenticationToken(
               request.getUsername(), request.getPassword()));
 
-      var user = repository.findByUsername(request.getUsername())
+      var user = userRepository.findByUsername(request.getUsername())
           .orElseThrow();
+
+      if(user.isBanned())
+          throw new GenericException("You are banned from the site.");
+
       var jwtToken = jwtService.generateToken(user);
       var refreshToken = jwtService.generateRefreshToken(user);
       revokeAllUserTokens(user);
@@ -76,7 +85,7 @@ public class AuthenticationService {
         refreshToken = authHeader.substring(7);
         username = jwtService.extractUsername(refreshToken);
         if (username != null) {
-            var user = this.repository.findByUsername(username) // look here
+            var user = this.userRepository.findByUsername(username) // look here
                 .orElseThrow();
             if (jwtService.isTokenValid(refreshToken, user)) {
               var accessToken = jwtService.generateToken(user);
@@ -89,5 +98,19 @@ public class AuthenticationService {
               new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
             }
         }
+    }
+
+    public Map<String, Boolean> isTokenValid(IsTokenValid token) {
+        Map<String, Boolean> mp = new HashMap<>();
+        User user = userRepository.findByUsername(token.getUsername()).
+                orElseThrow(() -> new NoSuchElementException("User Not Found"));
+        var validUserTokens = tokenRepository.findAllValidTokenByUser(user.getId());
+        for(Token singleToken : validUserTokens)
+            if(singleToken.getToken().equals(token.getAccessToken())) {
+                mp.put("isTokenValid", true);
+                return mp;
+            }
+        mp.put("isTokenValid", false);
+        return mp;
     }
 }

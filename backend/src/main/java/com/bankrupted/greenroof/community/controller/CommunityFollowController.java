@@ -27,6 +27,12 @@ public class CommunityFollowController {
         return communityFollowService.unfollowUser(user1, user2);
     }
 
+    @GetMapping("isFollow/{user2}")
+    public ResponseEntity<?> isFollowerOfUser(@PathVariable String user2) {
+        String user1 = GetUsername.get();
+        return new ResponseEntity<>(communityFollowService.isFollowerOfUser(user1, user2), HttpStatus.OK);
+    }
+
     @GetMapping("followers")
     public ResponseEntity<?> getFollowersList(@RequestParam String username) {
         return new ResponseEntity<>(communityFollowService.getFollowersList(username), HttpStatus.OK);
@@ -35,5 +41,21 @@ public class CommunityFollowController {
     @GetMapping("followings")
     public ResponseEntity<?> getFollowingsList(@RequestParam String username) {
         return new ResponseEntity<>(communityFollowService.getFollowingsList(username), HttpStatus.OK);
+    }
+
+    @GetMapping("total/followers")
+    public ResponseEntity<?> getFollowersNumber(@RequestParam String username) {
+        return new ResponseEntity<>(communityFollowService.getTotalFollowersNumber(username), HttpStatus.OK);
+    }
+
+    @GetMapping("total/followings")
+    public ResponseEntity<?> getFollowingsNumber(@RequestParam String username) {
+        return new ResponseEntity<>(communityFollowService.getTotalFollowingsNumber(username), HttpStatus.OK);
+    }
+
+    @GetMapping("whotofollow")
+    public ResponseEntity<?> whoToFollow() {
+        String username = GetUsername.get();
+        return new ResponseEntity<>(communityFollowService.whoToFollow(username), HttpStatus.OK);
     }
 }

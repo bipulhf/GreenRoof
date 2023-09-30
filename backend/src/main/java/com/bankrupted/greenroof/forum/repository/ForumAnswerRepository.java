@@ -12,8 +12,11 @@ public interface ForumAnswerRepository extends JpaRepository<ForumAnswer, Long> 
     Boolean existsByQuestionId(Long questionId);
     List<ForumAnswer> findByQuestionIdOrderByScoreDescCreatedAtDesc(Long questionId);
 
-    @Query(value = "SELECT SUM(user_id) FROM forum_answers WHERE user_id=:userId", nativeQuery = true)
+    @Query(value = "SELECT COUNT(user_id) FROM forum_answers WHERE user_id=:userId", nativeQuery = true)
     Long getTotalNumberOfAnswersOfUser(Long userId);
+
+    @Query(value = "SELECT COUNT(question_id) FROM forum_answers WHERE question_id=:questionId", nativeQuery = true)
+    Integer getTotalNumberOfAnswersOfQuestion(Long questionId);
 
     void deleteByQuestionId(Long questionId);
 }
