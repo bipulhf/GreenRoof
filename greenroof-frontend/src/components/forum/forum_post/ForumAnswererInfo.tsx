@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useDeleteAnswer } from "../../../hooks/useAnswer";
 import useAuth from "../../../hooks/useAuth";
 import { useGetUser } from "../../../hooks/useProfile";
+import Name from "../../Name";
 
 interface Props {
     postId: number;
@@ -10,6 +11,7 @@ interface Props {
     lastName: string;
     profilePhoto: string;
     username: string;
+    score: number;
 }
 
 export default function ForumAnswererInfo({
@@ -19,6 +21,7 @@ export default function ForumAnswererInfo({
     lastName,
     username,
     profilePhoto,
+    score,
 }: Props) {
     const { auth } = useAuth();
     const { data: loggedInUser } = useGetUser(auth.username);
@@ -38,7 +41,11 @@ export default function ForumAnswererInfo({
                     />
                     <Link to={"/forum/user/" + username} className="username">
                         <h3 className="font-semibold text-[11px] sm:text-[13px] md:text-[16px] dark:text-white">
-                            {firstName + " " + lastName}
+                            <Name
+                                firstName={firstName}
+                                lastName={lastName}
+                                score={score}
+                            />
                         </h3>
                         <h4 className="font-medium text-[9px] sm:text-[11px] md:text-[13px] text-gray dark:text-darksecondary">
                             @{username}

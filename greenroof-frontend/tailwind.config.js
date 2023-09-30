@@ -15,6 +15,7 @@ export default {
         md: '724px'
       },
       colors: {
+        gold: "#FFD700",
         darkbg: '#0F0F0F',
         darkprimary:'#363636',
         darktext: '#ffffff',

@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-
 import home from "/assets/community/home.svg";
 import community from "/assets/community/community.svg";
 import forum from "/assets/community/forum.svg";
@@ -39,9 +38,9 @@ export default function Header() {
                     </Link>
                 </ul>
                 <ul className="border-2 border-greenttl rounded-full pr-3 py-1">
-                    <Link to={"/AI"}>
+                    <a href="https://greenroof-ai-assistant.vercel.app">
                         <AIAssistantButton />
-                    </Link>
+                    </a>
                 </ul>
             </nav>
         </header>

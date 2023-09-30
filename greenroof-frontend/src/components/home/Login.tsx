@@ -20,7 +20,7 @@ export default function Login() {
     const location = useLocation();
     const { auth } = useAuth();
     const mutation = useCreateLogin();
-    const from = location.state?.from?.pathname || "/community";
+    const from = location.state?.from;
 
     const {
         register,
@@ -33,10 +33,20 @@ export default function Login() {
     };
 
     useEffect(() => {
-        if (isSubmitSuccessful && mutation.data) {
-            navigate(from, { replace: true });
+        if (isSubmitSuccessful && mutation.data && from) {
+            navigate(from);
         }
-    }, [isSubmitSuccessful, mutation.data]);
+    }, [isSubmitSuccessful, mutation.data, from]);
+
+    useEffect(() => {
+        if (
+            from &&
+            from.pathname !== "/logout" &&
+            from.pathname !== "/community"
+        ) {
+            navigate(from);
+        }
+    }, [from]);
 
     return (
         <>
@@ -133,7 +143,7 @@ export default function Login() {
                                     </button>
                                     <Link
                                         to={"/forgot-password"}
-                                        className="bg-brown px-5 py-3 rounded-full text-white font-medium text-xl min-[414px]:text-2xl hover:underline animate-fade-right animate-once animate-delay-[600ms] animate-ease-in-out"
+                                        className="bg-brown px-5 py-3 rounded-full text-white font-medium text-center text-xl min-[414px]:text-2xl hover:underline animate-fade-right animate-once animate-delay-[600ms] animate-ease-in-out"
                                     >
                                         <FontAwesomeIcon
                                             icon={faLock}

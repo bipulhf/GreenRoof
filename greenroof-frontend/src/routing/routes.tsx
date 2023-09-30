@@ -4,6 +4,7 @@ import MainLayout from "../layouts/MainLayout";
 import Home from "../components/home/Home";
 import RequireAuth from "../components/RequireAuth";
 import PopupLoading from "../components/PopupLoading";
+const Messages = React.lazy(() => import("../pages/Community/Messages"));
 const ForumLayout = React.lazy(() => import("../layouts/ForumLayout"));
 const ForumMainPage = React.lazy(() => import("../pages/Forum/ForumMainPage"));
 const ForumSinglePostPage = React.lazy(
@@ -49,9 +50,6 @@ const CommunityEditComment = React.lazy(
 const Logout = React.lazy(() => import("../components/home/Logout"));
 const Notifications = React.lazy(
     () => import("../components/community/Notifications")
-);
-const PushNotifications = React.lazy(
-    () => import("../components/community/PushNotifications")
 );
 const CommunityFollowingFeed = React.lazy(
     () =>
@@ -336,7 +334,7 @@ const router = createBrowserRouter([
                 element: (
                     <Suspense
                         fallback={
-                            <div className="popup">
+                            <div className="w-full h-screen flex content-center justify-center">
                                 <PopupLoading />
                             </div>
                         }
@@ -350,7 +348,7 @@ const router = createBrowserRouter([
                 element: (
                     <Suspense
                         fallback={
-                            <div className="popup">
+                            <div className="w-full h-screen flex content-center justify-center">
                                 <PopupLoading />
                             </div>
                         }
@@ -364,7 +362,7 @@ const router = createBrowserRouter([
                 element: (
                     <Suspense
                         fallback={
-                            <div className="popup">
+                            <div className="w-full h-screen flex content-center justify-center">
                                 <PopupLoading />
                             </div>
                         }
@@ -378,7 +376,7 @@ const router = createBrowserRouter([
                 element: (
                     <Suspense
                         fallback={
-                            <div className="popup">
+                            <div className="w-full h-screen flex content-center justify-center">
                                 <PopupLoading />
                             </div>
                         }
@@ -392,7 +390,7 @@ const router = createBrowserRouter([
                 element: (
                     <Suspense
                         fallback={
-                            <div className="popup">
+                            <div className="w-full h-screen flex content-center justify-center">
                                 <PopupLoading />
                             </div>
                         }
@@ -406,7 +404,7 @@ const router = createBrowserRouter([
                 element: (
                     <Suspense
                         fallback={
-                            <div className="popup">
+                            <div className="w-full h-screen flex content-center justify-center">
                                 <PopupLoading />
                             </div>
                         }
@@ -420,7 +418,7 @@ const router = createBrowserRouter([
                 element: (
                     <Suspense
                         fallback={
-                            <div className="popup">
+                            <div className="w-full h-screen flex content-center justify-center">
                                 <PopupLoading />
                             </div>
                         }
@@ -429,28 +427,28 @@ const router = createBrowserRouter([
                     </Suspense>
                 ),
             },
-            {
-                path: "push-notifications",
-                element: (
-                    <Suspense
-                        fallback={
-                            <div className="popup">
-                                <PopupLoading />
-                            </div>
-                        }
-                    >
-                        <PushNotifications />
-                    </Suspense>
-                ),
-            },
         ],
+    },
+    {
+        path: "community/messages",
+        element: (
+            <Suspense
+                fallback={
+                    <div className="w-full h-screen flex content-center justify-center">
+                        <PopupLoading />
+                    </div>
+                }
+            >
+                <Messages />
+            </Suspense>
+        ),
     },
     {
         path: "*",
         element: (
             <Suspense
                 fallback={
-                    <div className="popup">
+                    <div className="w-full h-screen flex content-center justify-center">
                         <PopupLoading />
                     </div>
                 }

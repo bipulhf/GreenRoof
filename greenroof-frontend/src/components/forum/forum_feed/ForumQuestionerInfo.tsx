@@ -3,6 +3,7 @@ import useNumberOfAnswer from "../../../hooks/useNumberOfAnswer";
 import { useDeleteQuestion } from "../../../hooks/useQuestion";
 import useAuth from "../../../hooks/useAuth";
 import { useGetUser } from "../../../hooks/useProfile";
+import Name from "../../Name";
 
 interface Props {
     firstName: string;
@@ -10,6 +11,7 @@ interface Props {
     username: string;
     profilePhoto: string;
     id: number;
+    score: number;
 }
 
 export default function ForumQuestionerInfo({
@@ -17,6 +19,7 @@ export default function ForumQuestionerInfo({
     lastName,
     profilePhoto,
     username,
+    score,
     id,
 }: Props) {
     const { auth } = useAuth();
@@ -43,7 +46,11 @@ export default function ForumQuestionerInfo({
                             className="username"
                         >
                             <h3 className="font-semibold text-[11px] sm:text-[13px] md:text-[16px] dark:text-white">
-                                {firstName + " " + lastName}
+                                <Name
+                                    firstName={firstName}
+                                    lastName={lastName}
+                                    score={score}
+                                />
                             </h3>
                             <h4 className="font-medium text-[9px] sm:text-[11px] md:text-[13px] text-gray dark:text-darksecondary">
                                 @{username}
@@ -52,7 +59,11 @@ export default function ForumQuestionerInfo({
                     ) : (
                         <div>
                             <h3 className="font-semibold text-[11px] sm:text-[13px] md:text-[16px] dark:text-white">
-                                {firstName + " " + lastName}
+                                <Name
+                                    firstName={firstName}
+                                    lastName={lastName}
+                                    score={score}
+                                />
                             </h3>
                             <h4 className="font-medium text-[9px] sm:text-[11px] md:text-[13px] text-gray dark:text-darksecondary">
                                 @{username}

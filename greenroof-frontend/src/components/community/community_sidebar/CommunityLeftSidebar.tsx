@@ -3,6 +3,7 @@ import {
     faBell,
     faHouse,
     faMagnifyingGlass,
+    faMessage,
     faMoon,
     faRightFromBracket,
     faRobot,
@@ -13,59 +14,9 @@ import { Link } from "react-router-dom";
 import forum_logo from "/assets/forum/forum_logo.svg";
 import { themeMode } from "../../../services/themeMode";
 import { faCircleQuestion } from "@fortawesome/free-regular-svg-icons";
-import { useEffect } from "react";
-import { fetchEventSource } from "@microsoft/fetch-event-source";
-import { useDispatch, useSelector } from "react-redux";
 import useAuth from "../../../hooks/useAuth";
-import { Notif } from "../../../services/types";
-import { add } from "../../../context/deliveredNotifs";
-
-interface NotifState {
-    notifs: Notif[];
-    notifToastList: Notif[];
-}
-interface RootState {
-    deliveredNotifs: NotifState;
-}
-
 export default function CommunityLeftSidebar() {
     const { auth } = useAuth();
-    const username = auth.username;
-    const jwtToken = auth.accessToken;
-
-    const allDeliveredNotifs = useSelector(
-        (state: RootState) => state.deliveredNotifs.notifs
-    );
-
-    const notifToastList = useSelector(
-        (state: RootState) => state.deliveredNotifs.notifToastList
-    );
-
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        if (username.length === 0 || jwtToken.length === 0) return;
-        const URL = "http://localhost:8080/api/v1/push-notifications";
-
-        const fetchData = async () => {
-            await fetchEventSource(URL, {
-                method: "GET",
-                headers: {
-                    Accept: "*/*",
-                    Authorization: `Bearer ${jwtToken}`,
-                },
-                openWhenHidden: true,
-                onmessage(event) {
-                    const parsedData = JSON.parse(event.data);
-                    if (parsedData.length != 0) {
-                        console.log(parsedData);
-                        dispatch(add({ newNotifs: parsedData }));
-                    }
-                },
-            });
-        };
-        fetchData();
-    }, [auth]);
 
     return (
         <div className="fixed h-screen max-md:hidden md:w-[30%] min-[1000px]:w-[20%]">
@@ -88,12 +39,16 @@ export default function CommunityLeftSidebar() {
                             className="hover:underline"
                         >
                             <FontAwesomeIcon icon={faBell} fontSize={20} />
-                            {allDeliveredNotifs.length > 0 && (
-                                <span className="text-white bg-red rounded-full text-[11px] p-1">
-                                    {allDeliveredNotifs.length}
-                                </span>
-                            )}
                             <span className="ml-5">Notifications</span>{" "}
+                        </Link>
+                    </li>
+                    <li>
+                        <Link
+                            to={"/community/messages"}
+                            className="hover:underline"
+                        >
+                            <FontAwesomeIcon icon={faMessage} fontSize={20} />
+                            <span className="ml-5">Messages</span>
                         </Link>
                     </li>
                     <li>
@@ -127,7 +82,10 @@ export default function CommunityLeftSidebar() {
                         </Link>
                     </li>
                     <li>
-                        <Link to={"/AI"} className="hover:underline">
+                        <a
+                            href="https://greenroof-ai-assistant.vercel.app"
+                            className="hover:underline"
+                        >
                             <FontAwesomeIcon
                                 icon={faRobot}
                                 fontSize={20}
@@ -136,7 +94,7 @@ export default function CommunityLeftSidebar() {
                             <span className="font-medium text-greenbtn ml-5 dark:text-white">
                                 AI Assistant
                             </span>
-                        </Link>
+                        </a>
                     </li>
                     {localStorage.getItem("theme") === "dark" ? (
                         <li>

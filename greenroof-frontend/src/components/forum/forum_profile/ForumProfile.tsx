@@ -30,6 +30,7 @@ export default function ForumProfile() {
                 username={userProfile?.username || ""}
                 city={userProfile?.city || ""}
                 profilePhoto={userProfile?.profilePhoto || ""}
+                score={userProfile?.score || 0}
             />
             {isLoading && <QuestionLoader />}
             <ul className="divide-y divide-graybg dark:divide-opacity-25">

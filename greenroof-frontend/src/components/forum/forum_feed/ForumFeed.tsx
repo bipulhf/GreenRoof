@@ -55,6 +55,7 @@ export default function ForumFeed() {
                                         }
                                         lastName={question.questioner.lastName}
                                         username={question.questioner.username}
+                                        score={question.questioner.score}
                                     />
                                     <ForumFeedQuestion
                                         id={question.id}

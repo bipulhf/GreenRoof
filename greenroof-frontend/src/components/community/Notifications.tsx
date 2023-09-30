@@ -26,7 +26,7 @@ export default function Notifications() {
             <div className="pb-[10%] min-h-screen md:w-[68%] min-[1000px]:w-[53%] md:ml-[30%] min-[1000px]:ml-[22%] divide-y divide-graybg">
                 <CommunityHeading heading="Notifications" />
                 {notifications.length === 0 && (
-                    <p className="text-gray font-medium text-center text-xl pt-5">
+                    <p className="text-gray dark:text-graybg font-medium text-center text-xl pt-5">
                         Nothing to show.
                     </p>
                 )}
@@ -35,7 +35,9 @@ export default function Notifications() {
                         <div
                             key={x.id}
                             className={`${
-                                x.read == false ? `bg-graybg font-semibold` : ``
+                                x.read == false
+                                    ? `bg-graybg dark:bg-darkprimary font-semibold`
+                                    : ``
                             } font-medium text-2xl p-3 flex justify-between w-full`}
                         >
                             <div className="flex">
@@ -47,7 +49,7 @@ export default function Notifications() {
                                 <Link
                                     to={`/community/post/${x.communityPost.id}`}
                                     onClick={() => readNotif(x.id)}
-                                    className="ml-5 self-center"
+                                    className="ml-5 self-center dark:text-white"
                                 >
                                     {x.content}
                                 </Link>

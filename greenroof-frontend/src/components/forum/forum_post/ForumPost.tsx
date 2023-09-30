@@ -35,6 +35,7 @@ export default function ForumPost() {
                         profilePhoto={questions?.questioner.profilePhoto || ""}
                         username={questions?.questioner.username || ""}
                         id={questions?.id || 0}
+                        score={questions?.questioner.score || 0}
                     />
                     <ForumFeedQuestion
                         id={questions?.id || 0}
@@ -64,14 +65,13 @@ export default function ForumPost() {
                                 className=" grid grid-cols-10 py-4"
                             >
                                 <ForumAnswererInfo
-                                    answerId={answer?.id || 0}
+                                    answerId={answer.id}
                                     postId={questions?.id || 0}
-                                    firstName={answer?.answerer.firstName || ""}
-                                    lastName={answer?.answerer.lastName || ""}
-                                    username={answer?.answerer.username || ""}
-                                    profilePhoto={
-                                        answer.answerer.profilePhoto || ""
-                                    }
+                                    firstName={answer.answerer.firstName}
+                                    lastName={answer.answerer.lastName}
+                                    username={answer.answerer.username}
+                                    profilePhoto={answer.answerer.profilePhoto}
+                                    score={answer.answerer.score}
                                 />
                                 <ForumAnswer
                                     id={answer?.id || 0}

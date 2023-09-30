@@ -53,6 +53,7 @@ export default function ForumTagResult() {
                                         profilePhoto={
                                             question.questioner.profilePhoto
                                         }
+                                        score={question.questioner.score}
                                     />
                                     <ForumFeedQuestion
                                         id={question.id}

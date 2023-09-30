@@ -2,6 +2,7 @@ import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useTopUser from "../../../hooks/useTopUser";
 import { Link } from "react-router-dom";
+import Name from "../../Name";
 
 export default function ForumTopUsers() {
     const { data: users, error, isLoading } = useTopUser();
@@ -29,7 +30,11 @@ export default function ForumTopUsers() {
                                     to={"/forum/user/" + user.username}
                                     className="font-semibold text-[16px]"
                                 >
-                                    {user.firstName + " " + user.lastName}
+                                    <Name
+                                        firstName={user.firstName}
+                                        lastName={user.lastName}
+                                        score={user.score}
+                                    />{" "}
                                 </Link>
                                 <h4 className="font-medium text-[14px] text-gray dark:text-darksecondary">
                                     @{user.username}

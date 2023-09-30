@@ -17,7 +17,6 @@ import {
 } from "../../../hooks/useProfile";
 import { User } from "../../../services/types";
 import { SubmitHandler, useForm } from "react-hook-form";
-import axios from "axios";
 import updateSendBirdProfile from "../../../services/UpdateSendBirdProfileURL";
 
 interface Props {

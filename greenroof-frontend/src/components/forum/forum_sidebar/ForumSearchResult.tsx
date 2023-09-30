@@ -54,6 +54,7 @@ export default function ForumSearchResult({ search }: Props) {
                                         profilePhoto={
                                             question.questioner.profilePhoto
                                         }
+                                        score={question.questioner.score}
                                     />
                                     <ForumFeedQuestion
                                         id={question.id}

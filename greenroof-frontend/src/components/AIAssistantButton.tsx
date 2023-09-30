@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 export default function AIAssistantButton() {
     return (
         <>
-            <button>
+            <a href="https://greenroof-ai-assistant.vercel.app">
                 <span className="m-3">
                     <FontAwesomeIcon
                         icon={faRobot}
@@ -15,7 +15,7 @@ export default function AIAssistantButton() {
                 <span className="font-medium text-greenbtn text-[20px] dark:text-white">
                     AI Assistant
                 </span>
-            </button>
+            </a>
         </>
     );
 }
