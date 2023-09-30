@@ -6,19 +6,18 @@ import React from "react";
 import SendbirdProvider from "@sendbird/uikit-react/SendbirdProvider";
 import ChannelList from "@sendbird/uikit-react/ChannelList";
 import Channel from "@sendbird/uikit-react/Channel";
+import useAuth from "../../hooks/useAuth";
 function Messages() {
   const [currentChannelUrl, setCurrentChannelUrl] = React.useState("");
+  const { auth } = useAuth();
 
   const APP_ID = "83DED529-E0E7-4BBB-AEB0-E78D67B2E2D0";
-  const USER_ID = "shaifurrahamanshifat71";
-  const AccessToken = "34b0f6342f129d96e5f320d1075c32d163aad652";
+  const USER_ID = auth.username;
   return (
     <div className="App">
       <SendbirdProvider
         appId={APP_ID}
         userId={USER_ID}
-        nickname="Shaifur Rahaman"
-        accessToken={AccessToken}
         uikitOptions={{
           groupChannel: {
             enableTypingIndicator: true,
