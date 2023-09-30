@@ -41,7 +41,7 @@ function MessageUser() {
             />
           </div>
           <div className="sendbird-app__conversation-wrap">
-            <Channel channelUrl={currentChannelUrl} />
+            {currentChannelUrl && <Channel channelUrl={currentChannelUrl} />}
           </div>
         </>
       </SendbirdProvider>
