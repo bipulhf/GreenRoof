@@ -1,11 +1,11 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/greenroof
-    username: postgres
-    password: abcd1234
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
     driver-class-name: org.postgresql.Driver
-    hikari:
-      maximum-pool-size:jpa: 30
+
+  jpa:
     hibernate:
       ddl-auto: update
     database: postgresql
@@ -13,9 +13,9 @@ spring:
 
   mail:
     host: smtp.gmail.com
-    port: 587
-    username: bankrupted.greenroof@gmail.com
-    password: kdplhutrmsiczqbq
+    port: ${MAIL_PORT}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
     properties:
       mail:
         smtp:
@@ -26,7 +26,7 @@ spring:
 application:
   security:
     jwt:
-      secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
-      expiration: 604800000 # a day
+      secret-key: ${SECRET_KEY}
+      expiration: ${EXPIRATION_TIME}
       refresh-token:
-        expiration: 604800000 # 7 days
+        expiration: ${EXPIRATION_TIME}

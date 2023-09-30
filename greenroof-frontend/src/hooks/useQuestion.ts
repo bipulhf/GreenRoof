@@ -1,11 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import APIClient from "../services/apiClient";
+import APIClient from "../services/ApiClient";
 import {
     PostAttatchments,
     Question,
     Tag,
     ValidationError,
-} from "../services/types";
+} from "../services/Types";
 import { useNavigate } from "react-router-dom";
 import useAuth from "./useAuth";
 

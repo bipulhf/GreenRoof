@@ -9,10 +9,10 @@ export default function AIAssistantButton() {
                     <FontAwesomeIcon
                         icon={faRobot}
                         fontSize={20}
-                        className="text-greenbtn dark:text-white"
+                        className="text-greenbtn dark:text-green"
                     />
                 </span>
-                <span className="font-medium text-greenbtn text-[20px] dark:text-white">
+                <span className="font-medium text-greenbtn text-[20px] dark:text-green hover:underline">
                     AI Assistant
                 </span>
             </a>

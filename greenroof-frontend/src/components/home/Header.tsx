@@ -37,7 +37,7 @@ export default function Header() {
                         Forum
                     </Link>
                 </ul>
-                <ul className="border-2 border-greenttl rounded-full pr-3 py-1">
+                <ul className="border-2 border-greenttl dark:border-green rounded-full pr-3 py-1">
                     <a href="https://greenroof-ai-assistant.vercel.app">
                         <AIAssistantButton />
                     </a>

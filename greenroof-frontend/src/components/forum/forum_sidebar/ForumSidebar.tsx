@@ -10,7 +10,7 @@ import {
     faRightFromBracket,
     faSun,
 } from "@fortawesome/free-solid-svg-icons";
-import { themeMode } from "../../../services/themeMode";
+import { themeMode } from "../../../services/ThemeMode";
 
 interface Props {
     menuOn: boolean;

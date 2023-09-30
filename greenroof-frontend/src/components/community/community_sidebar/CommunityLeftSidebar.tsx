@@ -12,7 +12,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import forum_logo from "/assets/forum/forum_logo.svg";
-import { themeMode } from "../../../services/themeMode";
+import { themeMode } from "../../../services/ThemeMode";
 import { faCircleQuestion } from "@fortawesome/free-regular-svg-icons";
 import useAuth from "../../../hooks/useAuth";
 export default function CommunityLeftSidebar() {

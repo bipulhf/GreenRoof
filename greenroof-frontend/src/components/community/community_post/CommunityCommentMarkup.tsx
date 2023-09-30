@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useDeleteComment } from "../../../hooks/useComment";
-import { User } from "../../../services/types";
-import user_profile_photo from "/assets/forum/forum_top_user_photo_40x40.png";
+import { User } from "../../../services/Types";
 import useAuth from "../../../hooks/useAuth";
 import { useGetUser } from "../../../hooks/useProfile";
 
@@ -35,9 +34,9 @@ export default function CommunityCommentmMarkup({
     return (
         <div className="py-5 px-2 grid grid-cols-10">
             <img
-                src={user_profile_photo}
+                src={commenter.profilePhoto}
                 alt="Profile Photo"
-                className="col-span-1 max-[350px]:col-span-2 ml-2 min-w-[40px] min-h-[40px]"
+                className="col-span-1 max-[350px]:col-span-2 ml-2 min-w-[40px] min-h-[40px] rounded-full"
             />
             <div className="ml-5 max-[350px]:col-span-8 col-span-9">
                 <div className="flex justify-between pb-1">

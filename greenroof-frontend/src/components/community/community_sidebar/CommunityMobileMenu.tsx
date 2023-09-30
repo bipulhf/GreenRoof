@@ -29,7 +29,7 @@ export default function CommunityMobileMenu() {
                     <FontAwesomeIcon
                         icon={faRobot}
                         fontSize={20}
-                        className="text-greenbtn dark:text-darksecondary"
+                        className="text-greenbtn dark:text-white"
                     />{" "}
                 </a>
                 <Link to={"/community/search"}>

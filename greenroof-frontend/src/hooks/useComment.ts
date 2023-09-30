@@ -4,8 +4,8 @@ import {
     useQuery,
     useQueryClient,
 } from "@tanstack/react-query";
-import APIClient from "../services/apiClient";
-import { Comment, Content, ValidationError } from "../services/types";
+import APIClient from "../services/ApiClient";
+import { Comment, Content, ValidationError } from "../services/Types";
 import useAuth from "./useAuth";
 
 interface CommentText {

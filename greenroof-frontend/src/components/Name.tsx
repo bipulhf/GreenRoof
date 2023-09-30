@@ -9,10 +9,10 @@ export default function Name({ firstName, lastName, score }: Props) {
         <span
             className={
                 score > 50
-                    ? "text-greenttl"
+                    ? "text-greenttl dark:text-green"
                     : score > 25
                     ? "text-brown"
-                    : "text-black"
+                    : "text-black dark:text-white"
             }
         >
             {firstName + " " + lastName}

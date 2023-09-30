@@ -3,7 +3,7 @@ import { faImage } from "@fortawesome/free-solid-svg-icons";
 import { useCreatePost } from "../../hooks/usePost";
 import { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { PostAttatchments } from "../../services/types";
+import { PostAttatchments } from "../../services/Types";
 import uploadImages from "../../services/ImageUpload";
 
 interface Inputs {

@@ -1,6 +1,6 @@
 import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
-import { User, UserProfile } from "../services/types";
-import APIClient from "../services/apiClient";
+import { User, UserProfile } from "../services/Types";
+import APIClient from "../services/ApiClient";
 import useAuth from "./useAuth";
 
 interface Name {

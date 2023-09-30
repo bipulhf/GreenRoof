@@ -5,7 +5,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
-import { themeMode } from "../../../services/themeMode";
+import { themeMode } from "../../../services/ThemeMode";
 
 export default function CommunityMobileHeader() {
     return (

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import APIClient from "../services/apiClient";
-import { Question } from "../services/types";
+import APIClient from "../services/ApiClient";
+import { Question } from "../services/Types";
 
 const questionApiClient = new APIClient<Question, Question>("/forum/feed");
 

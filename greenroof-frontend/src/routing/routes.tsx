@@ -4,6 +4,7 @@ import MainLayout from "../layouts/MainLayout";
 import Home from "../components/home/Home";
 import RequireAuth from "../components/RequireAuth";
 import PopupLoading from "../components/PopupLoading";
+const MessageUser = React.lazy(() => import("../pages/Community/MessasgeUser"));
 const Messages = React.lazy(() => import("../pages/Community/Messages"));
 const ForumLayout = React.lazy(() => import("../layouts/ForumLayout"));
 const ForumMainPage = React.lazy(() => import("../pages/Forum/ForumMainPage"));
@@ -440,6 +441,20 @@ const router = createBrowserRouter([
                 }
             >
                 <Messages />
+            </Suspense>
+        ),
+    },
+    {
+        path: "community/message/:userId",
+        element: (
+            <Suspense
+                fallback={
+                    <div className="w-full h-screen flex content-center justify-center">
+                        <PopupLoading />
+                    </div>
+                }
+            >
+                <MessageUser />
             </Suspense>
         ),
     },

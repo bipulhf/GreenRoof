@@ -1,5 +1,5 @@
 import ReadMore from "./ReadMore";
-import { Attatchments, User } from "../../../services/types";
+import { Attatchments, User } from "../../../services/Types";
 import CommunityPostLikeCmnt from "../community_post/CommunityPostLikeCmnt";
 import { Link, useNavigate } from "react-router-dom";
 import { useDeletePost, useEditPost } from "../../../hooks/usePost";

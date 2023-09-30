@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import ReadMore from "./ReadMore";
-import { PostAttatchments, Tag } from "../../../services/types";
+import { PostAttatchments, Tag } from "../../../services/Types";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";

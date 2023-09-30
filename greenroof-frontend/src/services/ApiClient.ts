@@ -1,9 +1,11 @@
 import axios from "axios";
 
-const axiosInstance = (path: string) =>
-    axios.create({
-        baseURL: "http://localhost:8080/api/v1" + path,
+const axiosInstance = (path: string) => {
+    const url = import.meta.env.VITE_SOURCE_LINK;
+    return axios.create({
+        baseURL: url + path,
     });
+};
 
 class APIClient<T, V> {
     subbase: string;

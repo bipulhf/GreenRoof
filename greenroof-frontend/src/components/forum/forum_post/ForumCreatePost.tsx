@@ -3,7 +3,7 @@ import { useCreateQuestion } from "../../../hooks/useQuestion";
 import { useEffect, useState } from "react";
 import Popup from "reactjs-popup";
 import PopupLoading from "../../PopupLoading";
-import { PostAttatchments } from "../../../services/types";
+import { PostAttatchments } from "../../../services/Types";
 import uploadImages from "../../../services/ImageUpload";
 import { TagsInput } from "react-tag-input-component";
 

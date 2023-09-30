@@ -1,6 +1,6 @@
-import { useMutation } from "@tanstack/react-query";
-import APIClient from "../services/apiClient";
-import { AuthObject, ValidationError } from "../services/types";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import APIClient from "../services/ApiClient";
+import { AuthObject, ValidationError } from "../services/Types";
 import useAuth from "./useAuth";
 
 interface LoginInfo {
@@ -59,6 +59,14 @@ const useCreateLogin = () => {
     });
 };
 
+const useVerifyEmail = (token: string) => {
+    return useQuery({
+        queryKey: ["token"],
+        queryFn: () =>
+            registrationApiClient.getWithCred("/verifyEmail", { token }),
+    });
+};
+
 const useLogout = () => {
     return useMutation({
         mutationFn: () => loginApiClient.login("/logout"),
@@ -113,4 +121,5 @@ export {
     useRegistration,
     usePasswordReset,
     useNewPassword,
+    useVerifyEmail,
 };

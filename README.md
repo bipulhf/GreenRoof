@@ -31,6 +31,7 @@ An innovative platform tailored exclusively for Rooftop Gardeners. This groundbr
 -   Redux
 -   TailwindCSS
 -   Axios
+-   Cloudinary (as Image Storing Service)
 
 **API for Chat Assistant:**
 
@@ -39,7 +40,7 @@ An innovative platform tailored exclusively for Rooftop Gardeners. This groundbr
 **Database:**
 
 -   PostgresQL
--   Pinecone
+-   Pinecone (to store embeddings)
 
 ## Authors
 

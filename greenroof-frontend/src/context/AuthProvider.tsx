@@ -7,7 +7,7 @@ import {
     useEffect,
     useState,
 } from "react";
-import { AuthObject } from "../services/types";
+import { AuthObject } from "../services/Types";
 import { useTokenValidity } from "../hooks/useLogin";
 import { useGetUser } from "../hooks/useProfile";
 

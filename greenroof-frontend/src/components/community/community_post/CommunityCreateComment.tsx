@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useCreateComment } from "../../../hooks/useComment";
-import user_profile_photo from "/assets/forum/forum_top_user_photo_40x40.png";
+import { useGetUser } from "../../../hooks/useProfile";
+import useAuth from "../../../hooks/useAuth";
 
 interface Props {
     postId: number;
@@ -11,7 +12,9 @@ interface Inputs {
 }
 
 export default function CommunityCreateComment({ postId }: Props) {
+    const { auth } = useAuth();
     const mutation = useCreateComment(postId);
+    const { data: loggedInUser } = useGetUser(auth.username);
     const {
         register,
         handleSubmit,
@@ -30,9 +33,9 @@ export default function CommunityCreateComment({ postId }: Props) {
         <>
             <div className="py-5 px-2 grid grid-cols-10 dark:bg-darkbg">
                 <img
-                    src={user_profile_photo}
+                    src={loggedInUser?.profilePhoto}
                     alt="Profile Photo"
-                    className="col-span-1 ml-5 h-[25px] w-[25px]"
+                    className="col-span-1 ml-5 h-[25px] w-[25px] rounded-full"
                 />
                 <form
                     onSubmit={handleSubmit(onSubmit)}

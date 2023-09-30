@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import APIClient from "../services/apiClient";
-import { Answer } from "../services/types";
+import APIClient from "../services/ApiClient";
+import { Answer } from "../services/Types";
 
 interface NumberOfAnswers {
     noa: number;

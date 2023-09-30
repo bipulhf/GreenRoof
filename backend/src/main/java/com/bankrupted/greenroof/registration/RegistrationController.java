@@ -50,7 +50,7 @@ public class RegistrationController {
 
         String url = applicationUrl(servletRequest) + "/api/v1/registration/resend-verification-token?token="
                 + token;
-
+        
         VerificationToken theToken = tokenRepository.findByToken(token);
         if (theToken.getUser().isEnabled()) {
             return new ResponseEntity<>("This account has already been verified, please, login.", HttpStatus.CONFLICT);

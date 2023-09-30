@@ -2,13 +2,20 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import loginIcon from "/assets/community/login.svg";
 import roofTopImage from "/assets/community/roof-desktop.svg";
 import { faLock, faRightToBracket } from "@fortawesome/free-solid-svg-icons";
-import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import {
+    Link,
+    Navigate,
+    useLocation,
+    useNavigate,
+    useSearchParams,
+} from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useCreateLogin } from "../../hooks/useLogin";
 import { useEffect } from "react";
 import useAuth from "../../hooks/useAuth";
 import Popup from "reactjs-popup";
 import PopupLoading from "../PopupLoading";
+import VerifyEmail from "./VerifyEmail";
 
 interface Inputs {
     username: string;
@@ -16,6 +23,7 @@ interface Inputs {
 }
 
 export default function Login() {
+    const [searchParams] = useSearchParams();
     const navigate = useNavigate();
     const location = useLocation();
     const { auth } = useAuth();
@@ -73,6 +81,13 @@ export default function Login() {
                         }`}
                     >
                         <div className="m-[10%] relative z-10">
+                            {searchParams.get("verifyEmail") && (
+                                <div className="flex mb-5">
+                                    <VerifyEmail
+                                        token={searchParams.get("verifyEmail")!}
+                                    />
+                                </div>
+                            )}
                             <div className="flex mb-10 animate-fade-right animate-once animate-ease-in-out">
                                 <img src={loginIcon} alt="Login" />
                                 <h2 className="text-3xl min-[414px]:text-4xl font-semibold self-center relative z-10">

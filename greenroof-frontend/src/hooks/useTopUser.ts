@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { User, UserProfile } from "../services/types";
-import APIClient from "../services/apiClient";
+import { User, UserProfile } from "../services/Types";
+import APIClient from "../services/ApiClient";
 
 const userApiClient = new APIClient<User, UserProfile>("/forum/feed");
 

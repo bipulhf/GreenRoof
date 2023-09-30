@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import APIClient from "../services/apiClient";
-import { Content, Question } from "../services/types";
+import APIClient from "../services/ApiClient";
+import { Content, Question } from "../services/Types";
 
 const contentApiClient = new APIClient<Content<Question>, Question>("/forum");
 

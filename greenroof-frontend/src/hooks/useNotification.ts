@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import APIClient from "../services/apiClient";
-import { Notif } from "../services/types";
+import APIClient from "../services/ApiClient";
+import { Notif } from "../services/Types";
 import useAuth from "./useAuth";
 
 const notifApiClient = new APIClient<Notif, Notif>("");

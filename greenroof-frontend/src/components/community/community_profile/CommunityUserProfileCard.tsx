@@ -15,9 +15,10 @@ import {
     useProfileName,
     useProfilePhoto,
 } from "../../../hooks/useProfile";
-import { User } from "../../../services/types";
+import { User } from "../../../services/Types";
 import { SubmitHandler, useForm } from "react-hook-form";
 import updateSendBirdProfile from "../../../services/UpdateSendBirdProfileURL";
+import CreateChannel from "../../../services/CreateChannel";
 
 interface Props {
     user: User;
@@ -112,6 +113,12 @@ export default function CommunityUserProfileCard({
         banMutation.mutate(user.username);
     };
 
+    const messageMe = () => {
+        if (uname) {
+            CreateChannel(auth.username, uname);
+        }
+    };
+
     return (
         <>
             <div className="relative justify-center py-7 dark:text-white">
@@ -187,12 +194,7 @@ export default function CommunityUserProfileCard({
                                     placeholder="Last Name"
                                     className="border mr-3 w-[20%]"
                                 />
-                                <button
-                                    type="submit"
-                                    className="hover:underline"
-                                >
-                                    Save
-                                </button>
+                                <button type="submit">Save</button>
                             </form>
                         ) : (
                             <h2 className="font-semibold text-[22px] max-[490px]:text-[18px]">
@@ -207,12 +209,22 @@ export default function CommunityUserProfileCard({
                         </h3>
                     </div>
                     {auth.username != uname && !user.isBanned && (
-                        <button
-                            onClick={onFollow}
-                            className="self-center h-fit rounded-full bg-greenbtn text-white text-[13px] md:text-[16px] px-3 py-1 md:py-2 my-2"
-                        >
-                            {follow ? "Unfollow" : "Follow"}
-                        </button>
+                        <div className="flex justify-center">
+                            <button
+                                onClick={onFollow}
+                                className="self-center h-fit rounded-full bg-greenbtn text-white text-[13px] md:text-[16px] px-3 py-1 md:py-2 my-2 hover:underline"
+                            >
+                                {follow ? "Unfollow" : "Follow"}
+                            </button>
+                            <button
+                                onClick={messageMe}
+                                className="ml-10 self-center h-fit rounded-full bg-brown text-white text-[13px] md:text-[16px] px-3 py-1 md:py-2 my-2 hover:underline"
+                            >
+                                <Link to={"/community/message/" + uname}>
+                                    Message
+                                </Link>
+                            </button>
+                        </div>
                     )}
                     {user.isBanned && (
                         <h2 className="self-center my-3 dark:text-white text-[13px] md:text-[16px]">

@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import APIClient from "../services/apiClient";
-import { ValidationError } from "../services/types";
+import APIClient from "../services/ApiClient";
+import { ValidationError } from "../services/Types";
 import useAuth from "./useAuth";
 
 interface NumberOfLikes {

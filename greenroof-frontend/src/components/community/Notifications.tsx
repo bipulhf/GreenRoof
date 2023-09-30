@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { clear } from "../../context/deliveredNotifs";
-import { Notif } from "../../services/types";
+import { Notif } from "../../services/Types";
 import CommunityHeading from "./CommunityHeading";
 import { Link } from "react-router-dom";
 import { useGetAllNotifs, useReadNotif } from "../../hooks/useNotification";

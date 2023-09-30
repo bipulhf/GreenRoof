@@ -6,7 +6,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useRegistration } from "../../hooks/useLogin";
 import { useEffect, useState } from "react";
 import useAuth from "../../hooks/useAuth";
-import { districts } from "../../services/districts";
+import { districts } from "../../services/Districts";
 import EmailVerification from "./EmailVerification";
 import Popup from "reactjs-popup";
 import PopupLoading from "../PopupLoading";
