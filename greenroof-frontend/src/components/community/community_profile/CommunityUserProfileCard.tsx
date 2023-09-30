@@ -1,5 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+
+import Sendbird from "@sendbird/uikit-react";
 import {
   useFollows,
   useIsFollow,
@@ -19,6 +21,9 @@ import { User } from "../../../services/types";
 import { SubmitHandler, useForm } from "react-hook-form";
 import axios from "axios";
 import updateSendBirdProfile from "../../../services/UpdateSendBirdProfileURL";
+import UserProfile from "@sendbird/uikit-react/ui/UserProfile";
+import SendbirdProvider from "@sendbird/uikit-react/SendbirdProvider";
+import CreateChannel from "../../../services/CreateChannel";
 
 interface Props {
   user: User;
@@ -113,6 +118,12 @@ export default function CommunityUserProfileCard({
     banMutation.mutate(user.username);
   };
 
+  const messageMe = () => {
+    if (uname) {
+      CreateChannel(auth.username, uname);
+    }
+  };
+
   return (
     <>
       <div className="relative justify-center py-7 dark:text-white">
@@ -162,6 +173,13 @@ export default function CommunityUserProfileCard({
               </form>
             )}
           </div>
+
+          <div>
+            <button onClick={messageMe}>
+              <Link to={"/message/" + uname}>Message</Link>
+            </button>
+          </div>
+
           <div className="ml-5 self-center">
             {cngName ? (
               <form

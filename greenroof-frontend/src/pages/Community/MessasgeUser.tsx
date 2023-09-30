@@ -1,14 +1,13 @@
 import "./Messages.css";
-import "@sendbird/uikit-react/dist/index.css";
-
 import React from "react";
 
 import SendbirdProvider from "@sendbird/uikit-react/SendbirdProvider";
 import ChannelList from "@sendbird/uikit-react/ChannelList";
 import Channel from "@sendbird/uikit-react/Channel";
 import useAuth from "../../hooks/useAuth";
-function Messages() {
-  const [currentChannelUrl, setCurrentChannelUrl] = React.useState("");
+function MessageUser() {
+  const [currentChannelUrl, setCurrentChannelUrl] =
+    React.useState("shifat71-Nasiat");
   const { auth } = useAuth();
 
   const APP_ID = "83DED529-E0E7-4BBB-AEB0-E78D67B2E2D0";
@@ -40,7 +39,6 @@ function Messages() {
             />
           </div>
           <div className="sendbird-app__conversation-wrap">
-            <h1>{currentChannelUrl}</h1>
             <Channel channelUrl={currentChannelUrl} />
           </div>
         </>
@@ -49,4 +47,4 @@ function Messages() {
   );
 }
 
-export default Messages;
+export default MessageUser;

@@ -27,6 +27,7 @@ import ForgotPassword from "../components/home/ForgotPassword";
 import ResetPassword from "../components/home/ResetPassword";
 import ForumTagResult from "../components/forum/forum_sidebar/ForumTagResult";
 import Messages from "../pages/Community/Messages";
+import MessageUser from "../pages/Community/MessasgeUser";
 
 const router = createBrowserRouter([
   {
@@ -119,8 +120,12 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/community/messages",
+    path: "community/messages",
     element: <Messages />,
+  },
+  {
+    path: "message/:userId",
+    element: <MessageUser />,
   },
 ]);
 
