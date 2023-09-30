@@ -8,12 +8,11 @@ import useAuth from "../../hooks/useAuth";
 import { useParams } from "react-router-dom";
 function MessageUser() {
     const { channelName } = useParams<string>();
-
     const [currentChannelUrl, setCurrentChannelUrl] =
         React.useState(channelName);
     const { auth } = useAuth();
 
-    const APP_ID = "83DED529-E0E7-4BBB-AEB0-E78D67B2E2D0";
+    const APP_ID = import.meta.env.VITE_SEND_BIRD_APP_ID;
     const USER_ID = auth.username;
     return (
         <div className="App">
@@ -42,9 +41,7 @@ function MessageUser() {
                         />
                     </div>
                     <div className="sendbird-app__conversation-wrap">
-                        {currentChannelUrl && (
-                            <Channel channelUrl={currentChannelUrl} />
-                        )}
+                        <Channel channelUrl={currentChannelUrl || ""} />
                     </div>
                 </>
             </SendbirdProvider>

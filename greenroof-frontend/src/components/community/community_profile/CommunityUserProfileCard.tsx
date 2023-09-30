@@ -95,6 +95,7 @@ export default function CommunityUserProfileCard({
 
     const [cngName, setCngName] = useState(false);
     const [isBanned, setIsBanned] = useState(user.isBanned);
+    const [channelLink, setChannelLink] = useState("");
 
     const changeName: SubmitHandler<Inputs> = (data) => {
         if (isSubmitSuccessful) {
@@ -115,9 +116,15 @@ export default function CommunityUserProfileCard({
 
     const messageMe = () => {
         if (uname) {
-            CreateChannel(auth.username, uname);
+            CreateChannel(auth.username, uname).then((result) => {
+                setChannelLink(result);
+            });
         }
     };
+
+    useEffect(() => {
+        messageMe();
+    }, [channelLink]);
 
     return (
         <>

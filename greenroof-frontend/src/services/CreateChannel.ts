@@ -5,6 +5,8 @@ export default function CreateChannel(user1: string, user2: string) {
     const apiToken = import.meta.env.VITE_SEND_BIRD_API_KEY;
 
     const data = {
+        name: user1 + " chats with " + user2,
+        channel_url: user1 + "-" + user2,
         is_distinct: true,
         user_ids: [user1, user2],
         operator_ids: [user1, user2],
