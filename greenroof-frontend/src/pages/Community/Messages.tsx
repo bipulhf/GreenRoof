@@ -19,6 +19,16 @@ function Messages() {
         userId={USER_ID}
         nickname="Shaifur Rahaman"
         accessToken={AccessToken}
+        uikitOptions={{
+          groupChannel: {
+            enableTypingIndicator: true,
+            enableReactions: true,
+          },
+          groupChannelSettings: {
+            // Setting this to false will hide the 🔎 icon on the top right corner.
+            enableMessageSearch: false,
+          },
+        }}
       >
         <>
           <div className="sendbird-app__channellist-wrap">

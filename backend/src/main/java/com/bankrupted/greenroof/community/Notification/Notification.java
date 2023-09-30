@@ -27,7 +27,6 @@ public class Notification {
     private Date createdAt;
 
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "post_id")
     private CommunityPost communityPost;
 
@@ -37,7 +36,6 @@ public class Notification {
     private User userTo;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JsonIgnore
     @JoinColumn(name = "user_from_id")
     private User userFrom;
 
