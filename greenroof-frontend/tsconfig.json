@@ -20,6 +20,6 @@
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
+  "include": ["src","node_modules/@sendbird/uikit-react/index.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

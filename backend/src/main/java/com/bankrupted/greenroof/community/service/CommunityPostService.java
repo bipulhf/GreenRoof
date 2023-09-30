@@ -64,7 +64,6 @@ public class CommunityPostService {
         CommunityPost prevPost = communityPostRepository.findById(postId)
                 .orElseThrow(() -> new NoSuchElementException("Post with id " + postId + " does not exists."));
 
-
         if (!Objects.equals(prevPost.getUser().getUsername(), username) && !isAdmin.check())
             throw new GenericException("You are not allowed to delete this post.");
         if (communityPostLikeRepository.totalNumberOfLikes(postId) > 0)
@@ -88,8 +87,7 @@ public class CommunityPostService {
                 .orElseThrow(() -> new NoSuchElementException("Post with id " + postId + " does not exists."));
         User liker = userRepository.findByUsername(username)
                 .orElseThrow(() -> new NoSuchElementException("No user found with this username " + username + "."));
-        User postOwner = userRepository.findByUsername(username)
-                .orElseThrow(() -> new NoSuchElementException("No user found with this username " + username + "."));
+        User postOwner = post.getUser();
 
         CommunityPostLike communityPostLike = new CommunityPostLike();
         communityPostLike.setPostId(post);

@@ -12,7 +12,10 @@ const uploadImages = (image: File) => {
                 imgData
             )
             .then((response) => {
-                resolve(response.data.url);
+                const url =   response.data.url;
+                const sliceIndex = 49;
+                const optimizedUrl = url.slice(0, sliceIndex) + "q_auto/f_auto/" + url.slice(sliceIndex);
+                resolve(optimizedUrl);
             });
     });
 };

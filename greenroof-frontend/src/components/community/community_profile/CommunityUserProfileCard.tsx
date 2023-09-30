@@ -17,6 +17,8 @@ import {
 } from "../../../hooks/useProfile";
 import { User } from "../../../services/types";
 import { SubmitHandler, useForm } from "react-hook-form";
+import axios from "axios";
+import updateSendBirdProfile from "../../../services/UpdateSendBirdProfileURL";
 
 interface Props {
     user: User;
@@ -83,9 +85,10 @@ export default function CommunityUserProfileCard({
     useEffect(() => {
         if (image) {
             const imagePromise = async () => await uploadImages(image);
-            imagePromise().then((d) => {
-                mutation.mutate(d);
-                setProfilePhotoLink(d);
+            imagePromise().then((imgUrl) => {
+                mutation.mutate(imgUrl);
+                setProfilePhotoLink(imgUrl);
+                updateSendBirdProfile(imgUrl, user.username);
             });
         }
     }, [image, mutation]);
