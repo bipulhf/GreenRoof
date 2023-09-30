@@ -30,42 +30,42 @@ interface RootState {
 
 export default function CommunityLeftSidebar() {
     const { auth } = useAuth();
-    // const username = auth.username;
-    // const jwtToken = auth.accessToken;
+    const username = auth.username;
+    const jwtToken = auth.accessToken;
 
-    // const allDeliveredNotifs = useSelector(
-    //     (state: RootState) => state.deliveredNotifs.notifs
-    // );
+    const allDeliveredNotifs = useSelector(
+        (state: RootState) => state.deliveredNotifs.notifs
+    );
 
-    // const notifToastList = useSelector(
-    //     (state: RootState) => state.deliveredNotifs.notifToastList
-    // );
+    const notifToastList = useSelector(
+        (state: RootState) => state.deliveredNotifs.notifToastList
+    );
 
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
-    // useEffect(() => {
-    //     if (username.length === 0 || jwtToken.length === 0) return;
-    //     const URL = "http://localhost:8080/api/v1/push-notifications";
+    useEffect(() => {
+        if (username.length === 0 || jwtToken.length === 0) return;
+        const URL = "http://localhost:8080/api/v1/push-notifications";
 
-    //     const fetchData = async () => {
-    //         await fetchEventSource(URL, {
-    //             method: "GET",
-    //             headers: {
-    //                 Accept: "*/*",
-    //                 Authorization: `Bearer ${jwtToken}`,
-    //             },
-    //             openWhenHidden: true,
-    //             onmessage(event) {
-    //                 const parsedData = JSON.parse(event.data);
-    //                 if (parsedData.length != 0) {
-    //                     console.log(parsedData);
-    //                     dispatch(add({ newNotifs: parsedData }));
-    //                 }
-    //             },
-    //         });
-    //     };
-    //     fetchData();
-    // }, [auth]);
+        const fetchData = async () => {
+            await fetchEventSource(URL, {
+                method: "GET",
+                headers: {
+                    Accept: "*/*",
+                    Authorization: `Bearer ${jwtToken}`,
+                },
+                openWhenHidden: true,
+                onmessage(event) {
+                    const parsedData = JSON.parse(event.data);
+                    if (parsedData.length != 0) {
+                        console.log(parsedData);
+                        dispatch(add({ newNotifs: parsedData }));
+                    }
+                },
+            });
+        };
+        fetchData();
+    }, [auth]);
 
     return (
         <div className="fixed h-screen max-md:hidden md:w-[30%] min-[1000px]:w-[20%]">
@@ -88,11 +88,11 @@ export default function CommunityLeftSidebar() {
                             className="hover:underline"
                         >
                             <FontAwesomeIcon icon={faBell} fontSize={20} />
-                            {/* {allDeliveredNotifs.length > 0 && (
+                            {allDeliveredNotifs.length > 0 && (
                                 <span className="text-white bg-red rounded-full text-[11px] p-1">
                                     {allDeliveredNotifs.length}
                                 </span>
-                            )} */}
+                            )}
                             <span className="ml-5">Notifications</span>{" "}
                         </Link>
                     </li>

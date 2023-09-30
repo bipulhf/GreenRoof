@@ -1,56 +1,35 @@
-import axios from "axios";
-import useAuth from "../../hooks/useAuth";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { clear } from "../../context/deliveredNotifs";
 import { Notif } from "../../services/types";
 import CommunityHeading from "./CommunityHeading";
 import { Link } from "react-router-dom";
+import { useGetAllNotifs, useReadNotif } from "../../hooks/useNotification";
 
 export default function Notifications() {
-    const { auth } = useAuth();
-    const [notifications, setNotifications] = useState<Array<Notif>>([]);
+    const { data } = useGetAllNotifs();
+    const mutation = useReadNotif();
+    const [notifications, setNotifications] = useState<Notif[]>([]);
     const dispatch = useDispatch();
 
-    const username = auth.username;
-    const jwtToken = auth.accessToken;
-    const BASE_URL = "http://localhost:8080/api/v1/notification";
-
-    const getAllNotifs = () => {
-        return axios.get(BASE_URL, {
-            headers: {
-                Authorization: `Bearer ${jwtToken}`,
-            },
-        });
-    };
-    const changeNotifStatusToRead = (notifID: number) => {
-        return axios.patch(BASE_URL + "/read/" + notifID, {
-            headers: {
-                Authorization: `Bearer ${jwtToken}`,
-            },
-        });
-    };
-
-    const fetchData = async () => {
+    const readNotif = (id: number) => {
+        mutation.mutate(id);
         dispatch(clear());
-        const data = await (await getAllNotifs()).data;
-        setNotifications(data);
-    };
-
-    const readNotif = async (id: number) => {
-        await changeNotifStatusToRead(id);
-        fetchData();
     };
 
     useEffect(() => {
-        if (username.length === 0 || jwtToken.length === 0) return;
-        fetchData();
-    }, [auth]);
+        if (data) setNotifications(data);
+    }, [data]);
 
     return (
         <>
             <div className="pb-[10%] min-h-screen md:w-[68%] min-[1000px]:w-[53%] md:ml-[30%] min-[1000px]:ml-[22%] divide-y divide-graybg">
                 <CommunityHeading heading="Notifications" />
+                {notifications.length === 0 && (
+                    <p className="text-gray font-medium text-center text-xl pt-5">
+                        Nothing to show.
+                    </p>
+                )}
                 {notifications.map((x) => (
                     <div className="flex justify-between p-2" key={x.id}>
                         <div

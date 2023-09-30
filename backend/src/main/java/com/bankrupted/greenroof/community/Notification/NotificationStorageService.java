@@ -46,11 +46,11 @@ public class NotificationStorageService {
         return modelMapperUtility.modelMap(notifRepository.findByUserToIdOrderByCreatedAtDesc(userID), NotificationDto.class);
     }
 
-    public Notification changeNotifStatusToRead(Long notifID) {
+    public void changeNotifStatusToRead(Long notifID) {
         var notif = notifRepository.findById(notifID)
                 .orElseThrow(() -> new RuntimeException("not found!"));
         notif.setRead(true);
-        return notifRepository.save(notif);
+        notifRepository.save(notif);
     }
 
     public void clear() {

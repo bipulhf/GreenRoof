@@ -3,6 +3,7 @@ import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
 import Home from "../components/home/Home";
 import RequireAuth from "../components/RequireAuth";
+import PopupLoading from "../components/PopupLoading";
 const ForumLayout = React.lazy(() => import("../layouts/ForumLayout"));
 const ForumMainPage = React.lazy(() => import("../pages/Forum/ForumMainPage"));
 const ForumSinglePostPage = React.lazy(
@@ -81,7 +82,13 @@ const router = createBrowserRouter([
             {
                 path: "login",
                 element: (
-                    <Suspense fallback="">
+                    <Suspense
+                        fallback={
+                            <div className="w-full h-screen flex content-center justify-center">
+                                <PopupLoading />
+                            </div>
+                        }
+                    >
                         <Login />
                     </Suspense>
                 ),
@@ -89,7 +96,13 @@ const router = createBrowserRouter([
             {
                 path: "register",
                 element: (
-                    <Suspense fallback="">
+                    <Suspense
+                        fallback={
+                            <div className="w-full h-screen flex content-center justify-center">
+                                <PopupLoading />
+                            </div>
+                        }
+                    >
                         <Registration />
                     </Suspense>
                 ),
@@ -97,7 +110,13 @@ const router = createBrowserRouter([
             {
                 path: "reset-password",
                 element: (
-                    <Suspense fallback="">
+                    <Suspense
+                        fallback={
+                            <div className="w-full h-screen flex content-center justify-center">
+                                <PopupLoading />
+                            </div>
+                        }
+                    >
                         <ResetPassword />
                     </Suspense>
                 ),
@@ -105,7 +124,13 @@ const router = createBrowserRouter([
             {
                 path: "forgot-password",
                 element: (
-                    <Suspense fallback="">
+                    <Suspense
+                        fallback={
+                            <div className="w-full h-screen flex content-center justify-center">
+                                <PopupLoading />
+                            </div>
+                        }
+                    >
                         <ForgotPassword />
                     </Suspense>
                 ),
@@ -114,7 +139,13 @@ const router = createBrowserRouter([
                 path: "logout",
                 element: (
                     <RequireAuth>
-                        <Suspense fallback="">
+                        <Suspense
+                            fallback={
+                                <div className="w-full h-screen flex content-center justify-center">
+                                    <PopupLoading />
+                                </div>
+                            }
+                        >
                             <Logout />
                         </Suspense>
                     </RequireAuth>
@@ -125,7 +156,13 @@ const router = createBrowserRouter([
     {
         path: "forum",
         element: (
-            <Suspense fallback="">
+            <Suspense
+                fallback={
+                    <div className="w-full h-screen flex content-center justify-center">
+                        <PopupLoading />
+                    </div>
+                }
+            >
                 <ForumLayout />
             </Suspense>
         ),
@@ -133,7 +170,13 @@ const router = createBrowserRouter([
             {
                 index: true,
                 element: (
-                    <Suspense fallback="">
+                    <Suspense
+                        fallback={
+                            <div className="w-full h-screen flex content-center justify-center">
+                                <PopupLoading />
+                            </div>
+                        }
+                    >
                         <ForumMainPage />
                     </Suspense>
                 ),
@@ -141,7 +184,13 @@ const router = createBrowserRouter([
             {
                 path: "post/:postId",
                 element: (
-                    <Suspense fallback="">
+                    <Suspense
+                        fallback={
+                            <div className="w-full h-screen flex content-center justify-center">
+                                <PopupLoading />
+                            </div>
+                        }
+                    >
                         <ForumSinglePostPage />
                     </Suspense>
                 ),
@@ -150,7 +199,13 @@ const router = createBrowserRouter([
                 path: "post/create",
                 element: (
                     <RequireAuth>
-                        <Suspense fallback="">
+                        <Suspense
+                            fallback={
+                                <div className="w-full h-screen flex content-center justify-center">
+                                    <PopupLoading />
+                                </div>
+                            }
+                        >
                             <ForumCreatePost />
                         </Suspense>
                     </RequireAuth>
@@ -160,7 +215,13 @@ const router = createBrowserRouter([
                 path: "post/edit/:postId",
                 element: (
                     <RequireAuth>
-                        <Suspense fallback="">
+                        <Suspense
+                            fallback={
+                                <div className="w-full h-screen flex content-center justify-center">
+                                    <PopupLoading />
+                                </div>
+                            }
+                        >
                             <ForumEditPost />
                         </Suspense>
                     </RequireAuth>
@@ -170,7 +231,13 @@ const router = createBrowserRouter([
                 path: "answer/edit/:postId/:answerId",
                 element: (
                     <RequireAuth>
-                        <Suspense fallback="">
+                        <Suspense
+                            fallback={
+                                <div className="w-full h-screen flex content-center justify-center">
+                                    <PopupLoading />
+                                </div>
+                            }
+                        >
                             <ForumEditAnswer />
                         </Suspense>
                     </RequireAuth>
@@ -179,7 +246,13 @@ const router = createBrowserRouter([
             {
                 path: "user/:username",
                 element: (
-                    <Suspense fallback="">
+                    <Suspense
+                        fallback={
+                            <div className="w-full h-screen flex content-center justify-center">
+                                <PopupLoading />
+                            </div>
+                        }
+                    >
                         <ForumUserProfilePage />
                     </Suspense>
                 ),
@@ -187,7 +260,13 @@ const router = createBrowserRouter([
             {
                 path: "tag/:tag",
                 element: (
-                    <Suspense fallback="">
+                    <Suspense
+                        fallback={
+                            <div className="w-full h-screen flex content-center justify-center">
+                                <PopupLoading />
+                            </div>
+                        }
+                    >
                         <ForumTagResult />
                     </Suspense>
                 ),
@@ -198,7 +277,13 @@ const router = createBrowserRouter([
         path: "community",
         element: (
             <RequireAuth>
-                <Suspense fallback="">
+                <Suspense
+                    fallback={
+                        <div className="w-full h-screen flex content-center justify-center">
+                            <PopupLoading />
+                        </div>
+                    }
+                >
                     <CommunityLayout />
                 </Suspense>
             </RequireAuth>
@@ -207,7 +292,13 @@ const router = createBrowserRouter([
             {
                 index: true,
                 element: (
-                    <Suspense fallback="">
+                    <Suspense
+                        fallback={
+                            <div className="w-full h-screen flex content-center justify-center">
+                                <PopupLoading />
+                            </div>
+                        }
+                    >
                         <CommunityMainPage />
                     </Suspense>
                 ),
@@ -215,7 +306,13 @@ const router = createBrowserRouter([
             {
                 path: "following",
                 element: (
-                    <Suspense fallback="">
+                    <Suspense
+                        fallback={
+                            <div className="w-full h-screen flex content-center justify-center">
+                                <PopupLoading />
+                            </div>
+                        }
+                    >
                         <CommunityFollowingFeed />
                     </Suspense>
                 ),
@@ -223,7 +320,13 @@ const router = createBrowserRouter([
             {
                 path: "post/:postId",
                 element: (
-                    <Suspense fallback="">
+                    <Suspense
+                        fallback={
+                            <div className="w-full h-screen flex content-center justify-center">
+                                <PopupLoading />
+                            </div>
+                        }
+                    >
                         <CommunitySinglePostPage />
                     </Suspense>
                 ),
@@ -231,7 +334,13 @@ const router = createBrowserRouter([
             {
                 path: "post/edit/:postId",
                 element: (
-                    <Suspense fallback="">
+                    <Suspense
+                        fallback={
+                            <div className="popup">
+                                <PopupLoading />
+                            </div>
+                        }
+                    >
                         <CommunityEditPost />
                     </Suspense>
                 ),
@@ -239,7 +348,13 @@ const router = createBrowserRouter([
             {
                 path: "comment/edit/:postId/:commentId",
                 element: (
-                    <Suspense fallback="">
+                    <Suspense
+                        fallback={
+                            <div className="popup">
+                                <PopupLoading />
+                            </div>
+                        }
+                    >
                         <CommunityEditComment />
                     </Suspense>
                 ),
@@ -247,7 +362,13 @@ const router = createBrowserRouter([
             {
                 path: "user/:username",
                 element: (
-                    <Suspense fallback="">
+                    <Suspense
+                        fallback={
+                            <div className="popup">
+                                <PopupLoading />
+                            </div>
+                        }
+                    >
                         <CommunityUserProfilePage />
                     </Suspense>
                 ),
@@ -255,7 +376,13 @@ const router = createBrowserRouter([
             {
                 path: "user/:username/followers",
                 element: (
-                    <Suspense fallback="">
+                    <Suspense
+                        fallback={
+                            <div className="popup">
+                                <PopupLoading />
+                            </div>
+                        }
+                    >
                         <CommunityFollowersFollowings />
                     </Suspense>
                 ),
@@ -263,7 +390,13 @@ const router = createBrowserRouter([
             {
                 path: "user/:username/followings",
                 element: (
-                    <Suspense fallback="">
+                    <Suspense
+                        fallback={
+                            <div className="popup">
+                                <PopupLoading />
+                            </div>
+                        }
+                    >
                         <CommunityFollowersFollowings />
                     </Suspense>
                 ),
@@ -271,7 +404,13 @@ const router = createBrowserRouter([
             {
                 path: "search",
                 element: (
-                    <Suspense fallback="">
+                    <Suspense
+                        fallback={
+                            <div className="popup">
+                                <PopupLoading />
+                            </div>
+                        }
+                    >
                         <CommunitySearchPage />
                     </Suspense>
                 ),
@@ -279,7 +418,13 @@ const router = createBrowserRouter([
             {
                 path: "notifications",
                 element: (
-                    <Suspense fallback="">
+                    <Suspense
+                        fallback={
+                            <div className="popup">
+                                <PopupLoading />
+                            </div>
+                        }
+                    >
                         <Notifications />
                     </Suspense>
                 ),
@@ -287,7 +432,13 @@ const router = createBrowserRouter([
             {
                 path: "push-notifications",
                 element: (
-                    <Suspense fallback="">
+                    <Suspense
+                        fallback={
+                            <div className="popup">
+                                <PopupLoading />
+                            </div>
+                        }
+                    >
                         <PushNotifications />
                     </Suspense>
                 ),
@@ -297,7 +448,13 @@ const router = createBrowserRouter([
     {
         path: "*",
         element: (
-            <Suspense fallback="">
+            <Suspense
+                fallback={
+                    <div className="popup">
+                        <PopupLoading />
+                    </div>
+                }
+            >
                 <NotFound />
             </Suspense>
         ),

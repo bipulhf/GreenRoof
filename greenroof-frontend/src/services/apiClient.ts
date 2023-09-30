@@ -51,6 +51,8 @@ class APIClient<T, V> {
         axiosInstance(this.subbase).delete(endpoint, { headers });
     changeUserInfo = (endpoint: string, headers: object, data = {}) =>
         axiosInstance(this.subbase).put(endpoint, data, { headers });
+    patch = (endpoint: string, headers: object, data = {}) =>
+        axiosInstance(this.subbase).patch(endpoint, data, { headers });
 }
 
 export default APIClient;

@@ -100,7 +100,6 @@ const useCreatePost = () => {
     const headers = { Authorization: `Bearer ${auth.accessToken}` };
     return useMutation({
         mutationFn: (post: PostPayload) => {
-            console.log(JSON.stringify(post));
             return postApiClient.post("/post/create", headers, post);
         },
         onSuccess: () => {
