@@ -31,7 +31,8 @@ An innovative platform tailored exclusively for Rooftop Gardeners. This groundbr
 -   Redux
 -   TailwindCSS
 -   Axios
--   Cloudinary (as Image Storing Service)
+-   Cloudinary (Cloud Image Storage)
+-   Sendbird (UI, APIs and Cloud Services for Messaging Application)
 
 **API for Chat Assistant:**
 
