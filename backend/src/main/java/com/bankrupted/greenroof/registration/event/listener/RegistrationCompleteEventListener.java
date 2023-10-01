@@ -25,21 +25,17 @@ public class RegistrationCompleteEventListener implements ApplicationListener<Re
 
     @Override
     public void onApplicationEvent(RegistrationCompleteEvent event) {
-        // 1. Get the newly registered user
+
         theUser = event.getUser();
-        // 2. Create a verification token for the user
         String verificationToken = UUID.randomUUID().toString();
-        // 3. Save the verification token for the user
         userService.saveUserVerificationToken(theUser, verificationToken);
-        // 4 Build the verification url to be sent to the user
         String url = event.getApplicationUrl() + "/login?verifyEmail=" + verificationToken;
-        // 5. Send the email.
+
         try {
             sendVerificationEmail(url);
         } catch (MessagingException | UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
-        log.info("Click the link to verify your registration :  {}", url);
     }
 
     public void sendVerificationEmail(String url) throws MessagingException, UnsupportedEncodingException {
