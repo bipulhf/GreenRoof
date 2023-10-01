@@ -12,7 +12,7 @@ const userApiClient = new APIClient<User, UserProfile>("");
 
 const useProfile = (username: string) => {
     return useQuery<User[], Error>({
-        queryKey: ["user", username],
+        queryKey: ["users", username],
         queryFn: () =>
             userApiClient.getAll("/forum/search/user?username=" + username),
     });

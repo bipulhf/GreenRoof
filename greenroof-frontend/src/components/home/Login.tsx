@@ -46,16 +46,6 @@ export default function Login() {
         }
     }, [isSubmitSuccessful, mutation.data, from]);
 
-    useEffect(() => {
-        if (
-            from &&
-            from.pathname !== "/logout" &&
-            from.pathname !== "/community"
-        ) {
-            navigate(from);
-        }
-    }, [from]);
-
     return (
         <>
             {auth.username && auth.accessToken ? (

@@ -2,7 +2,7 @@ import axios from "axios";
 
 export default function CreateChannel(user1: string, user2: string) {
     const sendBirdURL = import.meta.env.VITE_SEND_BIRD_URL;
-    const apiToken = import.meta.env.VITE_SEND_BIRD_API_KEY;
+    const apiToken = import.meta.env.VITE_SEND_BIRD_API_TOKEN;
 
     const data = {
         is_distinct: true,

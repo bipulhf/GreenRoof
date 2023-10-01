@@ -20,11 +20,13 @@ export default function ForumTopUsers() {
                     {error && <p>Network Error...</p>}
                     {users?.map((user) => (
                         <li key={user.id} className="flex mb-[10px]">
-                            <img
-                                src={user.profilePhoto}
-                                alt="User Photo"
-                                className="w-[40px] h-[40px] rounded-full mt-[10px] mr-[12px]"
-                            />
+                            <div className="profile-img">
+                                <img
+                                    src={user.profilePhoto}
+                                    alt="User Photo"
+                                    className="max-w-[40px] max-h-[40px] min-w-[40px] min-h-[40px] rounded-full mt-[10px] mr-[12px]"
+                                />
+                            </div>
                             <div>
                                 <Link
                                     to={"/forum/user/" + user.username}

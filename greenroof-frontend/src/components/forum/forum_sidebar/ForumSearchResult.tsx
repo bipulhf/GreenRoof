@@ -4,6 +4,8 @@ import React from "react";
 import ForumFeedQuestion from "../forum_feed/ForumFeedQuestion";
 import ForumQuestionerInfo from "../forum_feed/ForumQuestionerInfo";
 import PostLoader from "../../PostLoader";
+import { useProfile } from "../../../hooks/useProfile";
+import ProfileCard from "../../ProfileCard";
 
 interface Props {
     search: string;
@@ -17,6 +19,7 @@ export default function ForumSearchResult({ search }: Props) {
         hasNextPage,
         fetchNextPage,
     } = useSearch(search);
+    const { data: users } = useProfile(search);
 
     const fetchedQuestionCount =
         questions?.pages.reduce(
@@ -28,6 +31,11 @@ export default function ForumSearchResult({ search }: Props) {
             <h2 className="font-bold text-[14px] sm:text-[16px] md:text-[22px] dark:text-darksecondary">
                 Showing Results for '{search}'
             </h2>
+            <div className="flex">
+                {users !== undefined &&
+                    users?.length > 0 &&
+                    users?.map((user) => <ProfileCard user={user} />)}
+            </div>
             {isLoading && <PostLoader />}
             {error && <p>Network Error...</p>}
             <InfiniteScroll

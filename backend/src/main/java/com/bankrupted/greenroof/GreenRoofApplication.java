@@ -25,7 +25,7 @@ public class GreenRoofApplication {
 						.allowedMethods("*")
 						.allowedHeaders("*")
 						.allowCredentials(true)
-						.allowedOrigins("http://localhost:5173/");
+						.allowedOrigins("https://greenroof.vercel.app/");
 			}
 		};
 	}

@@ -27,17 +27,6 @@ export default function CommunityCreatePost({ profilePhoto }: Props) {
         formState: { isSubmitSuccessful },
     } = useForm<Inputs>();
 
-    // const ImgDataUrl = (image: File) => {
-    //     if (image) {
-    //         const reader = new FileReader();
-    //         reader.onload = (r) => {
-    //             return r.target?.result;
-    //         };
-    //         reader.readAsDataURL(image);
-    //     }
-    //     return "";
-    // };
-
     const [clicked, setClicked] = useState(false);
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
@@ -49,6 +38,8 @@ export default function CommunityCreatePost({ profilePhoto }: Props) {
         Promise.allSettled(imagesPromises)
             .then((promisesArr) => {
                 promisesArr.map((link) => {
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
                     postAttatchments.push({ link: link.value });
                 });
                 mutation.mutate({
@@ -95,11 +86,13 @@ export default function CommunityCreatePost({ profilePhoto }: Props) {
 
     return (
         <div className="py-5 px-2 grid grid-cols-8 dark:bg-darkbg">
-            <img
-                src={profilePhoto}
-                alt="Profile Photo"
-                className="col-span-1 ml-5 min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] rounded-full"
-            />
+            <div className="profile-img">
+                <img
+                    src={profilePhoto}
+                    alt="Profile Photo"
+                    className="col-span-1 ml-5 min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] rounded-full"
+                />
+            </div>
             <form
                 onSubmit={handleSubmit(onSubmit)}
                 className="col-span-7 flex max-[500px]:ml-10 dark:text-white"

@@ -32,9 +32,8 @@ export default function Registration() {
         profile_url: "",
     };
 
-    const sendBirdURL =
-        "https://api-83DED529-E0E7-4BBB-AEB0-E78D67B2E2D0.sendbird.com/v3/users";
-    const apiToken = "ebf287851ccc7acd28616cb625e2c288ce56e9ed";
+    const sendBirdURL = import.meta.env.VITE_SEND_BIRD_USER_PROFILE_LINK;
+    const apiToken = import.meta.env.VITE_SEND_BIRD_API_TOKEN;
     const {
         register,
         handleSubmit,

@@ -33,11 +33,13 @@ export default function CommunityCommentmMarkup({
 
     return (
         <div className="py-5 px-2 grid grid-cols-10">
-            <img
-                src={commenter.profilePhoto}
-                alt="Profile Photo"
-                className="col-span-1 max-[350px]:col-span-2 ml-2 min-w-[40px] min-h-[40px] rounded-full"
-            />
+            <div className="profile-img">
+                <img
+                    src={commenter.profilePhoto}
+                    alt="Profile Photo"
+                    className="col-span-1 max-[350px]:col-span-2 ml-2 max-w-[40px] max-h-[40px] min-h-[40px] min-w-[40px] rounded-full"
+                />
+            </div>
             <div className="ml-5 max-[350px]:col-span-8 col-span-9">
                 <div className="flex justify-between pb-1">
                     <div className="flex max-sm:flex-col">

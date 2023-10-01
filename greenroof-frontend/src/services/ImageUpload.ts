@@ -13,10 +13,13 @@ const uploadImages = (image: File) => {
             const url = response.data.url;
             const sliceIndex = 49;
             const optimizedUrl =
-                url.slice(0, sliceIndex) +
+                url.slice(0, 4) +
+                "s" +
+                url.slice(4, sliceIndex) +
                 "q_auto/f_auto/" +
                 url.slice(sliceIndex);
             resolve(optimizedUrl);
+            console.log(optimizedUrl);
         });
     });
 };

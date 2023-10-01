@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useCreateQuestion } from "../../../hooks/useQuestion";
 import { useEffect, useState } from "react";
@@ -40,6 +41,7 @@ export default function ForumCreatePost() {
         Promise.allSettled(imagesPromises)
             .then((promisesArr) => {
                 promisesArr.map((link) => {
+                    // @ts-ignore
                     forumAttatchments.push({ link: link.value });
                 });
                 mutation.mutate({
@@ -152,6 +154,7 @@ export default function ForumCreatePost() {
                 <div className="mt-5 outline-none">
                     <TagsInput
                         value={selected}
+                        // @ts-ignore
                         onChange={setSelected}
                         name="tags"
                         placeHolder="Enter Tags..."

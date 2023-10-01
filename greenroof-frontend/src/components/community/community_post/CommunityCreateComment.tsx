@@ -32,11 +32,13 @@ export default function CommunityCreateComment({ postId }: Props) {
     return (
         <>
             <div className="py-5 px-2 grid grid-cols-10 dark:bg-darkbg">
-                <img
-                    src={loggedInUser?.profilePhoto}
-                    alt="Profile Photo"
-                    className="col-span-1 ml-5 h-[25px] w-[25px] rounded-full"
-                />
+                <div className="profile-img">
+                    <img
+                        src={loggedInUser?.profilePhoto}
+                        alt="Profile Photo"
+                        className="col-span-1 ml-5 max-h-[25px] max-w-[25px] min-h-[25px] min-w-[25px] rounded-full"
+                    />
+                </div>
                 <form
                     onSubmit={handleSubmit(onSubmit)}
                     className="col-span-9 flex ml-8"

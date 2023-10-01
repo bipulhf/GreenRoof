@@ -20,17 +20,17 @@ export default function CommunityUserProfile() {
     const { username } = useParams();
     const { data, isLoading, isError, error, hasNextPage, fetchNextPage } =
         useGetUserPost(username || "");
-    const fetchedPostCount =
-        data?.pages.reduce(
-            (total, page) => total + page.contentList.length,
-            0
-        ) || 0;
     const {
         data: user,
         isLoading: userLoading,
         isError: userErrors,
         error: userError,
-    } = useGetUser(username!);
+    } = useGetUser(username || "");
+    const fetchedPostCount =
+        data?.pages.reduce(
+            (total, page) => total + page.contentList.length,
+            0
+        ) || 0;
 
     const { data: totalFollowers } = useTotalFollowers(username || "");
     const { data: totalFollowings } = useTotalFollowings(username || "");
@@ -42,7 +42,12 @@ export default function CommunityUserProfile() {
                 <ProfileLoader />
             ) : (
                 <CommunityUserProfileCard
-                    user={user!}
+                    firstName={user?.firstName || ""}
+                    lastName={user?.lastName || ""}
+                    username={user?.username || ""}
+                    profilePhoto={user?.profilePhoto || ""}
+                    isUserBanned={user?.isBanned || false}
+                    city={user?.city || ""}
                     followers={totalFollowers?.total || 0}
                     followings={totalFollowings?.total || 0}
                 />

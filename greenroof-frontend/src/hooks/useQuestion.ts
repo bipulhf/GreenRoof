@@ -12,7 +12,7 @@ import useAuth from "./useAuth";
 interface QuestionText {
     questionTitle: string;
     questionText: string;
-    questionTag: Tag[];
+    questionTag?: Tag[];
     forumAttatchments?: PostAttatchments[];
 }
 

@@ -7,13 +7,18 @@ import CommunityHeading from "../CommunityHeading";
 
 export default function CommunityFollowersFollowings() {
     const { username } = useParams();
-    const { data: followers } = useFollowers(username || "");
-    const { data: followings } = useFollowings(username || "");
+    const { data: followers, isLoading: followersLoading } = useFollowers(
+        username || ""
+    );
+    const { data: followings, isLoading: followingsLoading } = useFollowings(
+        username || ""
+    );
     const isFollowers =
         window.location.href.indexOf("followers") > -1 ? true : false;
     return isFollowers ? (
         <div className="min-h-screen md:w-[68%] min-[1000px]:w-[53%] md:ml-[30%] min-[1000px]:ml-[22%] divide-y divide-graybg dark:divide-opacity-25">
             <CommunityHeading heading="Followers" />
+            {followersLoading && <p>Loading...</p>}
             {followers?.map((follower) => (
                 <div className="flex px-[5%] min-[1200px]:px-[10%] py-[3%] self-center">
                     <img
@@ -39,6 +44,7 @@ export default function CommunityFollowersFollowings() {
     ) : (
         <div className="min-h-screen md:w-[68%] min-[1000px]:w-[53%] md:ml-[30%] min-[1000px]:ml-[22%] divide-y divide-graybg">
             <CommunityHeading heading="Followings" />
+            {followingsLoading && <p>Loading...</p>}
             {followings?.map((following) => (
                 <div className="flex px-[5%] min-[1200px]:px-[10%] py-[3%] self-center">
                     <img

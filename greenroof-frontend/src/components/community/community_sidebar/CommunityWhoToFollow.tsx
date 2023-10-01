@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useFollows, useUnfollow } from "../../../hooks/useFollowersFollowings";
 import { Link } from "react-router-dom";
 
@@ -20,21 +20,20 @@ export default function CommunityWhoToFollow({
     const unfollowMutation = useUnfollow(username);
 
     const onFollow = () => {
+        setFollow(!follow);
         if (follow) unfollowMutation.mutate();
         else followMutation.mutate();
     };
-    useEffect(() => {
-        if (followMutation.isSuccess || unfollowMutation.isSuccess)
-            setFollow(!follow);
-    }, [followMutation.isSuccess, unfollowMutation.isSuccess]);
     return (
         <div className="flex px-[5%] min-[1200px]:px-[10%] pb-[5%] justify-between">
             <div className="flex">
-                <img
-                    src={profilePhoto}
-                    alt="User Photo"
-                    className="h-[40px] w-[40px] mr-5 rounded-full"
-                />
+                <div className="profile-img">
+                    <img
+                        src={profilePhoto}
+                        alt="User Photo"
+                        className="max-h-[40px] max-w-[40px] min-h-[40px] min-w- mr-5 rounded-full"
+                    />
+                </div>
                 <Link to={"/community/user/" + username} className="mr-7">
                     <h2 className="font-semibold text-[16px]">
                         {firstName + " " + lastName}

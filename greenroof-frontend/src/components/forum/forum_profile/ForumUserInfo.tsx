@@ -20,11 +20,13 @@ export default function ForumUserInfo({
     return (
         <>
             <div className="mt-2 mb-10 user-card flex flex-col justify-center items-center">
-                <img
-                    src={profilePhoto}
-                    alt="User Profile Photo"
-                    className="w-[45px] h-[45px] sm:w-[55px] sm:h-[55px] md:w-[104px] md:h-[104px] rounded-full mr-2"
-                />
+                <div className="profile-img">
+                    <img
+                        src={profilePhoto}
+                        alt="User Profile Photo"
+                        className="max-w-[45px] max-h-[45px] min-w-[45px] min-h-[45px] sm:max-w-[55px] sm:max-h-[55px] md:max-w-[104px] md:max-h-[104px] sm:min-w-[55px] sm:min-h-[55px] md:min-w-[104px] md:min-h-[104px] rounded-full mr-2"
+                    />
+                </div>
                 <div className="username text-center">
                     <h3 className="inline font-semibold text-[16px] sm:text-[18px] md:text-[20px] dark:text-white">
                         <Name

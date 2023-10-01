@@ -42,11 +42,13 @@ export default function CommunityFeedPost({
     return (
         <>
             <div className="py-5 px-3 grid grid-cols-10">
-                <img
-                    src={user.profilePhoto}
-                    alt="Profile Photo"
-                    className="col-span-1 max-[350px]:col-span-2 ml-2 min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] rounded-full"
-                />
+                <div className="profile-img">
+                    <img
+                        src={user.profilePhoto}
+                        alt="Profile Photo"
+                        className="col-span-1 max-[350px]:col-span-2 ml-2 min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] rounded-full"
+                    />
+                </div>
                 <div className="dark:text-white ml-5 max-[350px]:col-span-8 col-span-9">
                     <div className="flex justify-between pb-1">
                         <Link
@@ -69,15 +71,15 @@ export default function CommunityFeedPost({
                                     Edit
                                 </h3>
                             )}
-                            {auth.username === user.username ||
-                                (loggedInUser?.role === "ADMIN" && (
-                                    <h3
-                                        className="hover:cursor-pointer"
-                                        onClick={onDelete}
-                                    >
-                                        Delete
-                                    </h3>
-                                ))}
+                            {(auth.username === user.username ||
+                                loggedInUser?.role === "ADMIN") && (
+                                <h3
+                                    className="hover:cursor-pointer"
+                                    onClick={onDelete}
+                                >
+                                    Delete
+                                </h3>
+                            )}
                         </div>
                     </div>
                     <div className="pb-2">

@@ -131,6 +131,6 @@ public class RegistrationController {
     }
 
     public String applicationUrl(HttpServletRequest request) {
-        return "http://localhost:5173" + request.getContextPath();
+        return "https://greenroof.vercel.app" + request.getContextPath();
     }
 }

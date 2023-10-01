@@ -52,7 +52,7 @@ export default function ForumPost() {
                     <ForumAddAnswer id={questions?.id || 0} />
                 </div>
                 <div className="mt-[10px]">
-                    {answers?.length > 0 && (
+                    {answers != undefined && answers?.length > 0 && (
                         <span className="text-gray font-semibold text-[11px] sm:text-[13px] md:text-[16px]">
                             Answers
                         </span>

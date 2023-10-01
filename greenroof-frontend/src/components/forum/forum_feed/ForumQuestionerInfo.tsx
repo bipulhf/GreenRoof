@@ -35,11 +35,13 @@ export default function ForumQuestionerInfo({
         <>
             <div className="self-center col-span-4 sm:col-span-3 md:col-span-2 text-center mr-4 break-all">
                 <div className="questioner flex text-left mb-3">
-                    <img
-                        src={profilePhoto}
-                        alt="User Photo"
-                        className="w-[24px] h-[24px] sm:w-[30px] sm:h-[30px] rounded-full mr-5 mt-[5px]"
-                    />
+                    <div className="profile-img">
+                        <img
+                            src={profilePhoto}
+                            alt="User Photo"
+                            className="max-w-[24px] max-h-[24px] min-w-[24px] min-h-[24px] sm:max-w-[30px] sm:max-h-[30px] sm:min-w-[30px] sm:min-h-[30px] rounded-full mr-5 mt-[5px]"
+                        />
+                    </div>
                     {postId == null ? (
                         <Link
                             to={"/forum/user/" + username}
